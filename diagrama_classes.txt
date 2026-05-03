@@ -1,1 +1,145 @@
-teste
+classDiagram
+class Usuario {
+  -nome: String
+  -email: string
+  -senha: string
+  +login() bool
+  +logout() void
+}
+class Administrador
+class Organizador
+class UsuarioArbitro
+class Operador
+class Arbitro {
+  -nome: string
+  -idade: int
+  -categoria: CategoriaArbitro
+  -experiencia: int
+  +getNome() string
+  +setNome(nome: string) void
+  +getIdade() int
+  +setIdade(idade: int) void
+  +getCategoria() CategoriaArbitro
+  +setCategoria(categoria: CategoriaArbitro) void
+  +getExperiencia() int
+  +setExperiencia(experiencia: int) void
+}
+class CategoriaArbitro {
+  <<enumeration>>
+  FIFA
+  NACIONAL
+}
+class Jogador {
+  -nomeCompleto: string
+  -idade: int
+  -numeracao: string
+  -posicao: string
+  +getNomeCompleto() string
+  +setNomeCompleto(nome: string) void
+  +getIdade() int
+  +setIdade(idade: int) void
+  +getNumeracao() string
+  +setNumeracao(numeracao: string) void
+  +getPosicao() string
+  +setPosicao(posicao: string) void
+}
+class Selecao {
+  -pais: string
+  -confederacao: string
+  -tecnico: string
+  -rankingFifa: string
+  -titulos: string
+  +getPais() string
+  +setPais(pais: string) void
+  +getConfederacao() string
+  +setConfederacao(confederacao: string) void
+  +getTecnico() string
+  +setTecnico(tecnico: string) void
+  +getRankingFifa() string
+  +setRankingFifa(rankingFifa: string) void
+  +getTitulos() string
+  +setTitulos(titulos: string) void
+}
+class Partida {
+  -timeCasa: string
+  -timeVisitante: string
+  -cidade: string
+  -rodada: string
+  -data: string
+  -horario: string
+  +getTimeCasa() string
+  +setTimeCasa(timeCasa: string) void
+  +getTimeVisitante() string
+  +setTimeVisitante(timeVisitante: string) void
+  +getCidade() string
+  +setCidade(cidade: string) void
+  +getRodada() string
+  +setRodada(rodada: string) void
+  +getData() string
+  +setData(data: string) void
+  +getHorario() string
+  +setHorario(horario: string) void
+  +getEstadio() Estadio
+  +setEstadio(estadio: Estadio) void
+}
+class Resultado {
+  -timeVencedor: string
+  -timePerdedor: string
+  -placar: string
+  -placarPenaltis: string
+  -cartoesAmarelos: int
+  -cartoesVermelhos: int
+  +getTimeVencedor() string
+  +setTimeVencedor(timeVencedor: string) void
+  +getTimePerdedor() string
+  +setTimePerdedor(timePerdedor: string) void
+  +getPlacar() string
+  +setPlacar(placar: string) void
+  +getPlacarPenaltis() string
+  +setPlacarPenaltis(placarPenaltis: string) void
+  +getCartoesAmarelos() int
+  +setCartoesAmarelos(n: int) void
+  +getCartoesVermelhos() int
+  +setCartoesVermelhos(n: int) void
+}
+class Estadio {
+  -nome: String
+  -cidade: String
+  -estado: String
+  -capacidade: int
+  -tipo_gramado: String
+}
+class Designacao {
+  +getArbitroPrincipal() Arbitro
+  +setArbitroPrincipal(a: Arbitro) void
+  +getAssistente1() Arbitro
+  +setAssistente1(a: Arbitro) void
+  +getAssistente2() Arbitro
+  +setAssistente2(a: Arbitro) void
+}
+class Ingresso {
+  -setor: string
+  -codigo: string
+  +ingressoConsulta() void
+  +ingressoRelatorios() void
+  +ingressoPublico() void
+}
+Operador --> Resultado : visualiza
+Operador --> Ingresso : compra
+UsuarioArbitro --> Partida : visualiza
+Organizador --> Selecao : gere
+Organizador --> Partida : gere
+Administrador --> Usuario : cadastra
+Administrador --> Usuario : exclui
+Organizador <|-- Administrador
+UsuarioArbitro <|-- Organizador
+Operador <|-- UsuarioArbitro
+Usuario <|-- Operador
+Arbitro --> CategoriaArbitro
+Jogador --> Selecao
+Selecao "1" --> "0..*" Partida
+Partida --> Estadio
+Partida "1" --> "0..1" Resultado
+Partida --> Designacao
+Partida "1" --> "0..*" Ingresso
+Designacao --> Arbitro
