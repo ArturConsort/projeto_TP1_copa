@@ -1,12 +1,34 @@
 classDiagram
-class Usuario {
+class Pessoa {
+  <<abstract>>
   -nome: String
+  -cpf: string
   -email: string
-  -senha: string
+  +Pessoa(String nome, String cpf, String email)
+  +getNome() String
+  +getCpf() String
+  +getEmail() String
+  +setNome(String nome) void
+  +setCpf(String cpf) void
+  +setEmail(String email) void
+}
+class Usuario {
+  -login: String
+  -senha: String
+  +getLogin() String
+  +getSenha() String
+  +setLogin(String login) void
+  +setSenha(String senha) void
   +login() bool
   +logout() void
+  +listarUsuarios() void
+  +pesquisarUsuario() Usuario
 }
-class Administrador
+class Administrador{
+  +cadastraUsuario(Usuario usuario) void
+  +editarUsuario(Usuario usuario) void
+  +excluiUsuario(Usuario usuario) void
+}
 class Organizador
 class UsuarioArbitro
 class Operador
@@ -124,17 +146,38 @@ class Ingresso {
   +ingressoRelatorios() void
   +ingressoPublico() void
 }
+class RelatorioCompeticao{
+  -numeroDePartidas: int
+  -publico: int
+  -desempenho: DesempenhoDeSelecoes
+  +getNumeroDePartidas(): int
+  +getPublico(): Int
+  +getDesempenho(): DesempenhoDeSelecoes
+  +setNumeroDePartidas(n: int): void
+  +setPublico(n: int): void
+  +setDesempenho(desempenho: DesempenhoDeSelecoes): void
+}
+class DesempenhoDeSelecoes {
+  <<enumeration>>
+    EXELENTE
+    BOM
+    MEDIO
+    RUIM
+}
 Operador --> Resultado : visualiza
 Operador --> Ingresso : compra
 UsuarioArbitro --> Partida : visualiza
 Organizador --> Selecao : gere
 Organizador --> Partida : gere
 Administrador --> Usuario : cadastra
+Administrador --> Usuario : edita
 Administrador --> Usuario : exclui
+Administrador --> RelatorioCompeticao : gera
 Organizador <|-- Administrador
 UsuarioArbitro <|-- Organizador
 Operador <|-- UsuarioArbitro
 Usuario <|-- Operador
+Pessoa <|-- Usuario
 Arbitro --> CategoriaArbitro
 Jogador --> Selecao
 Selecao "1" --> "0..*" Partida
@@ -143,3 +186,4 @@ Partida "1" --> "0..1" Resultado
 Partida --> Designacao
 Partida "1" --> "0..*" Ingresso
 Designacao --> Arbitro
+RelatorioCompeticao ..> DesempenhoDeSelecoes : usa

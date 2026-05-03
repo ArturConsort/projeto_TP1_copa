@@ -5,17 +5,14 @@ public class Operador extends  Usuario{
     //atributos
 
     //construtores
-    public Operador() {
-        super();
-    }
-    public Operador(String nome, String email, String senha) {
-        super(nome, email, senha);
+    public Operador(String nome, String cpf, String email, String login, String senha) {
+        super(nome, cpf, email, login, senha);
     }
 
     //get set
 
     //metodos
-    //void veResultado(){}
-    //void compraIngresso(){}
+    //*void veResultado(){}
+    //*void compraIngresso(){}
 
 }

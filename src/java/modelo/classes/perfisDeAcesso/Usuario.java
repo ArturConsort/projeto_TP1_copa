@@ -1,26 +1,26 @@
 package modelo.classes.perfisDeAcesso;
 
-public class Usuario {
+import modelo.classes.outros.Pessoa;
+
+public class Usuario extends Pessoa {
 
     //atributos
-    protected String nome;
-    protected String email;
+    protected String login;
     protected String senha;
 
     //construtores
-    public Usuario(){}
-    public Usuario(String nome, String email, String senha){
-        this.nome = nome;
-        this.email = email;
+    public Usuario(String nome, String cpf, String email, String login, String senha) {
+        super(nome, cpf, email);
         this.senha = senha;
+        this.login = login;
     }
 
     //get set
-    public String getEmail() {
-        return email;
+    public String getLogin() {
+        return login;
     }
-    public void setEmail(String email) {
-        this.email = email;
+    public void setLogin(String login) {
+        this.login = login;
     }
     public String getSenha() {
         return senha;
@@ -29,9 +29,13 @@ public class Usuario {
         this.senha = senha;
     }
 
+
     //metodos
     //Boolean login(){}
     //void logout(){}
+    //void listarUsuario(){}
+    //pesquisar usuario(){}
+
 
 
 

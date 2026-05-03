@@ -5,17 +5,15 @@ public class Organizador extends UsuarioArbitro{
     //atributos
 
     //construtores
-    public Organizador() {
-        super();
+    public Organizador(String nome, String cpf, String email, String login, String senha) {
+        super(nome, cpf, email, login, senha);
     }
-    public Organizador(String nome, String email, String senha) {
-        super(nome, email, senha);
-    }
+
 
     //get set
 
     //metodos
-    //void gerePartida(){}
-    //void gereSelecao(){}
+    //*void gerePartida(){}
+    //*void gereSelecao(){}
 
 }
