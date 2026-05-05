@@ -89,6 +89,8 @@ class Partida {
   -rodada: string
   -data: string
   -horario: string
+  -arbitroPrincipal: Arbitro
+  -listaAssistentes: List<Arbitro>
   +getTimeCasa() string
   +setTimeCasa(timeCasa: string) void
   +getTimeVisitante() string
@@ -103,6 +105,12 @@ class Partida {
   +setHorario(horario: string) void
   +getEstadio() Estadio
   +setEstadio(estadio: Estadio) void
+  +getArbitroPrincipal() Arbitro
+  +setArbitroPrincipal(a: Arbitro) void
+  +getAssistente1() Arbitro
+  +setAssistente1(a: Arbitro) void
+  +getAssistente2() Arbitro
+  +setAssistente2(a: Arbitro) void
 }
 class Resultado {
   -timeVencedor: string
@@ -130,14 +138,6 @@ class Estadio {
   -estado: String
   -capacidade: int
   -tipo_gramado: String
-}
-class Designacao {
-  +getArbitroPrincipal() Arbitro
-  +setArbitroPrincipal(a: Arbitro) void
-  +getAssistente1() Arbitro
-  +setAssistente1(a: Arbitro) void
-  +getAssistente2() Arbitro
-  +setAssistente2(a: Arbitro) void
 }
 class Ingresso {
   -setor: string
@@ -183,7 +183,6 @@ Jogador --> Selecao
 Selecao "1" --> "0..*" Partida
 Partida --> Estadio
 Partida "1" --> "0..1" Resultado
-Partida --> Designacao
 Partida "1" --> "0..*" Ingresso
-Designacao --> Arbitro
+Partida "0..*" --> "0..*" Arbitro
 RelatorioCompeticao ..> DesempenhoDeSelecoes : usa
