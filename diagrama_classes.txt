@@ -56,6 +56,7 @@ class Jogador {
   -idade: int
   -numeracao: string
   -posicao: string
+  -seleção: Seleção
   +getNomeCompleto() string
   +setNomeCompleto(nome: string) void
   +getIdade() int
@@ -64,6 +65,8 @@ class Jogador {
   +setNumeracao(numeracao: string) void
   +getPosicao() string
   +setPosicao(posicao: string) void
+  +getSeleção() Seleção
+  +setSeleção(seleção: Seleção) void
 }
 class Selecao {
   -pais: string
@@ -71,6 +74,7 @@ class Selecao {
   -tecnico: string
   -rankingFifa: string
   -titulos: string
+  -jogadores: List<Jogador>
   +getPais() string
   +setPais(pais: string) void
   +getConfederacao() string
@@ -81,6 +85,8 @@ class Selecao {
   +setRankingFifa(rankingFifa: string) void
   +getTitulos() string
   +setTitulos(titulos: string) void
+  +setJogadores(jogador: Jogador) void
+  +getJogadores() List<Jogador>
 }
 class Partida {
   -timeCasa: string
