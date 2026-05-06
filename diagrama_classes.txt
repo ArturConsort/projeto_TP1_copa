@@ -89,18 +89,19 @@ class Selecao {
   +getJogadores() List<Jogador>
 }
 class Partida {
-  -timeCasa: string
-  -timeVisitante: string
+  -timeCasa: Selecao
+  -timeVisitante: Selecao
   -cidade: string
   -rodada: string
   -data: string
   -horario: string
+  -estadio : Estadio
   -arbitroPrincipal: Arbitro
   -listaAssistentes: List<Arbitro>
-  +getTimeCasa() string
-  +setTimeCasa(timeCasa: string) void
-  +getTimeVisitante() string
-  +setTimeVisitante(timeVisitante: string) void
+  +getTimeCasa() Selecao
+  +setTimeCasa(timeCasa: Selecao) void
+  +getTimeVisitante() Selecao
+  +setTimeVisitante(timeVisitante: Selecao) void
   +getCidade() string
   +setCidade(cidade: string) void
   +getRodada() string
