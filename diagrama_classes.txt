@@ -92,10 +92,10 @@ class Partida {
   -estadio : Estadio
   -arbitroPrincipal: Arbitro
   -listaAssistentes: List<Arbitro>
-  +getTimeCasa() string
-  +setTimeCasa(timeCasa: string) void
-  +getTimeVisitante() string
-  +setTimeVisitante(timeVisitante: string) void
+  +getTimeCasa() Selecao
+  +setTimeCasa(timeCasa: Selecao) void
+  +getTimeVisitante() Selecao
+  +setTimeVisitante(timeVisitante: Selecao) void
   +getCidade() string
   +setCidade(cidade: string) void
   +getRodada() string
