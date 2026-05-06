@@ -83,12 +83,13 @@ class Selecao {
   +setTitulos(titulos: string) void
 }
 class Partida {
-  -timeCasa: string
-  -timeVisitante: string
+  -timeCasa: Selecao
+  -timeVisitante: Selecao
   -cidade: string
   -rodada: string
   -data: string
   -horario: string
+  -estadio : Estadio
   -arbitroPrincipal: Arbitro
   -listaAssistentes: List<Arbitro>
   +getTimeCasa() string
