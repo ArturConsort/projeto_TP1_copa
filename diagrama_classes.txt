@@ -188,6 +188,8 @@ Pessoa <|-- Usuario
 Arbitro --> CategoriaArbitro
 Jogador --> Selecao
 Selecao "1" --> "0..*" Partida
+Selecao "1" --> "0..*" Jogador
+Jogador "1" --> "1" Selecao
 Partida --> Estadio
 Partida "1" --> "0..1" Resultado
 Partida "1" --> "0..*" Ingresso

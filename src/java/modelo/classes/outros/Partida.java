@@ -1,6 +1,6 @@
 package src.java.modelo.classes.outros;
 
-public class partidas {
+public class Partida {
     private String time1;
 
 }
