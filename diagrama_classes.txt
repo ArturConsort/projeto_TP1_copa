@@ -91,6 +91,8 @@ class Selecao {
 class Partida {
   -timeCasa: Selecao
   -timeVisitante: Selecao
+  -contPartidas: int {static}
+  -numeroPartidas: int
   -cidade: string
   -rodada: string
   -data: string
@@ -114,22 +116,20 @@ class Partida {
   +setEstadio(estadio: Estadio) void
   +getArbitroPrincipal() Arbitro
   +setArbitroPrincipal(a: Arbitro) void
-  +getAssistente1() Arbitro
-  +setAssistente1(a: Arbitro) void
-  +getAssistente2() Arbitro
-  +setAssistente2(a: Arbitro) void
+  +getListaAssistentes(): List<Arbitro>
+  +setListaAssistentes(lista: List<Arbitro>): void
 }
 class Resultado {
-  -timeVencedor: string
-  -timePerdedor: string
+  -timeVencedor: Selecao
+  -timePerdedor: Selecao
   -placar: string
   -placarPenaltis: string
   -cartoesAmarelos: int
   -cartoesVermelhos: int
-  +getTimeVencedor() string
-  +setTimeVencedor(timeVencedor: string) void
-  +getTimePerdedor() string
-  +setTimePerdedor(timePerdedor: string) void
+  +getTimeVencedor() Selecao
+  +setTimeVencedor(timeVencedor: Selecao) void
+  +getTimePerdedor() Selecao
+  +setTimePerdedor(timePerdedor: Selecao) void
   +getPlacar() string
   +setPlacar(placar: string) void
   +getPlacarPenaltis() string
