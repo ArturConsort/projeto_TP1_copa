@@ -1,4 +1,4 @@
-package modelo.classes.outros;
+package src.java.modelo.classes.outros;
 
 enum Tipo_gramado{
     SINTÉTICO,

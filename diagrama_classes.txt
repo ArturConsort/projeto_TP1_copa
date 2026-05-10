@@ -70,6 +70,7 @@ class Jogador {
 }
 class Selecao {
   -pais: string
+  -grupo: char
   -confederacao: string
   -tecnico: string
   -rankingFifa: string
@@ -94,20 +95,19 @@ class Partida {
   -contPartidas: int {static}
   -numeroPartidas: int
   -cidade: string
-  -rodada: string
   -data: string
   -horario: string
   -estadio : Estadio
   -arbitroPrincipal: Arbitro
   -listaAssistentes: List<Arbitro>
+  -finalizado: boolean
+  -fase: FasePartida
   +getTimeCasa() Selecao
   +setTimeCasa(timeCasa: Selecao) void
   +getTimeVisitante() Selecao
   +setTimeVisitante(timeVisitante: Selecao) void
   +getCidade() string
   +setCidade(cidade: string) void
-  +getRodada() string
-  +setRodada(rodada: string) void
   +getData() string
   +setData(data: string) void
   +getHorario() string
@@ -118,6 +118,8 @@ class Partida {
   +setArbitroPrincipal(a: Arbitro) void
   +getListaAssistentes(): List<Arbitro>
   +setListaAssistentes(lista: List<Arbitro>): void
+  +setFinalizado(finalizado: boolean) void
+  +getFinalizado() boolean
 }
 class Resultado {
   -timeVencedor: Selecao
@@ -126,6 +128,7 @@ class Resultado {
   -placarPenaltis: string
   -cartoesAmarelos: int
   -cartoesVermelhos: int
+  -partida: Partida
   +getTimeVencedor() Selecao
   +setTimeVencedor(timeVencedor: Selecao) void
   +getTimePerdedor() Selecao
@@ -138,6 +141,17 @@ class Resultado {
   +setCartoesAmarelos(n: int) void
   +getCartoesVermelhos() int
   +setCartoesVermelhos(n: int) void
+  +setPartida(partida: Partida) void
+  +getPartida() Partida
+}
+class FasePartida {
+  <<enumeration>>
+  FASE_DE_GRUPOS
+  OITAVAS_DE_FINAL
+  QUARTAS_DE_FINAL
+  SEMIFINAL
+  FINAL
+  DISPUTA_DE_TERCEIRO_LUGAR
 }
 class Estadio {
   -nome: String

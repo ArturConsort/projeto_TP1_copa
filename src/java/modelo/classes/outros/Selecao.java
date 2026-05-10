@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Selecao {
     private String pais;
+    private char grupo;
     private String confederacao;
     private String tecnico;
     private int rankingFIFA;
@@ -12,11 +13,29 @@ public class Selecao {
     private List<Jogador> jogadores;
     private List<Partida> partidas = new ArrayList<>();
 
+    public Selecao(String pais, char grupo, String confederacao, String tecnico, int rankingFIFA, int titulos, List<Jogador> jogadores, List<Partida> partidas) {
+        this.pais = pais;
+        this.grupo = grupo;
+        this.confederacao = confederacao;
+        this.tecnico = tecnico;
+        this.rankingFIFA = rankingFIFA;
+        this.titulos = titulos;
+        this.jogadores = jogadores;
+        this.partidas = partidas;
+    }
+
     public String getPais() {
         return pais;
     }
     public void setPais(String pais) {
         this.pais = pais;
+    }
+
+    public char getGrupo() {
+        return grupo;
+    }
+    public void setGrupo(char grupo) {
+        this.grupo = grupo;
     }
 
     public String getConfederacao() {

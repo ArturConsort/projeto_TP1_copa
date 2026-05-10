@@ -7,6 +7,14 @@ public class Jogador {
     private String posicao;
     private Selecao selecao;
 
+    public Jogador(String nome, int idade, String numeracao, String posicao, Selecao selecao) {
+        this.nome = nome;
+        this.idade = idade;
+        this.numeracao = numeracao;
+        this.posicao = posicao;
+        this.selecao = selecao;
+    }
+
     public String getNome() {
         return nome;
     }
