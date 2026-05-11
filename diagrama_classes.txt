@@ -5,29 +5,29 @@ class Pessoa {
   -cpf: string
   -email: string
   +Pessoa(String nome, String cpf, String email)
-  +getNome() String
-  +getCpf() String
-  +getEmail() String
-  +setNome(String nome) void
-  +setCpf(String cpf) void
-  +setEmail(String email) void
+  +getNome(): String
+  +getCpf(): String
+  +getEmail(): String
+  +setNome(String nome): void
+  +setCpf(String cpf): void
+  +setEmail(String email): void
 }
 class Usuario {
   -login: String
   -senha: String
-  +getLogin() String
-  +getSenha() String
-  +setLogin(String login) void
-  +setSenha(String senha) void
-  +login() bool
-  +logout() void
-  +listarUsuarios() void
-  +pesquisarUsuario() Usuario
+  +getLogin(): String
+  +getSenha(): String
+  +setLogin(String login): void
+  +setSenha(String senha): void
+  +login(): boolean
+  +logout(): void
+  +listarUsuarios(): void
+  +pesquisarUsuario(): Usuario
 }
 class Administrador{
-  +cadastraUsuario(Usuario usuario) void
-  +editarUsuario(Usuario usuario) void
-  +excluiUsuario(Usuario usuario) void
+  +cadastraUsuario(Usuario usuario): void
+  +editarUsuario(Usuario usuario): void
+  +excluiUsuario(Usuario usuario): void
 }
 class Organizador
 class UsuarioArbitro
@@ -37,14 +37,14 @@ class Arbitro {
   -idade: int
   -categoria: CategoriaArbitro
   -experiencia: int
-  +getNome() string
-  +setNome(nome: string) void
-  +getIdade() int
-  +setIdade(idade: int) void
-  +getCategoria() CategoriaArbitro
-  +setCategoria(categoria: CategoriaArbitro) void
-  +getExperiencia() int
-  +setExperiencia(experiencia: int) void
+  +getNome(): string
+  +setNome(nome: string): void
+  +getIdade(): int
+  +setIdade(idade: int): void
+  +getCategoria(): CategoriaArbitro
+  +setCategoria(categoria: CategoriaArbitro): void
+  +getExperiencia(): int
+  +setExperiencia(experiencia: int): void
 }
 class CategoriaArbitro {
   <<enumeration>>
@@ -57,16 +57,16 @@ class Jogador {
   -numeracao: string
   -posicao: string
   -seleção: Seleção
-  +getNomeCompleto() string
-  +setNomeCompleto(nome: string) void
-  +getIdade() int
-  +setIdade(idade: int) void
-  +getNumeracao() string
-  +setNumeracao(numeracao: string) void
-  +getPosicao() string
-  +setPosicao(posicao: string) void
-  +getSeleção() Seleção
-  +setSeleção(seleção: Seleção) void
+  +getNomeCompleto(): string
+  +setNomeCompleto(nome: string): void
+  +getIdade(): int
+  +setIdade(idade: int): void
+  +getNumeracao(): string
+  +setNumeracao(numeracao: string): void
+  +getPosicao(): string
+  +setPosicao(posicao: string): void
+  +getSeleção(): Seleção
+  +setSeleção(seleção: Seleção): void
 }
 class Selecao {
   -pais: string
@@ -76,18 +76,18 @@ class Selecao {
   -rankingFifa: string
   -titulos: string
   -jogadores: List<Jogador>
-  +getPais() string
-  +setPais(pais: string) void
-  +getConfederacao() string
-  +setConfederacao(confederacao: string) void
-  +getTecnico() string
-  +setTecnico(tecnico: string) void
-  +getRankingFifa() string
-  +setRankingFifa(rankingFifa: string) void
-  +getTitulos() string
-  +setTitulos(titulos: string) void
-  +setJogadores(jogador: Jogador) void
-  +getJogadores() List<Jogador>
+  +getPais(): string
+  +setPais(pais: string): void
+  +getConfederacao(): string
+  +setConfederacao(confederacao: string): void
+  +getTecnico(): string
+  +setTecnico(tecnico: string): void
+  +getRankingFifa(): string
+  +setRankingFifa(rankingFifa: string): void
+  +getTitulos(): string
+  +setTitulos(titulos: string): void
+  +setJogadores(jogador: Jogador): void
+  +getJogadores(): List<Jogador>
 }
 class Partida {
   -timeCasa: Selecao
@@ -102,24 +102,24 @@ class Partida {
   -listaAssistentes: List<Arbitro>
   -finalizado: boolean
   -fase: FasePartida
-  +getTimeCasa() Selecao
-  +setTimeCasa(timeCasa: Selecao) void
-  +getTimeVisitante() Selecao
-  +setTimeVisitante(timeVisitante: Selecao) void
-  +getCidade() string
-  +setCidade(cidade: string) void
-  +getData() string
-  +setData(data: string) void
-  +getHorario() string
-  +setHorario(horario: string) void
-  +getEstadio() Estadio
-  +setEstadio(estadio: Estadio) void
-  +getArbitroPrincipal() Arbitro
-  +setArbitroPrincipal(a: Arbitro) void
+  +getTimeCasa(): Selecao
+  +setTimeCasa(timeCasa: Selecao): void
+  +getTimeVisitante(): Selecao
+  +setTimeVisitante(timeVisitante: Selecao): void
+  +getCidade(): string
+  +setCidade(cidade: string): void
+  +getData(): string
+  +setData(data: string): void
+  +getHorario(): string
+  +setHorario(horario: string): void
+  +getEstadio(): Estadio
+  +setEstadio(estadio: Estadio): void
+  +getArbitroPrincipal(): Arbitro
+  +setArbitroPrincipal(a: Arbitro): void
   +getListaAssistentes(): List<Arbitro>
   +setListaAssistentes(lista: List<Arbitro>): void
-  +setFinalizado(finalizado: boolean) void
-  +getFinalizado() boolean
+  +setFinalizado(finalizado: boolean): void
+  +getFinalizado(): boolean
 }
 class Resultado {
   -timeVencedor: Selecao
@@ -129,20 +129,20 @@ class Resultado {
   -cartoesAmarelos: int
   -cartoesVermelhos: int
   -partida: Partida
-  +getTimeVencedor() Selecao
-  +setTimeVencedor(timeVencedor: Selecao) void
-  +getTimePerdedor() Selecao
-  +setTimePerdedor(timePerdedor: Selecao) void
-  +getPlacar() string
-  +setPlacar(placar: string) void
-  +getPlacarPenaltis() string
-  +setPlacarPenaltis(placarPenaltis: string) void
-  +getCartoesAmarelos() int
-  +setCartoesAmarelos(n: int) void
-  +getCartoesVermelhos() int
-  +setCartoesVermelhos(n: int) void
-  +setPartida(partida: Partida) void
-  +getPartida() Partida
+  +getTimeVencedor(): Selecao
+  +setTimeVencedor(timeVencedor: Selecao): void
+  +getTimePerdedor(): Selecao
+  +setTimePerdedor(timePerdedor: Selecao): void
+  +getPlacar(): string
+  +setPlacar(placar: string): void
+  +getPlacarPenaltis(): string
+  +setPlacarPenaltis(placarPenaltis: string): void
+  +getCartoesAmarelos(): int
+  +setCartoesAmarelos(n: int): void
+  +getCartoesVermelhos(): int
+  +setCartoesVermelhos(n: int): void
+  +setPartida(partida: Partida): void
+  +getPartida(): Partida
 }
 class FasePartida {
   <<enumeration>>
@@ -161,18 +161,41 @@ class Estadio {
   -tipo_gramado: String
 }
 class Ingresso {
-  -setor: string
-  -codigo: string
-  +ingressoConsulta() void
-  +ingressoRelatorios() void
-  +ingressoPublico() void
+  -idIngresso: string
+  -partida: string
+  -categoria: CategoriaIngresso
+  -foiValidado: boolean
+  +validarEntrada(): boolean
+  +getPrecoEfetivo(): double
+  +ingressoConsulta(): void
+  +ingressoRelatorios(): void
+  +ingressoPublico(): void
+}
+class Venda {
+  -idVenda: string
+  -dataVenda: string
+  -cliente: Usuario
+  -ingressos: List<Ingresso>
+  -valorTotal: double
+  -status: string
+  +adicionar Ingresso(ingresso: Ingresso): void
+  +calcularTotal(): void
+  +finalizarVenda(): void
+}
+class CategoriaIngresso {
+  -nome: string
+  -preço: double
+  -estoque: int
+  +atualizarPreco(novoPreco: double): void
+  +temVagasDisponiveis(): boolean
+  +reduzirEstoque(quantidade: int): void
 }
 class RelatorioCompeticao{
   -numeroDePartidas: int
   -publico: int
   -desempenho: DesempenhoDeSelecoes
   +getNumeroDePartidas(): int
-  +getPublico(): Int
+  +getPublico(): int
   +getDesempenho(): DesempenhoDeSelecoes
   +setNumeroDePartidas(n: int): void
   +setPublico(n: int): void
@@ -209,3 +232,6 @@ Partida "1" --> "0..1" Resultado
 Partida "1" --> "0..*" Ingresso
 Partida "0..*" --> "0..*" Arbitro
 RelatorioCompeticao ..> DesempenhoDeSelecoes : usa
+Usuário "1" --> "0..*" Ingresso: possui
+Venda "1" *-- "1..*" Ingresso: contém
+Ingresso "*" --> "1" CategoriaIngresso : possui
