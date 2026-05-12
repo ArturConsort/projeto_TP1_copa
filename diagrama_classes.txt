@@ -43,31 +43,24 @@ class Selecao {
   -titulos: String
 }
 class Partida {
-  -timeCasa: Selecao
-  -timeVisitante: Selecao
   -contPartidas: int
   -numeroPartidas: int
   -cidade: String
   -data: String
   -horario: String
-  -arbitroPrincipal: Arbitro
-  -listaAssistentes: List~Arbitro~
   -finalizado: boolean
-  -fase: FasePartida
-  +Partida(timeCasa: Selecao, timeVisitante: Selecao, cidade: String, data: String, horario: String, arbitroPrincipal: Arbitro, fase: FasePartida)
+  +Partida(timeCasa: Selecao, timeVisitante: Selecao, cidade: String, data: String, horario: String, arbitroPrincipal: Arbitro, fase: FasePartida, estadio: Estadio)
 }
 class DesignacaoArbitro {
   +DesignacaoArbitro(partida: Partida, arbitro: Arbitro, assistentes: List~Arbitro~)
   +confirmarDesignacao() boolean
 }
 class Resultado {
-  -timeVencedor: Selecao
-  -timePerdedor: Selecao
   -placar: String
   -placarPenaltis: String
   -cartoesAmarelos: int
   -cartoesVermelhos: int
-  +Resultado(timeVencedor: Selecao, timePerdedor: Selecao, placar: String)
+  +Resultado(timeVencedor: Selecao, timePerdedor: Selecao, placar: String, partida: Partida)
 }
 class FasePartida {
   <<enumeration>>
