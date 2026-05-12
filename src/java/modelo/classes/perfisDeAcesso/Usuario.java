@@ -1,4 +1,4 @@
-package modelo.classes.perfisDeAcesso;
+package src.java.modelo.classes.perfisDeAcesso;
 
 import modelo.classes.outros.Pessoa;
 

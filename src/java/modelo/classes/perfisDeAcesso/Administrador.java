@@ -1,6 +1,6 @@
-package modelo.classes.perfisDeAcesso;
+package src.java.modelo.classes.perfisDeAcesso;
 
-public class Administrador extends Organizador{
+public class Administrador extends Usuario {
 
     //atributos
 

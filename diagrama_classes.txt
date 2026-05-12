@@ -7,18 +7,12 @@ class Pessoa {
   +Pessoa(String nome, String cpf, String email)
 }
 class Usuario {
+  <<abstract>>
   -login: String
   -senha: String
-  +login() boolean
-  +logout() void
-  +listarUsuarios() void
-  +pesquisarUsuario() Usuario
+  +Usuario(String nome, String cpf, String email, String login, String senha)
 }
-class Administrador{
-  +cadastraUsuario(Usuario usuario) void
-  +editarUsuario(Usuario usuario) void
-  +excluiUsuario(Usuario usuario) void
-}
+class Administrador
 class Organizador
 class UsuarioArbitro
 class Operador
@@ -132,18 +126,9 @@ class DesempenhoDeSelecoes {
     MEDIO
     RUIM
 }
-Operador --> Resultado : visualiza
-Operador --> Ingresso : compra
-UsuarioArbitro --> Partida : visualiza
-Organizador --> Selecao : gere
-Organizador --> Partida : gere
-Administrador --> Usuario : cadastra
-Administrador --> Usuario : edita
-Administrador --> Usuario : exclui
-Administrador --> RelatorioCompeticao : gera
-Organizador <|-- Administrador
-UsuarioArbitro <|-- Organizador
-Operador <|-- UsuarioArbitro
+Usuario <|-- Administrador
+Usuario<|-- Organizador
+Usuario <|-- UsuarioArbitro
 Usuario <|-- Operador
 Pessoa <|-- Usuario
 Arbitro --> CategoriaArbitro : possui

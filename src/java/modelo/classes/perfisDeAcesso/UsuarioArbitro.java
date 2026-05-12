@@ -1,6 +1,6 @@
-package modelo.classes.perfisDeAcesso;
+package src.java.modelo.classes.perfisDeAcesso;
 
-public class UsuarioArbitro extends Operador{
+public class UsuarioArbitro extends Usuario {
 
     //atributos
 
