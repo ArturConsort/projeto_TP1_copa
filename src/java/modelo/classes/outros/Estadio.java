@@ -1,13 +1,13 @@
 package src.java.modelo.classes.outros;
 
-enum Tipo_gramado{
-    SINTÉTICO,
+enum TipoGramado{
+    SINTETICO,
     NATURAL
 }
 public class Estadio{
     private String nome, cidade, estado;
     private int capacidade;
-    private Tipo_gramado tipo_gramado;
+    private Tipogramado tipoGramado;
     // private String image_path; --> será discutido
 
     // constructor
@@ -16,7 +16,7 @@ public class Estadio{
         this.cidade = cidade;
         this.estado = estado;
         this.capacidade = capacidade;
-        this.tipo_gramado = tipo_gramado;
+        this.tipoGramado = tipo_gramado;
     }
 
     // getters e setters

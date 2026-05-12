@@ -36,15 +36,8 @@ class Arbitro {
   -nome: string
   -idade: int
   -categoria: CategoriaArbitro
+  -nacionalidade: String;
   -experiencia: int
-  +getNome(): string
-  +setNome(nome: string): void
-  +getIdade(): int
-  +setIdade(idade: int): void
-  +getCategoria(): CategoriaArbitro
-  +setCategoria(categoria: CategoriaArbitro): void
-  +getExperiencia(): int
-  +setExperiencia(experiencia: int): void
 }
 class CategoriaArbitro {
   <<enumeration>>
@@ -56,7 +49,7 @@ class Jogador {
   -idade: int
   -numeracao: string
   -posicao: string
-  -seleção: Seleção
+  -selecao: Selecao
   +getNomeCompleto(): string
   +setNomeCompleto(nome: string): void
   +getIdade(): int
@@ -65,8 +58,8 @@ class Jogador {
   +setNumeracao(numeracao: string): void
   +getPosicao(): string
   +setPosicao(posicao: string): void
-  +getSeleção(): Seleção
-  +setSeleção(seleção: Seleção): void
+  +getSelecao(): Selecao
+  +setSelecao(selecao: Seleçao): void
 }
 class Selecao {
   -pais: string
@@ -75,7 +68,7 @@ class Selecao {
   -tecnico: string
   -rankingFifa: string
   -titulos: string
-  -jogadores: List<Jogador>
+  -jogadores: List~Jogador~
   +getPais(): string
   +setPais(pais: string): void
   +getConfederacao(): string
@@ -87,19 +80,19 @@ class Selecao {
   +getTitulos(): string
   +setTitulos(titulos: string): void
   +setJogadores(jogador: Jogador): void
-  +getJogadores(): List<Jogador>
+  +getJogadores(): List~Jogador~
 }
 class Partida {
   -timeCasa: Selecao
   -timeVisitante: Selecao
-  -contPartidas: int {static}
+  -contPartidas: int
   -numeroPartidas: int
   -cidade: string
   -data: string
   -horario: string
   -estadio : Estadio
   -arbitroPrincipal: Arbitro
-  -listaAssistentes: List<Arbitro>
+  -listaAssistentes: List~Arbitro~
   -finalizado: boolean
   -fase: FasePartida
   +getTimeCasa(): Selecao
@@ -116,8 +109,8 @@ class Partida {
   +setEstadio(estadio: Estadio): void
   +getArbitroPrincipal(): Arbitro
   +setArbitroPrincipal(a: Arbitro): void
-  +getListaAssistentes(): List<Arbitro>
-  +setListaAssistentes(lista: List<Arbitro>): void
+  +getListaAssistentes(): List~Arbitro~
+  +setListaAssistentes(lista: List~Arbitro~): void
   +setFinalizado(finalizado: boolean): void
   +getFinalizado(): boolean
 }
@@ -158,7 +151,14 @@ class Estadio {
   -cidade: String
   -estado: String
   -capacidade: int
-  -tipo_gramado: String
+  -tipoGramado: TipoGramado
+  +getLocalizacao(): String
+  +aceitaPublico(quantidade: int): boolean
+}
+class TipoGramado {
+  <<enumeration>>
+  SINTETICO
+  NATURAL
 }
 class Ingresso {
   -idIngresso: string
@@ -175,16 +175,16 @@ class Venda {
   -idVenda: string
   -dataVenda: string
   -cliente: Usuario
-  -ingressos: List<Ingresso>
+  -ingressos: List~Ingresso~
   -valorTotal: double
   -status: string
-  +adicionar Ingresso(ingresso: Ingresso): void
+  +adicionarIngresso(ingresso: Ingresso): void
   +calcularTotal(): void
   +finalizarVenda(): void
 }
 class CategoriaIngresso {
   -nome: string
-  -preço: double
+  -preco: double
   -estoque: int
   +atualizarPreco(novoPreco: double): void
   +temVagasDisponiveis(): boolean
@@ -232,6 +232,6 @@ Partida "1" --> "0..1" Resultado
 Partida "1" --> "0..*" Ingresso
 Partida "0..*" --> "0..*" Arbitro
 RelatorioCompeticao ..> DesempenhoDeSelecoes : usa
-Usuário "1" --> "0..*" Ingresso: possui
+Usuario "1" --> "0..*" Ingresso: possui
 Venda "1" *-- "1..*" Ingresso: contém
 Ingresso "*" --> "1" CategoriaIngresso : possui

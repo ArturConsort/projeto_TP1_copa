@@ -10,6 +10,7 @@ public class Arbitro{
     private int idade;
     private Categoria categoria;
     private int experiencia;
+    private String nacionalidade;
 
     public Arbitro(String nome, int idade, Categoria categoria, int experiencia){
         this.nome = nome;
@@ -29,4 +30,7 @@ public class Arbitro{
 
     public int getExperiencia() {return experiencia;}
     public void setExperiencia(int experiencia) {this.experiencia = experiencia;}
+
+    public String getNacionalidade() {return nacionalidade;}
+    public void setNacionalidade(String nacionalidade) {this.nacionalidade = nacionalidade;}
 }
