@@ -1,3 +1,6 @@
+package src.java.modelo.classes.outros;
+import java.util.List;
+
 public class DesignacaoArbitro {
 
     private Partida partida;
@@ -29,11 +32,28 @@ public class DesignacaoArbitro {
     }
 
     // getters e setters
-    public Partida getPartida() { return partida; }
-    public void setPartida(Partida partida) { this.partida = partida; }
+    public Partida getPartida() {
+        return partida;
+    }
 
-    public Arbitro getPrincipalArbitro() { return principalArbitro; }
-    public void setPrincipalArbitro(Arbitro principalArbitro) { this.principalArbitro = principalArbitro; }
+    public void setPartida(Partida partida) {
+        this.partida = partida;
+    }
 
-    public List<Arbitro> getAssistentes() { return assistentes; }
-    public void setAssistentes(List<Arbitro> assistentes) { this.assistentes = assistentes; }
+    public Arbitro getPrincipalArbitro() {
+        return principalArbitro;
+    }
+
+    public void setPrincipalArbitro(Arbitro principalArbitro) {
+        this.principalArbitro = principalArbitro;
+    }
+
+    public List<Arbitro> getAssistentes() {
+        return assistentes;
+    }
+
+    public void setAssistentes(List<Arbitro> assistentes) {
+        this.assistentes = assistentes;
+    }
+
+}

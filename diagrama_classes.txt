@@ -33,6 +33,7 @@ class Jogador {
   -idade: int
   -numeracao: String
   -posicao: String
+  +Jogador(nomeCompleto: String, idade: int, numeracao: String, posicao: String, selecao: Selecao)
 }
 class Selecao {
   -pais: String
@@ -41,6 +42,7 @@ class Selecao {
   -tecnico: String
   -rankingFifa: String
   -titulos: String
+  +Selecao(pais: String, grupo: char, confederacao: String, tecnico: String, rankingFifa: String, titulos: String, jogadores: List<Jogador>, partidas: List<Partida>)
 }
 class Partida {
   -contPartidas: int
@@ -49,6 +51,7 @@ class Partida {
   -data: String
   -horario: String
   -finalizado: boolean
+  -fase: FasePartida
   +Partida(timeCasa: Selecao, timeVisitante: Selecao, cidade: String, data: String, horario: String, arbitroPrincipal: Arbitro, fase: FasePartida, estadio: Estadio)
 }
 class DesignacaoArbitro {
@@ -89,6 +92,7 @@ class Ingresso {
   -idIngresso: String
   -partida: String
   -foiValidado: boolean
+  +Ingresso(idIngresso: String, partida: String, foiValidado: boolean)
   +validarEntrada() boolean
   +getPrecoEfetivo() double
 }
@@ -98,6 +102,7 @@ class Venda {
   -cliente: Usuario
   -valorTotal: double
   -status: String
+  +Venda(idVenda: String, dataVenda: String, cliente: Usuario, valorTotal: double, status: String)
   +adicionarIngresso(ingresso: Ingresso) void
   +calcularTotal() void
   +finalizarVenda() void
@@ -106,6 +111,7 @@ class CategoriaIngresso {
   -nome: String
   -preco: double
   -estoque: int
+  +CategoriaIngresso(nome: String, preco: double, estoque: int)
   +atualizarPreco(novoPreco: double) void
   +temVagasDisponiveis() boolean
   +reduzirEstoque(quantidade: int) void
@@ -113,6 +119,7 @@ class CategoriaIngresso {
 class RelatorioCompeticao{
   -numeroDePartidas: int
   -publico: int
+  +RelatorioCompeticao(numerodePartidas: int, publico: int)
 }
 class DesempenhoDeSelecoes {
   <<enumeration>>
@@ -140,5 +147,5 @@ DesignacaoArbitro "1" --> "1" Arbitro : principal
 DesignacaoArbitro "1" --> "2" Arbitro : assistentes
 RelatorioCompeticao --> DesempenhoDeSelecoes : usa
 Usuario "1" --> "0..*" Ingresso: possui
-Venda "1" *-- "1..*" Ingresso: contém
+Venda "1" *-- "1..*" Ingresso: contem
 Ingresso "*" --> "1" CategoriaIngresso : possui
