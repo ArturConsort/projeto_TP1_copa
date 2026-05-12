@@ -5,29 +5,19 @@ class Pessoa {
   -cpf: String
   -email: String
   +Pessoa(String nome, String cpf, String email)
-  +getNome(): String
-  +getCpf(): String
-  +getEmail(): String
-  +setNome(String nome): void
-  +setCpf(String cpf): void
-  +setEmail(String email): void
 }
 class Usuario {
   -login: String
   -senha: String
-  +getLogin(): String
-  +getSenha(): String
-  +setLogin(String login): void
-  +setSenha(String senha): void
-  +login(): boolean
-  +logout(): void
-  +listarUsuarios(): void
-  +pesquisarUsuario(): Usuario
+  +login() boolean
+  +logout() void
+  +listarUsuarios() void
+  +pesquisarUsuario() Usuario
 }
 class Administrador{
-  +cadastraUsuario(Usuario usuario): void
-  +editarUsuario(Usuario usuario): void
-  +excluiUsuario(Usuario usuario): void
+  +cadastraUsuario(Usuario usuario) void
+  +editarUsuario(Usuario usuario) void
+  +excluiUsuario(Usuario usuario) void
 }
 class Organizador
 class UsuarioArbitro
@@ -35,7 +25,6 @@ class Operador
 class Arbitro {
   -nome: String
   -idade: int
-  -categoria: CategoriaArbitro
   -nacionalidade: String
   -experiencia: int
   +Arbitro(nome: String, idade: int, categoria: CategoriaArbitro, experiencia: int, nacionalidade: String)
@@ -50,17 +39,6 @@ class Jogador {
   -idade: int
   -numeracao: String
   -posicao: String
-  -selecao: Selecao
-  +getNomeCompleto(): String
-  +setNomeCompleto(nome: String): void
-  +getIdade(): int
-  +setIdade(idade: int): void
-  +getNumeracao(): String
-  +setNumeracao(numeracao: String): void
-  +getPosicao(): String
-  +setPosicao(posicao: String): void
-  +getSelecao(): Selecao
-  +setSelecao(selecao: Selecao): void
 }
 class Selecao {
   -pais: String
@@ -69,19 +47,6 @@ class Selecao {
   -tecnico: String
   -rankingFifa: String
   -titulos: String
-  -jogadores: List~Jogador~
-  +getPais(): String
-  +setPais(pais: String): void
-  +getConfederacao(): String
-  +setConfederacao(confederacao: String): void
-  +getTecnico(): String
-  +setTecnico(tecnico: String): void
-  +getRankingFifa(): String
-  +setRankingFifa(rankingFifa: String): void
-  +getTitulos(): String
-  +setTitulos(titulos: String): void
-  +setJogadores(jogador: Jogador): void
-  +getJogadores(): List~Jogador~
 }
 class Partida {
   -timeCasa: Selecao
@@ -91,36 +56,14 @@ class Partida {
   -cidade: String
   -data: String
   -horario: String
-  -estadio : Estadio
   -arbitroPrincipal: Arbitro
   -listaAssistentes: List~Arbitro~
   -finalizado: boolean
   -fase: FasePartida
-  +getTimeCasa(): Selecao
-  +setTimeCasa(timeCasa: Selecao): void
-  +getTimeVisitante(): Selecao
-  +setTimeVisitante(timeVisitante: Selecao): void
-  +getCidade(): String
-  +setCidade(cidade: String): void
-  +getData(): String
-  +setData(data: String): void
-  +getHorario(): String
-  +setHorario(horario: String): void
-  +getEstadio(): Estadio
-  +setEstadio(estadio: Estadio): void
-  +getArbitroPrincipal(): Arbitro
-  +setArbitroPrincipal(a: Arbitro): void
-  +getListaAssistentes(): List~Arbitro~
-  +setListaAssistentes(lista: List~Arbitro~): void
-  +setFinalizado(finalizado: boolean): void
-  +getFinalizado(): boolean
 }
 class DesignacaoArbitro {
-  -partida: Partida
-  -principalArbitro: Arbitro
-  -assistentes: List~Arbitro~
   +DesignacaoArbitro(partida: Partida, arbitro: Arbitro, assistentes: List~Arbitro~)
-  +confirmarDesignacao(): boolean
+  +confirmarDesignacao() boolean
 }
 class Resultado {
   -timeVencedor: Selecao
@@ -129,21 +72,6 @@ class Resultado {
   -placarPenaltis: String
   -cartoesAmarelos: int
   -cartoesVermelhos: int
-  -partida: Partida
-  +getTimeVencedor(): Selecao
-  +setTimeVencedor(timeVencedor: Selecao): void
-  +getTimePerdedor(): Selecao
-  +setTimePerdedor(timePerdedor: Selecao): void
-  +getPlacar(): String
-  +setPlacar(placar: String): void
-  +getPlacarPenaltis(): String
-  +setPlacarPenaltis(placarPenaltis: String): void
-  +getCartoesAmarelos(): int
-  +setCartoesAmarelos(n: int): void
-  +getCartoesVermelhos(): int
-  +setCartoesVermelhos(n: int): void
-  +setPartida(partida: Partida): void
-  +getPartida(): Partida
 }
 class FasePartida {
   <<enumeration>>
@@ -159,10 +87,9 @@ class Estadio {
   -cidade: String
   -estado: String
   -capacidade: int
-  -tipoGramado: TipoGramado
   +Estadio(nome: String, cidade: String, estado: String, capacidade: int, tipoGramado: TipoGramado)
-  +getLocalizacao(): String
-  +aceitaPublico(quantidade: int): boolean
+  +getLocalizacao() String
+  +aceitaPublico(quantidade: int) boolean
 }
 class TipoGramado {
   <<enumeration>>
@@ -172,43 +99,31 @@ class TipoGramado {
 class Ingresso {
   -idIngresso: String
   -partida: String
-  -categoria: CategoriaIngresso
   -foiValidado: boolean
-  +validarEntrada(): boolean
-  +getPrecoEfetivo(): double
-  +ingressoConsulta(): void
-  +ingressoRelatorios(): void
-  +ingressoPublico(): void
+  +validarEntrada() boolean
+  +getPrecoEfetivo() double
 }
 class Venda {
   -idVenda: String
   -dataVenda: String
   -cliente: Usuario
-  -ingressos: List~Ingresso~
   -valorTotal: double
   -status: String
-  +adicionarIngresso(ingresso: Ingresso): void
-  +calcularTotal(): void
-  +finalizarVenda(): void
+  +adicionarIngresso(ingresso: Ingresso) void
+  +calcularTotal() void
+  +finalizarVenda() void
 }
 class CategoriaIngresso {
   -nome: String
   -preco: double
   -estoque: int
-  +atualizarPreco(novoPreco: double): void
-  +temVagasDisponiveis(): boolean
-  +reduzirEstoque(quantidade: int): void
+  +atualizarPreco(novoPreco: double) void
+  +temVagasDisponiveis() boolean
+  +reduzirEstoque(quantidade: int) void
 }
 class RelatorioCompeticao{
   -numeroDePartidas: int
   -publico: int
-  -desempenho: DesempenhoDeSelecoes
-  +getNumeroDePartidas(): int
-  +getPublico(): int
-  +getDesempenho(): DesempenhoDeSelecoes
-  +setNumeroDePartidas(n: int): void
-  +setPublico(n: int): void
-  +setDesempenho(desempenho: DesempenhoDeSelecoes): void
 }
 class DesempenhoDeSelecoes {
   <<enumeration>>
@@ -231,8 +146,9 @@ UsuarioArbitro <|-- Organizador
 Operador <|-- UsuarioArbitro
 Usuario <|-- Operador
 Pessoa <|-- Usuario
-Arbitro --> CategoriaArbitro
-Jogador --> Selecao
+Arbitro --> CategoriaArbitro : possui
+Estadio --> TipoGramado : possui
+Partida --> FasePartida : possui
 Selecao "1" --> "0..*" Partida
 Selecao "1" --> "0..*" Jogador
 Jogador "1" --> "1" Selecao
@@ -242,7 +158,7 @@ Partida "1" --> "0..*" Ingresso
 DesignacaoArbitro "1" --> "1" Partida
 DesignacaoArbitro "1" --> "1" Arbitro : principal
 DesignacaoArbitro "1" --> "2" Arbitro : assistentes
-RelatorioCompeticao ..> DesempenhoDeSelecoes : usa
+RelatorioCompeticao --> DesempenhoDeSelecoes : usa
 Usuario "1" --> "0..*" Ingresso: possui
 Venda "1" *-- "1..*" Ingresso: contém
 Ingresso "*" --> "1" CategoriaIngresso : possui
