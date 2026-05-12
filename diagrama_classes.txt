@@ -2,8 +2,8 @@ classDiagram
 class Pessoa {
   <<abstract>>
   -nome: String
-  -cpf: string
-  -email: string
+  -cpf: String
+  -email: String
   +Pessoa(String nome, String cpf, String email)
   +getNome(): String
   +getCpf(): String
@@ -33,11 +33,12 @@ class Organizador
 class UsuarioArbitro
 class Operador
 class Arbitro {
-  -nome: string
+  -nome: String
   -idade: int
   -categoria: CategoriaArbitro
-  -nacionalidade: String;
+  -nacionalidade: String
   -experiencia: int
+  +Arbitro(nome: String, idade: int, categoria: CategoriaArbitro, experiencia: int, nacionalidade: String)
 }
 class CategoriaArbitro {
   <<enumeration>>
@@ -45,40 +46,40 @@ class CategoriaArbitro {
   NACIONAL
 }
 class Jogador {
-  -nomeCompleto: string
+  -nomeCompleto: String
   -idade: int
-  -numeracao: string
-  -posicao: string
+  -numeracao: String
+  -posicao: String
   -selecao: Selecao
-  +getNomeCompleto(): string
-  +setNomeCompleto(nome: string): void
+  +getNomeCompleto(): String
+  +setNomeCompleto(nome: String): void
   +getIdade(): int
   +setIdade(idade: int): void
-  +getNumeracao(): string
-  +setNumeracao(numeracao: string): void
-  +getPosicao(): string
-  +setPosicao(posicao: string): void
+  +getNumeracao(): String
+  +setNumeracao(numeracao: String): void
+  +getPosicao(): String
+  +setPosicao(posicao: String): void
   +getSelecao(): Selecao
-  +setSelecao(selecao: Seleçao): void
+  +setSelecao(selecao: Selecao): void
 }
 class Selecao {
-  -pais: string
+  -pais: String
   -grupo: char
-  -confederacao: string
-  -tecnico: string
-  -rankingFifa: string
-  -titulos: string
+  -confederacao: String
+  -tecnico: String
+  -rankingFifa: String
+  -titulos: String
   -jogadores: List~Jogador~
-  +getPais(): string
-  +setPais(pais: string): void
-  +getConfederacao(): string
-  +setConfederacao(confederacao: string): void
-  +getTecnico(): string
-  +setTecnico(tecnico: string): void
-  +getRankingFifa(): string
-  +setRankingFifa(rankingFifa: string): void
-  +getTitulos(): string
-  +setTitulos(titulos: string): void
+  +getPais(): String
+  +setPais(pais: String): void
+  +getConfederacao(): String
+  +setConfederacao(confederacao: String): void
+  +getTecnico(): String
+  +setTecnico(tecnico: String): void
+  +getRankingFifa(): String
+  +setRankingFifa(rankingFifa: String): void
+  +getTitulos(): String
+  +setTitulos(titulos: String): void
   +setJogadores(jogador: Jogador): void
   +getJogadores(): List~Jogador~
 }
@@ -87,9 +88,9 @@ class Partida {
   -timeVisitante: Selecao
   -contPartidas: int
   -numeroPartidas: int
-  -cidade: string
-  -data: string
-  -horario: string
+  -cidade: String
+  -data: String
+  -horario: String
   -estadio : Estadio
   -arbitroPrincipal: Arbitro
   -listaAssistentes: List~Arbitro~
@@ -99,12 +100,12 @@ class Partida {
   +setTimeCasa(timeCasa: Selecao): void
   +getTimeVisitante(): Selecao
   +setTimeVisitante(timeVisitante: Selecao): void
-  +getCidade(): string
-  +setCidade(cidade: string): void
-  +getData(): string
-  +setData(data: string): void
-  +getHorario(): string
-  +setHorario(horario: string): void
+  +getCidade(): String
+  +setCidade(cidade: String): void
+  +getData(): String
+  +setData(data: String): void
+  +getHorario(): String
+  +setHorario(horario: String): void
   +getEstadio(): Estadio
   +setEstadio(estadio: Estadio): void
   +getArbitroPrincipal(): Arbitro
@@ -114,11 +115,18 @@ class Partida {
   +setFinalizado(finalizado: boolean): void
   +getFinalizado(): boolean
 }
+class DesignacaoArbitro {
+  -partida: Partida
+  -principalArbitro: Arbitro
+  -assistentes: List~Arbitro~
+  +DesignacaoArbitro(partida: Partida, arbitro: Arbitro, assistentes: List~Arbitro~)
+  +confirmarDesignacao(): boolean
+}
 class Resultado {
   -timeVencedor: Selecao
   -timePerdedor: Selecao
-  -placar: string
-  -placarPenaltis: string
+  -placar: String
+  -placarPenaltis: String
   -cartoesAmarelos: int
   -cartoesVermelhos: int
   -partida: Partida
@@ -126,10 +134,10 @@ class Resultado {
   +setTimeVencedor(timeVencedor: Selecao): void
   +getTimePerdedor(): Selecao
   +setTimePerdedor(timePerdedor: Selecao): void
-  +getPlacar(): string
-  +setPlacar(placar: string): void
-  +getPlacarPenaltis(): string
-  +setPlacarPenaltis(placarPenaltis: string): void
+  +getPlacar(): String
+  +setPlacar(placar: String): void
+  +getPlacarPenaltis(): String
+  +setPlacarPenaltis(placarPenaltis: String): void
   +getCartoesAmarelos(): int
   +setCartoesAmarelos(n: int): void
   +getCartoesVermelhos(): int
@@ -152,6 +160,7 @@ class Estadio {
   -estado: String
   -capacidade: int
   -tipoGramado: TipoGramado
+  +Estadio(nome: String, cidade: String, estado: String, capacidade: int, tipoGramado: TipoGramado)
   +getLocalizacao(): String
   +aceitaPublico(quantidade: int): boolean
 }
@@ -161,8 +170,8 @@ class TipoGramado {
   NATURAL
 }
 class Ingresso {
-  -idIngresso: string
-  -partida: string
+  -idIngresso: String
+  -partida: String
   -categoria: CategoriaIngresso
   -foiValidado: boolean
   +validarEntrada(): boolean
@@ -172,18 +181,18 @@ class Ingresso {
   +ingressoPublico(): void
 }
 class Venda {
-  -idVenda: string
-  -dataVenda: string
+  -idVenda: String
+  -dataVenda: String
   -cliente: Usuario
   -ingressos: List~Ingresso~
   -valorTotal: double
-  -status: string
+  -status: String
   +adicionarIngresso(ingresso: Ingresso): void
   +calcularTotal(): void
   +finalizarVenda(): void
 }
 class CategoriaIngresso {
-  -nome: string
+  -nome: String
   -preco: double
   -estoque: int
   +atualizarPreco(novoPreco: double): void
@@ -203,7 +212,7 @@ class RelatorioCompeticao{
 }
 class DesempenhoDeSelecoes {
   <<enumeration>>
-    EXELENTE
+    EXCELENTE
     BOM
     MEDIO
     RUIM
@@ -230,7 +239,9 @@ Jogador "1" --> "1" Selecao
 Partida --> Estadio
 Partida "1" --> "0..1" Resultado
 Partida "1" --> "0..*" Ingresso
-Partida "0..*" --> "0..*" Arbitro
+DesignacaoArbitro "1" --> "1" Partida
+DesignacaoArbitro "1" --> "1" Arbitro : principal
+DesignacaoArbitro "1" --> "2" Arbitro : assistentes
 RelatorioCompeticao ..> DesempenhoDeSelecoes : usa
 Usuario "1" --> "0..*" Ingresso: possui
 Venda "1" *-- "1..*" Ingresso: contém

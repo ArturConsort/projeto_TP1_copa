@@ -1,6 +1,6 @@
 package src.java.modelo.classes.outros;
 
-enum Categoria{
+enum CategoriaArbitro{
     FIFA,
     NACIONAL
 }
@@ -8,15 +8,16 @@ enum Categoria{
 public class Arbitro{
     private String nome;
     private int idade;
-    private Categoria categoria;
+    private CategoriaArbitro categoria;
     private int experiencia;
-    private String nacionalidade;
+    private String nacionalidade; // nome do pais de origem
 
-    public Arbitro(String nome, int idade, Categoria categoria, int experiencia){
+    public Arbitro(String nome, int idade, CategoriaArbitro categoria, int experiencia, String nacionalidade){
         this.nome = nome;
         this.idade = idade;
         this.categoria = categoria;
         this.experiencia = experiencia;
+        this.nacionalidade = nacionalidade;
     }
 
     public String getNome() {return nome;}
@@ -25,8 +26,8 @@ public class Arbitro{
     public int getIdade() {return idade;}
     public void setIdade(int idade) {this.idade = idade;}
 
-    public Categoria getCategoria() {return categoria;}
-    public void setCategoria(Categoria categoria) {this.categoria = categoria;}
+    public CategoriaArbitro getCategoria() {return categoria;}
+    public void setCategoria(CategoriaArbitro categoria) {this.categoria = categoria;}
 
     public int getExperiencia() {return experiencia;}
     public void setExperiencia(int experiencia) {this.experiencia = experiencia;}

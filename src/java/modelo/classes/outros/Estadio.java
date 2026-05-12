@@ -7,16 +7,16 @@ enum TipoGramado{
 public class Estadio{
     private String nome, cidade, estado;
     private int capacidade;
-    private Tipogramado tipoGramado;
+    private TipoGramado tipoGramado;
     // private String image_path; --> será discutido
 
     // constructor
-    public Estadio(String nome, String cidade, String estado, int capacidade, Tipo_gramado tipo_gramado){
+    public Estadio(String nome, String cidade, String estado, int capacidade, TipoGramado tipoGramado){
         this.nome = nome;
         this.cidade = cidade;
         this.estado = estado;
         this.capacidade = capacidade;
-        this.tipoGramado = tipo_gramado;
+        this.tipoGramado = tipoGramado;
     }
 
     // getters e setters
@@ -32,8 +32,8 @@ public class Estadio{
     public int getCapacidade() { return capacidade; }
     public void setCapacidade(int capacidade) { this.capacidade = capacidade; }
 
-    public Tipo_gramado getTipo_gramado() { return tipo_gramado; }
-    public void setTipo_gramado(Tipo_gramado tipo_gramado) { this.tipo_gramado = tipo_gramado; }
+    public TipoGramado getTipoGramado() { return this.tipoGramado; }
+    public void setTipoGramado(TipoGramado tipoGramado) { this.tipoGramado = tipoGramado; }
 
     // functions
     public String getLocalizacao(){

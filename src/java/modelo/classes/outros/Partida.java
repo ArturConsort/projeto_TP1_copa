@@ -25,7 +25,7 @@ public class Partida {
     private boolean finalizado = false;
     private FasePartida fase;
 
-    public Partida(Selecao timeCasa, Selecao timeVisitante, int numeroPartidas, String cidade, String data, String horario, Estadio estadio, Arbitro arbitroPrincipal, List<Arbitro> listaAssistentes, FasePartida fase) {
+    public Partida(Selecao timeCasa, Selecao timeVisitante, int numeroPartidas, String cidade, String data, String horario, Estadio estadio, FasePartida fase) {
         this.timeCasa = timeCasa;
         this.timeVisitante = timeVisitante;
         this.numeroPartidas = numeroPartidas;
@@ -33,8 +33,6 @@ public class Partida {
         this.data = data;
         this.horario = horario;
         this.estadio = estadio;
-        this.arbitroPrincipal = arbitroPrincipal;
-        this.listaAssistentes = listaAssistentes;
         this.fase = fase;
     }
 
