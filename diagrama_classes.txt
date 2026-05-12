@@ -54,6 +54,7 @@ class Partida {
   -listaAssistentes: List~Arbitro~
   -finalizado: boolean
   -fase: FasePartida
+  +Partida(timeCasa: Selecao, timeVisitante: Selecao, cidade: String, data: String, horario: String, arbitroPrincipal: Arbitro, fase: FasePartida)
 }
 class DesignacaoArbitro {
   +DesignacaoArbitro(partida: Partida, arbitro: Arbitro, assistentes: List~Arbitro~)
@@ -66,6 +67,7 @@ class Resultado {
   -placarPenaltis: String
   -cartoesAmarelos: int
   -cartoesVermelhos: int
+  +Resultado(timeVencedor: Selecao, timePerdedor: Selecao, placar: String)
 }
 class FasePartida {
   <<enumeration>>
