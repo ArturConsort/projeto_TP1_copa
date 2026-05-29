@@ -4,7 +4,7 @@ import src.java.modelo.classes.perfisDeAcesso.Usuario;
 
 public class SessaoUsuario {
 
-
+    //padrao singleton
     private static SessaoUsuario instancia;     // faz com que toda SessaoUsuario se refira sempre ao mesmo objeto, pois o objeto "instancia" eh unico pra toda a classe
     private Usuario usuarioLogado;
 
@@ -14,7 +14,7 @@ public class SessaoUsuario {
 
     public static SessaoUsuario getInstancia(){                        // so eh possivel criar uma nova instancia por esse metodo. se uma sessao ja tiver sido criada ele nao cria outra, pra que sempre exista uma unica secao
         if (instancia == null) instancia = new SessaoUsuario();
-        else return instancia;      // unica forma de acessar o objeto instancia. fazer SessaoUsuario.getInstancia.metodo
+        return instancia;      // unica forma de acessar o objeto instancia. fazer SessaoUsuario.getInstancia.metodo
     }
 
 
