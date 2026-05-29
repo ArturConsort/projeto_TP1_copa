@@ -1,5 +1,5 @@
 package src.java.persistencia;
-import src.java.modelo.classes.outros.Selecao;
+import src.java.modelo.classes.Selecao;
 
 import java.io.*;
 import java.util.ArrayList;

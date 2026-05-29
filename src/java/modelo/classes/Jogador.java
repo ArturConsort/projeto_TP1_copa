@@ -1,4 +1,4 @@
-package src.java.modelo.classes.outros;
+package src.java.modelo.classes;
 
 public class Jogador {
     private String nome;

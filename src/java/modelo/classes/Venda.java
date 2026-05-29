@@ -1,6 +1,4 @@
-package src.java.modelo.classes.outros;
-
-import src.java.modelo.classes.perfisDeAcesso.Usuario;
+package src.java.modelo.classes;
 
 public class Venda {
     private String idVenda;

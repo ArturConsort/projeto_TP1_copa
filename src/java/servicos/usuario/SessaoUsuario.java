@@ -1,6 +1,6 @@
-package src.java.servicos;
+package src.java.servicos.usuario;
 
-import src.java.modelo.classes.perfisDeAcesso.Usuario;
+import src.java.modelo.classes.Usuario;
 
 public class SessaoUsuario {
 
@@ -33,10 +33,6 @@ public class SessaoUsuario {
     }
 
 
-    public boolean isLogado(){
-        if (usuarioLogado == null) return false;
-        else return true;
-    }
 
 
 

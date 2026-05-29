@@ -1,6 +1,6 @@
-package src.java.modelo.classes.perfisDeAcesso;
+package src.java.modelo.classes;
 
-import src.java.modelo.classes.outros.Pessoa;
+import src.java.modelo.enumerations.TipoPerfil;
 
 public class Usuario extends Pessoa {
 
@@ -10,14 +10,15 @@ public class Usuario extends Pessoa {
     protected TipoPerfil perfil;
 
     //construtores
-    public Usuario(String nome, String cpf, String email, String login, String senha, TipoPerfil perfil) {
-        super(nome, cpf, email);
+    public Usuario(String nome, String cpf, String email, String pais, String login, String senha, TipoPerfil perfil) {
+        super(nome, cpf, email, pais);
         this.senha = senha;
         this.login = login;
         this.perfil = perfil;
     }
 
     //get set
+
     public String getLogin() {return login;}
 
     public void setLogin(String login) {this.login = login;}

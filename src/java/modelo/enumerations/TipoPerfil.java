@@ -1,4 +1,4 @@
-package src.java.modelo.classes.perfisDeAcesso;
+package src.java.modelo.enumerations;
 
 public enum TipoPerfil {
     ADMINISTRADOR,

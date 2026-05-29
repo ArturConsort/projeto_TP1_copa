@@ -2,11 +2,10 @@
 
 package src.java.persistencia;
 
-import src.java.modelo.classes.perfisDeAcesso.Usuario;
+import src.java.modelo.classes.Usuario;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class UsuarioDAO {
@@ -43,8 +42,9 @@ public class UsuarioDAO {
 
         try{
             ObjectInputStream leitura = new ObjectInputStream(new FileInputStream("usuarios.dat"));     //leitura recebe os dados dos arquivos, ainda em formato serializado que nao tem sentido proprio
+            List<Usuario> lista = (List<Usuario>) leitura.readObject();
             leitura.close();
-            return (List<Usuario>) leitura.readObject();        // faz o casting dos dados em leituras para uma lista de usuarios, dando sentido aos dados lidos
+            return lista;        // faz o casting dos dados em leituras para uma lista de usuarios, dando sentido aos dados lidos
         }
         catch(IOException | ClassNotFoundException e){
             System.err.println("Erro ao carregar usuários" + e.getMessage());
