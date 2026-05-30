@@ -1,11 +1,18 @@
 package src.java.modelo.classes;
 
-public class Venda {
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Venda implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private String idVenda;
     private String dataVenda;
     private Usuario cliente;
     private double valorTotal;
     private String status;
+    private List<Ingresso> ingressos;
 
     public Venda(String idVenda, String dataVenda, Usuario cliente, double valorTotal, String status) {
         this.idVenda = idVenda;
@@ -13,7 +20,34 @@ public class Venda {
         this.cliente = cliente;
         this.valorTotal = valorTotal;
         this.status = status;
+        this.ingressos = new ArrayList<>();
     }
+
+    // ------- metodos do diagrama ------- //
+
+    public void adicionarIngresso(Ingresso ingresso) {
+        ingressos.add(ingresso);
+    }
+
+    public void calcularTotal() {
+        double total = 0.0;
+        for (Ingresso i : ingressos) {
+            total += i.getPrecoEfetivo();
+        }
+        this.valorTotal = total;
+    }
+
+    public void finalizarVenda() {
+        calcularTotal();
+        this.status = "FINALIZADA";
+        for (Ingresso i : ingressos) {
+            if (i.getCategoria() != null) {
+                i.getCategoria().reduzirEstoque(1);
+            }
+        }
+    }
+
+    // ------- getters e setters ------- //
 
     public String getIdVenda() {
         return idVenda;
@@ -48,5 +82,12 @@ public class Venda {
     }
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public List<Ingresso> getIngressos() {
+        return ingressos;
+    }
+    public void setIngressos(List<Ingresso> ingressos) {
+        this.ingressos = ingressos;
     }
 }

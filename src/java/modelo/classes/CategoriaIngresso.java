@@ -1,6 +1,10 @@
 package src.java.modelo.classes;
 
-public class CategoriaIngresso {
+import java.io.Serializable;
+
+public class CategoriaIngresso implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private String nome;
     private double preco;
     private int estoque;
@@ -11,6 +15,25 @@ public class CategoriaIngresso {
         this.estoque = estoque;
     }
 
+    // ------- metodos do diagrama ------- //
+
+    public void atualizarPreco(double novoPreco) {
+        this.preco = novoPreco;
+    }
+
+    public boolean temVagasDisponiveis() {
+        return estoque > 0;
+    }
+
+    public void reduzirEstoque(int quantidade) {
+        if (quantidade > estoque) {
+            throw new IllegalArgumentException("Quantidade solicitada (" + quantidade + ") maior que o estoque disponível (" + estoque + ")");
+        }
+        this.estoque -= quantidade;
+    }
+
+    // ------- getters e setters ------- //
+
     public String getNome() {
         return nome;
     }
@@ -20,9 +43,6 @@ public class CategoriaIngresso {
 
     public double getPreco() {
         return preco;
-    }
-    public void setPreco(double preco) {
-        this.preco = preco;
     }
 
     public int getEstoque() {
