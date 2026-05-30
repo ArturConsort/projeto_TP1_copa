@@ -44,7 +44,7 @@ public class JogadorServico {
 
         // --- validacao de duplicata --- //
         if (dao.buscarPorPais(selecao.getPais()) == null)
-            throw new SelecaoJaExisteException("Essa seleção não exite ainda: " + selecao.getPais());
+            throw new SelecaoNaoEncontradaException("Essa seleção não exite ainda: " + selecao.getPais());
 
         for (Jogador j : selecao.getJogadores()) {
             if (j.getNumeracao().equals(numeracao))
