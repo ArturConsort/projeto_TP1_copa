@@ -1,4 +1,5 @@
 package src.java.modelo.classes;
+
 import java.util.List;
 
 public class DesignacaoArbitro {
@@ -8,9 +9,9 @@ public class DesignacaoArbitro {
     private List<Arbitro> assistentes;
 
     public DesignacaoArbitro(Partida partida, Arbitro arbitro, List<Arbitro> assistentes) {
-        this.partida = partida;
-        this.principalArbitro = arbitro;
-        this.assistentes = assistentes;
+        setPartida(partida);
+        setPrincipalArbitro(arbitro);
+        setAssistentes(assistentes);
     }
 
     public boolean confirmarDesignacao() {
@@ -26,17 +27,17 @@ public class DesignacaoArbitro {
                 }
             }
         }
-        partida.setArbitroPrincipal(principalArbitro);
-        partida.setListaAssistentes(assistentes);
         return true;
     }
 
-    // getters e setters
     public Partida getPartida() {
         return partida;
     }
 
     public void setPartida(Partida partida) {
+        if (partida == null) {
+            throw new IllegalArgumentException("A partida não pode ser nula.");
+        }
         this.partida = partida;
     }
 
@@ -45,6 +46,10 @@ public class DesignacaoArbitro {
     }
 
     public void setPrincipalArbitro(Arbitro principalArbitro) {
+
+        if (principalArbitro == null) {
+            throw new IllegalArgumentException("O árbitro principal não pode ser nulo.");
+        }
         this.principalArbitro = principalArbitro;
     }
 
@@ -53,6 +58,21 @@ public class DesignacaoArbitro {
     }
 
     public void setAssistentes(List<Arbitro> assistentes) {
+
+        if (assistentes == null) {
+            throw new IllegalArgumentException("A lista de assistentes não pode ser nula.");
+        }
+        if (assistentes.isEmpty()) {
+            throw new IllegalArgumentException("A lista de assistentes não pode estar vazia.");
+        }
+        if (assistentes.size() != 2) {
+            throw new IllegalArgumentException("Uma designação deve possuir exatamente 2 árbitros assistentes.");
+        }
+        for (Arbitro assistente : assistentes) {
+            if (assistente == null) {
+                throw new IllegalArgumentException("Nenhum assistente pode ser nulo.");
+            }
+        }
         this.assistentes = assistentes;
     }
 
