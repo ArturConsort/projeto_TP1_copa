@@ -148,6 +148,10 @@ public class UsuarioServico {
 
    }
 
+    public Usuario buscarPorLogin(String login) {
+        return dao.buscarPorLogin(login);
+    }
+
 
 
 

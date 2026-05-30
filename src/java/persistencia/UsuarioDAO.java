@@ -84,6 +84,7 @@ public class UsuarioDAO {
                 break;
             }
         }
+        salvarLista(listaUsuarios);
     }
 
 
