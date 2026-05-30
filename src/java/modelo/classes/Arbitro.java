@@ -1,9 +1,6 @@
 package src.java.modelo.classes;
 
-enum CategoriaArbitro{
-    FIFA,
-    NACIONAL
-}
+import src.java.modelo.enumerations.CategoriaArbitro;
 
 public class Arbitro{
     private String nome;

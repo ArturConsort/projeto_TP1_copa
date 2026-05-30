@@ -1,14 +1,11 @@
 package src.java.modelo.classes;
 
-enum TipoGramado{
-    SINTETICO,
-    NATURAL
-}
+import src.java.modelo.enumerations.TipoGramado;
+
 public class Estadio{
     private String nome, cidade, estado;
     private int capacidade;
     private TipoGramado tipoGramado;
-    // private String image_path; --> será discutido
 
     // constructor
     public Estadio(String nome, String cidade, String estado, int capacidade, TipoGramado tipoGramado){
