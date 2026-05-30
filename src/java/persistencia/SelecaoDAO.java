@@ -1,4 +1,5 @@
 package src.java.persistencia;
+import src.java.modelo.classes.Jogador;
 import src.java.modelo.classes.Selecao;
 
 import java.io.*;
@@ -41,7 +42,7 @@ public class SelecaoDAO {
             ObjectInputStream leitura = new ObjectInputStream(new FileInputStream("selecoes.dat"));     //leitura recebe os dados dos arquivos, ainda em formato serializado que nao tem sentido proprio
             List<Selecao> lista = (List<Selecao>) leitura.readObject();
             leitura.close();
-            return (List<Selecao>) leitura.readObject();        // faz o casting dos dados em leituras para uma lista de usuarios, dando sentido aos dados lidos
+            return lista;        // faz o casting dos dados em leituras para uma lista de usuarios, dando sentido aos dados lidos
         }
         catch(IOException | ClassNotFoundException e){
             System.err.println("Erro ao carregar seleções" + e.getMessage());
@@ -73,8 +74,28 @@ public class SelecaoDAO {
         return null;
     }
 
+    public void adicionarJog(Jogador jog){
+        List<Selecao> lista = carregaLista();
+        for(Selecao s : lista){
+            if(s == jog.getSelecao()){
+                s.addJogadores(jog);
+            }
+        }
+        salvarLista(lista);
+    }
 
+    public void atualizaSelecao(Selecao selecaoAtualizada) {
+        List<Selecao> lista = carregaLista();
 
+        for (int i = 0; i < lista.size(); i++) {
+            if (lista.get(i).getPais().equals(selecaoAtualizada.getPais())) {
+                lista.set(i, selecaoAtualizada); // substitui a selecao antiga pela atualizada
+                break;
+            }
+        }
+
+        salvarLista(lista);
+    }
 
 }
 

@@ -1,18 +1,22 @@
 package src.java.modelo.classes;
 
-public class Jogador {
+import java.io.Serializable;
+
+
+public class Jogador implements Serializable {
     private String nome;
     private int idade;
     private String numeracao;
     private String posicao;
     private Selecao selecao;
-
-    public Jogador(String nome, int idade, String numeracao, String posicao, Selecao selecao) {
+    private StatusJogador status;
+    public Jogador(String nome, int idade, String numeracao, String posicao, Selecao selecao, StatusJogador status) {
         this.nome = nome;
         this.idade = idade;
         this.numeracao = numeracao;
         this.posicao = posicao;
         this.selecao = selecao;
+        this.status = status;
     }
 
     public String getNome() {
