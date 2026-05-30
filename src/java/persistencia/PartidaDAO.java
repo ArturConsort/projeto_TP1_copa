@@ -8,39 +8,28 @@ import java.util.List;
 
 public class PartidaDAO {
 
-    private static final String ARQUIVO = "dados/partidas.dat";
+    private static final String ARQUIVO = "partidas.dat";
 
-    // ---------------------------------------------------------------
-    // PRIVADO: salva a lista inteira de partidas no arquivo
-    // ---------------------------------------------------------------
-    private void salvarLista(List<Partida> lista) {
-        // Cria a pasta "dados/" automaticamente se não existir
-        new File("dados").mkdirs();
-
+    // Privado — só chamado internamente pelos métodos salvar/remover/atualizar
+    private void salvarLista(List<Partida> listaPartidas) {
         try {
-            ObjectOutputStream escrita = new ObjectOutputStream(
-                    new FileOutputStream(ARQUIVO)
-            );
-            escrita.writeObject(lista);
+            ObjectOutputStream escrita = new ObjectOutputStream(new FileOutputStream(ARQUIVO));
+            escrita.writeObject(listaPartidas);
             escrita.close();
         } catch (IOException e) {
             System.err.println("Erro ao salvar partidas: " + e.getMessage());
         }
     }
 
-    // ---------------------------------------------------------------
-    // PÚBLICO: carrega e retorna todas as partidas do arquivo
-    // ---------------------------------------------------------------
+    // Carrega todas as partidas do arquivo
     public List<Partida> carregaLista() {
         File arquivo = new File(ARQUIVO);
-        if (!arquivo.exists()) return new ArrayList<>();
+        if (!arquivo.exists()) return new ArrayList<>(); // primeira execução
 
         try {
-            ObjectInputStream leitura = new ObjectInputStream(
-                    new FileInputStream(ARQUIVO)
-            );
-            List<Partida> lista = (List<Partida>) leitura.readObject();
-            leitura.close();
+            ObjectInputStream leitura = new ObjectInputStream(new FileInputStream(ARQUIVO));
+            List<Partida> lista = (List<Partida>) leitura.readObject(); // lê primeiro
+            leitura.close();                                             // fecha depois
             return lista;
         } catch (IOException | ClassNotFoundException e) {
             System.err.println("Erro ao carregar partidas: " + e.getMessage());
@@ -48,45 +37,38 @@ public class PartidaDAO {
         }
     }
 
-    // ---------------------------------------------------------------
-    // Salva uma nova partida no arquivo
-    // ---------------------------------------------------------------
+    // Adiciona uma nova partida no arquivo
     public void salvar(Partida partida) {
-        List<Partida> lista = carregaLista();
-        lista.add(partida);
-        salvarLista(lista);
+        List<Partida> listaPartidas = carregaLista();
+        listaPartidas.add(partida);
+        salvarLista(listaPartidas);
     }
 
-    // ---------------------------------------------------------------
     // Busca uma partida pelo número dela
-    // ---------------------------------------------------------------
     public Partida buscarPorNumero(int numero) {
-        for (Partida p : carregaLista()) {
+        List<Partida> listaPartidas = carregaLista();
+        for (Partida p : listaPartidas) {
             if (p.getNumeroPartidas() == numero) return p;
         }
         return null;
     }
 
-    // ---------------------------------------------------------------
     // Remove uma partida pelo número
-    // ---------------------------------------------------------------
     public void remover(int numero) {
-        List<Partida> lista = carregaLista();
-        lista.removeIf(p -> p.getNumeroPartidas() == numero);
-        salvarLista(lista);
+        List<Partida> listaPartidas = carregaLista();
+        listaPartidas.removeIf(p -> p.getNumeroPartidas() == numero);
+        salvarLista(listaPartidas);
     }
 
-    // ---------------------------------------------------------------
-    // Atualiza uma partida existente (substitui pelo número)
-    // ---------------------------------------------------------------
+    // Substitui uma partida existente pelo número
     public void atualizar(Partida partidaAtualizada) {
-        List<Partida> lista = carregaLista();
-        for (int i = 0; i < lista.size(); i++) {
-            if (lista.get(i).getNumeroPartidas() == partidaAtualizada.getNumeroPartidas()) {
-                lista.set(i, partidaAtualizada);
+        List<Partida> listaPartidas = carregaLista();
+        for (int i = 0; i < listaPartidas.size(); i++) {
+            if (listaPartidas.get(i).getNumeroPartidas() == partidaAtualizada.getNumeroPartidas()) {
+                listaPartidas.set(i, partidaAtualizada);
                 break;
             }
         }
-        salvarLista(lista);
+        salvarLista(listaPartidas);
     }
 }
