@@ -35,10 +35,11 @@ public class SelecaoDAO {
     public List<Selecao> carregaLista(){
 
         File arquivo = new File(ARQUIVO);                   // carrega "usuarios.dat" pra variavel "arquivo"
-        if(arquivo == null) return new ArrayList<>();       // se "usuarios.dat" nao existe (no caso de primeira execucao), retorna uma nova lista em branco
+        if(!arquivo.exists()) return new ArrayList<>();       // se "usuarios.dat" nao existe (no caso de primeira execucao), retorna uma nova lista em branco
 
         try{
             ObjectInputStream leitura = new ObjectInputStream(new FileInputStream("selecoes.dat"));     //leitura recebe os dados dos arquivos, ainda em formato serializado que nao tem sentido proprio
+            List<Selecao> lista = (List<Selecao>) leitura.readObject();
             leitura.close();
             return (List<Selecao>) leitura.readObject();        // faz o casting dos dados em leituras para uma lista de usuarios, dando sentido aos dados lidos
         }

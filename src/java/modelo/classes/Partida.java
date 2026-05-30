@@ -12,6 +12,8 @@ enum FasePartida{
 }
 
 public class Partida {
+    private static final long serialVersionUID = 1L;
+
     private Selecao timeCasa;
     private Selecao timeVisitante;
     private static int contPartidas;
