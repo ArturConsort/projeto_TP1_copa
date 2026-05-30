@@ -1,9 +1,10 @@
 package src.java.modelo.classes;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Selecao {
+public class Selecao implements Serializable {
     private String pais;
     private char grupo;
     private String confederacao;
@@ -11,17 +12,17 @@ public class Selecao {
     private int rankingFIFA;
     private int titulos;
     private List<Jogador> jogadores;
-    private List<Partida> partidas = new ArrayList<>();
+    private List<Partida> partidas;
 
-    public Selecao(String pais, char grupo, String confederacao, String tecnico, int rankingFIFA, int titulos, List<Jogador> jogadores, List<Partida> partidas) {
+    public Selecao(String pais, char grupo, String confederacao, String tecnico, int rankingFIFA, int titulos) {
         this.pais = pais;
         this.grupo = grupo;
         this.confederacao = confederacao;
         this.tecnico = tecnico;
         this.rankingFIFA = rankingFIFA;
         this.titulos = titulos;
-        this.jogadores = jogadores;
-        this.partidas = partidas;
+        this.jogadores = new ArrayList<>();
+        this.partidas = new ArrayList<>();
     }
 
     public String getPais() {
@@ -70,8 +71,8 @@ public class Selecao {
     public List<Jogador> getJogadores() {
         return jogadores;
     }
-    public void setJogadores(List<Jogador> jogadores) {
-        this.jogadores = jogadores;
+    public void addJogadores(Jogador jog) {
+        jogadores.add(jog);
     }
 
     public List<Partida> getPartidas(){
