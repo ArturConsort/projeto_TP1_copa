@@ -17,6 +17,19 @@ public class Programa {
 
     public static void main(String[] args){
 
+
+        // +++++ CASO SEJA A PRIMEIRA VEZ RODANDO O CODIGO, DESCOMENTE ESSA PERTE, RODE UMA VEZ, COMENTE, E RODE DE NOVO//
+        // O USUARIO ADM É CRIADO, LOGIN:0000, SENHA: SENHA123
+
+        //Usuario novo = new Usuario("ADM", "000.000.000-00", "adm@gmail.com", "Brasil", "0000", "senha123", TipoPerfil.ADMINISTRADOR);
+        //SessaoUsuario.getInstancia().iniciarSessao(novo);
+        //servico.cadastrar(novo);
+        //SessaoUsuario.getInstancia().encerrarSessao();
+        //return;
+
+
+
+
         limparTela();
 
 
