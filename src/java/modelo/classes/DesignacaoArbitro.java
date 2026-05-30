@@ -1,6 +1,7 @@
 package src.java.modelo.classes;
 
 import java.util.List;
+import src.java.modelo.excecoes.designacaoarbitro.NacionalidadeConflitanteException;
 
 public class DesignacaoArbitro {
 
@@ -14,20 +15,19 @@ public class DesignacaoArbitro {
         setAssistentes(assistentes);
     }
 
-    public boolean confirmarDesignacao() {
+    public void verificarConflitosNacionalidade() throws NacionalidadeConflitanteException {
         List<Selecao> times = List.of(partida.getTimeCasa(), partida.getTimeVisitante());
 
         for (Selecao time : times) {
             if (time.getPais().equalsIgnoreCase(principalArbitro.getNacionalidade())) {
-                return false;
+                throw new NacionalidadeConflitanteException(principalArbitro.getNome(), time.getPais());
             }
             for (Arbitro assistente : assistentes) {
                 if (time.getPais().equalsIgnoreCase(assistente.getNacionalidade())) {
-                    return false;
+                    throw new NacionalidadeConflitanteException(assistente.getNome(), time.getPais());
                 }
             }
         }
-        return true;
     }
 
     public Partida getPartida() {
