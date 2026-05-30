@@ -1,17 +1,9 @@
 package src.java.modelo.classes;
+import src.java.modelo.enumerations.FasePartida;
 import java.util.List;
+import java.io.Serializable;
 
-enum FasePartida{
-
-    FASE_DE_GRUPOS,
-    OITAVAS_DE_FINAL,
-    QUARTAS_DE_FINAL,
-    SEMIFINAL,
-    FINAL,
-    DISPUTA_DE_TERCEIRO_LUGAR
-}
-
-public class Partida {
+public class Partida implements Serializable{
     private static final long serialVersionUID = 1L;
 
     private Selecao timeCasa;

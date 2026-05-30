@@ -1,6 +1,8 @@
 package src.java.modelo.classes;
+import java.io.Serializable;
 
-public class ResultadoPartida {
+public class ResultadoPartida implements Serializable{
+    private static final long serialVersionUID = 1L;
     private Selecao timeVencedor;
     private Selecao timePerdedor;
     private Partida partida;
