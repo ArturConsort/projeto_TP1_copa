@@ -55,7 +55,9 @@ public class UsuarioServico {
 
             // ------- manipulacao de contas pelo admin ------- //
 
-    public void cadastrar(Usuario novoUsuario) throws AcessoNegadoException, EmailInvalidoException, SenhaFracaException, LoginJaExisteException {
+    public void cadastrar(Usuario novoUsuario) throws AcessoNegadoException, EmailInvalidoException, SenhaFracaException, LoginJaExisteException, IllegalArgumentException {
+
+
         verificarPermissao(TipoPerfil.ADMINISTRADOR);
         validarEmail(novoUsuario.getEmail());
         validarSenha(novoUsuario.getSenha());
@@ -65,6 +67,8 @@ public class UsuarioServico {
                 throw new LoginJaExisteException("Já existe um usuário com esse login");
             }
         }
+
+
 
         dao.salvar(novoUsuario);
 
@@ -89,7 +93,7 @@ public class UsuarioServico {
                 u.setEmail(novoEmail);
             }
             catch(EmailInvalidoException e){
-                avisos.add("e-mail inválido:" + e.getMessage());
+                avisos.add("e-mail inválido: " + e.getMessage());
             }
         }
 
@@ -132,9 +136,9 @@ public class UsuarioServico {
         List<Usuario> resultado = new ArrayList<>();
 
         for(Usuario u : dao.carregaLista()){
-            boolean nomeOk =     nome == null     ||    nome == u.getNome();
-            boolean paisOK =     pais == null     ||    pais == u.getPais();
-            boolean perfilOK =   perfil == null   ||    perfil == u.getPerfil();
+            boolean nomeOk =     nome == null     ||    nome.equals(u.getNome());
+            boolean paisOK =     pais == null     ||    pais.equals(u.getPais());
+            boolean perfilOK =   perfil == null   ||    perfil.equals(u.getPerfil());
 
 
             if(nomeOk && paisOK && perfilOK) resultado.add(u);

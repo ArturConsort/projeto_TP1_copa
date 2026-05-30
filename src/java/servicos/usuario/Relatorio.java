@@ -23,7 +23,7 @@ public class Relatorio {
         long operador = todosUsuarios.stream().filter(u -> u.getPerfil() == TipoPerfil.OPERADOR).count();
         long arbitro = todosUsuarios.stream().filter(u -> u.getPerfil() == TipoPerfil.ARBITRO).count();
 
-        System.out.println("=== RELATÓrio de USUÁRIOS ===");
+        System.out.println("=== RELATÓRIO de USUÁRIOS ===");
         System.out.println("Quantidade total de usuários: " + todosUsuarios.size());
         System.out.println("Administradores: " + administrador);
         System.out.println("Organizadores: " + organizador);
@@ -36,6 +36,7 @@ public class Relatorio {
 
 
     public void exibirRelatorioGeral(){
+        System.out.println("SESSAO EM DESENVOLVIMENTO");
         // relatorio com:
         // numero de partidas
         // publico
