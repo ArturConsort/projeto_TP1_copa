@@ -14,15 +14,18 @@ import src.java.servicos.CategoriaIngressoServico;
 import src.java.servicos.DesignacaoArbitroServico;
 import src.java.servicos.EstadioServico;
 import src.java.servicos.IngressoServico;
+import src.java.servicos.Partida.PartidaService;
 import src.java.servicos.VendaServico;
 import src.java.servicos.usuario.Relatorio;
 import src.java.servicos.usuario.SessaoUsuario;
 import src.java.servicos.usuario.UsuarioServico;
 import src.java.modelo.excecoes.arbitro.ArbitroNaoEncontradoException;
-
+import src.java.modelo.classes.Selecao;
+import src.java.modelo.classes.Partida;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import src.java.modelo.enumerations.FasePartida;
 
 public class Programa {
 
@@ -34,7 +37,7 @@ public class Programa {
     private static ArbitroServico arbitroServico = new ArbitroServico(new ArbitroDAO());
     private static DesignacaoArbitroServico designacaoServico = new DesignacaoArbitroServico(new DesignacaoArbitroDAO());
     private static EstadioServico estadioServico = new EstadioServico(new EstadioDAO(), new PartidaDAO());
-
+    private static PartidaService partidaServico = new PartidaService();
 
 
     public static void main(String[] args){
@@ -1153,10 +1156,13 @@ public class Programa {
         System.out.println("(0): Sair");
         System.out.print("\nEscolha uma opção: ");
     }
-
-
-
-
+    private static void gerirSelecao(){
+        limparTela();
+        System.out.println("SESSAO EM DESENVOLVIMENTO");
+        System.out.println();
+        System.out.print("voltar ao menu");
+        entrada.nextLine();
+    }
     private static void listarUsuarios(){
 
         try {
@@ -1258,28 +1264,238 @@ public class Programa {
     }
 
 
-    private static void gerirPartida(){
-        limparTela();
-        System.out.println("SESSAO EM DESENVOLVIMENTO");
-        System.out.println();
-        System.out.print("voltar ao menu");
-        entrada.nextLine();
+    private static void gerirPartida() {
+        boolean rodando = true;
+        while (rodando) {
+            limparTela();
+            System.out.println("=== GERIR PARTIDAS ===");
+            System.out.println("(1) Cadastrar partida");
+            System.out.println("(2) Listar partidas");
+            System.out.println("(3) Remover partida");
+            System.out.println("(0) Voltar ao menu");
+            System.out.print("\nEscolha uma opção: ");
+            String op = entrada.nextLine();
+
+            switch (op) {
+                case "1" -> cadastrarPartida();
+                case "2" -> listarPartidas();
+                case "3" -> removerPartida();
+                case "0" -> rodando = false;
+                default  -> System.out.println("Opção inválida.");
+            }
+        }
     }
 
-    private static void gerirSelecao(){
+
+    private static void cadastrarPartida() {
         limparTela();
-        System.out.println("SESSAO EM DESENVOLVIMENTO");
-        System.out.println();
-        System.out.print("voltar ao menu");
-        entrada.nextLine();
+        System.out.println("=== CADASTRAR PARTIDA ===");
+        try {
+
+            // exibe seleções disponíveis para facilitar a escolha
+            List<Selecao> selecoes = partidaServico.listarSelecoes();
+            if (selecoes.isEmpty()) {
+                System.out.println("Nenhuma seleção cadastrada. Cadastre seleções antes de criar uma partida.");
+                pausar();
+                return;
+            }
+            System.out.println("Seleções disponíveis:");
+            selecoes.forEach(s -> System.out.println(
+                    "  " + s.getPais() +
+                            " | Grupo: " + s.getGrupo() +
+                            " | Confederação: " + s.getConfederacao() +
+                            " | Ranking FIFA: " + s.getRankingFIFA()
+            ));
+            System.out.println();
+
+            System.out.print("País do time da casa: ");
+            String paisCasa = entrada.nextLine();
+            Selecao timeCasa = selecoes.stream()
+                    .filter(s -> s.getPais().equalsIgnoreCase(paisCasa))
+                    .findFirst()
+                    .orElse(null);
+            if (timeCasa == null) {
+                System.out.println("Seleção não encontrada: " + paisCasa);
+                pausar();
+                return;
+            }
+
+            System.out.print("País do time visitante: ");
+            String paisVisitante = entrada.nextLine();
+            Selecao timeVisitante = selecoes.stream()
+                    .filter(s -> s.getPais().equalsIgnoreCase(paisVisitante))
+                    .findFirst()
+                    .orElse(null);
+            if (timeVisitante == null) {
+                System.out.println("Seleção não encontrada: " + paisVisitante);
+                pausar();
+                return;
+            }
+
+            // exibe estádios disponíveis para facilitar a escolha
+            List<Estadio> estadios = estadioServico.listarEstadios();
+            if (estadios.isEmpty()) {
+                System.out.println("Nenhum estádio cadastrado. Cadastre um estádio antes de criar uma partida.");
+                pausar();
+                return;
+            }
+            System.out.println("\nEstádios disponíveis:");
+            estadios.forEach(e -> System.out.println(
+                    "  " + e.getNome() +
+                            " | " + e.getLocalizacao() +
+                            " | Capacidade: " + e.getCapacidade()
+            ));
+            System.out.println();
+
+            System.out.print("Nome do estádio: ");
+            String nomeEstadio = entrada.nextLine();
+            Estadio estadio = estadioServico.buscarPorNome(nomeEstadio);
+            if (estadio == null) {
+                System.out.println("Estádio não encontrado: " + nomeEstadio);
+                pausar();
+                return;
+            }
+
+            System.out.print("Cidade: ");
+            String cidade = entrada.nextLine();
+
+            System.out.print("Data (ex: 2025-06-15): ");
+            String data = entrada.nextLine();
+
+            System.out.print("Horário (ex: 16:00): ");
+            String horario = entrada.nextLine();
+
+            System.out.print("Rodada: ");
+            String rodada = entrada.nextLine();
+
+            System.out.println("Fase (" + fasesDisponiveis() + "): ");
+            String faseStr = entrada.nextLine().toUpperCase();
+            FasePartida fase = FasePartida.valueOf(faseStr);
+
+            partidaServico.cadastrarPartida(timeCasa, timeVisitante, estadio, cidade, data, horario, rodada, fase);
+            System.out.println("\nPartida cadastrada com sucesso!");
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("Erro: fase inválida.");
+        } catch (Exception e) {
+            System.out.println("Erro: " + e.getMessage());
+        }
+        pausar();
+    }
+
+
+    private static void listarPartidas() {
+        limparTela();
+        System.out.println("=== LISTA DE PARTIDAS ===");
+        List<Partida> lista = partidaServico.listarPartidas();
+        if (lista.isEmpty()) {
+            System.out.println("Nenhuma partida cadastrada.");
+        } else {
+            lista.forEach(p -> {
+                System.out.println("----------------------------------------");
+                System.out.println("Partida Nº:   " + p.getNumeroPartidas());
+                System.out.println("Data:         " + p.getData());
+                System.out.println("Horário:      " + p.getHorario());
+                System.out.println("Cidade:       " + p.getCidade());
+                System.out.println("Fase:         " + p.getFase());
+                System.out.println("Estádio:      " + (p.getEstadio() != null ? p.getEstadio().getNome() : "-"));
+                System.out.println("Time Casa:    " + (p.getTimeCasa() != null ? p.getTimeCasa().getPais() : "-"));
+                System.out.println("Visitante:    " + (p.getTimeVisitante() != null ? p.getTimeVisitante().getPais() : "-"));
+            });
+            System.out.println("----------------------------------------");
+            System.out.println("\nTotal de partidas: " + lista.size());
+        }
+        pausar();
+    }
+
+
+    private static void removerPartida() {
+        limparTela();
+        System.out.println("=== REMOVER PARTIDA ===");
+        try {
+            listarPartidas();
+
+            System.out.print("Número da partida a remover: ");
+            int numero = Integer.parseInt(entrada.nextLine());
+
+            System.out.print("Tem certeza que deseja remover? (1) sim  (2) não: ");
+            String conf = entrada.nextLine();
+            if (!conf.equals("1")) {
+                System.out.println("Remoção cancelada.");
+                pausar();
+                return;
+            }
+
+            partidaServico.removerPartida(numero);
+            System.out.println("\nPartida removida com sucesso.");
+        } catch (NumberFormatException e) {
+            System.out.println("Erro: número inválido. Digite apenas números.");
+        } catch (Exception e) {
+            System.out.println("Erro: " + e.getMessage());
+        }
+        pausar();
+    }
+
+
+    private static String fasesDisponiveis() {
+        StringBuilder sb = new StringBuilder();
+        FasePartida[] valores = FasePartida.values();
+        for (int i = 0; i < valores.length; i++) {
+            sb.append(valores[i].name());
+            if (i < valores.length - 1) sb.append(", ");
+        }
+        return sb.toString();
     }
 
     private static void visualizarPartida(){
         limparTela();
-        System.out.println("SESSAO EM DESENVOLVIMENTO");
-        System.out.println();
-        System.out.print("voltar ao menu");
-        entrada.nextLine();
+        System.out.println("=== MINHAS PARTIDAS DESIGNADAS ===");
+        try {
+            Usuario logado = SessaoUsuario.getInstancia().getUsuarioLogado();
+            String nomeLogado = logado.getNome();
+
+            List<DesignacaoArbitro> todasDesignacoes = designacaoServico.listarDesignacoes();
+
+            List<DesignacaoArbitro> minhasDesignacoes = todasDesignacoes.stream()
+                    .filter(d -> {
+                        boolean isPrincipal = d.getPrincipalArbitro() != null &&
+                                d.getPrincipalArbitro().getNome().equalsIgnoreCase(nomeLogado);
+
+                        boolean isAssistente = d.getAssistentes() != null &&
+                                d.getAssistentes().stream()
+                                        .anyMatch(a -> a.getNome().equalsIgnoreCase(nomeLogado));
+
+                        return isPrincipal || isAssistente;
+                    })
+                    .toList();
+
+            if (minhasDesignacoes.isEmpty()) {
+                System.out.println("Nenhuma partida designada para você.");
+            } else {
+                minhasDesignacoes.forEach(d -> {
+                    Partida p = d.getPartida();
+                    System.out.println("----------------------------------------");
+                    System.out.println("Partida Nº:   " + p.getNumeroPartidas());
+                    System.out.println("Data:         " + p.getData());
+                    System.out.println("Horário:      " + p.getHorario());
+                    System.out.println("Cidade:       " + p.getCidade());
+                    System.out.println("Fase:         " + p.getFase());
+                    System.out.println("Estádio:      " + (p.getEstadio() != null ? p.getEstadio().getNome() : "-"));
+                    System.out.println("Time Casa:    " + (p.getTimeCasa() != null ? p.getTimeCasa().getPais() : "-"));
+                    System.out.println("Visitante:    " + (p.getTimeVisitante() != null ? p.getTimeVisitante().getPais() : "-"));
+
+                    boolean isPrincipal = d.getPrincipalArbitro() != null &&
+                            d.getPrincipalArbitro().getNome().equalsIgnoreCase(nomeLogado);
+                    System.out.println("Sua função:   " + (isPrincipal ? "Árbitro Principal" : "Árbitro Assistente"));
+                });
+                System.out.println("----------------------------------------");
+                System.out.println("\nTotal de partidas: " + minhasDesignacoes.size());
+            }
+
+        } catch (Exception e) {
+            System.out.println("Erro: " + e.getMessage());
+        }
+        pausar();
     }
 
     private static void criarConta(){

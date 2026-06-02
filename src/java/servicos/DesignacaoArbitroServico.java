@@ -45,12 +45,13 @@ public class DesignacaoArbitroServico {
 
     public DesignacaoArbitro buscarPorPartida(int numeroPartida) throws DesignacaoNaoEncontradaException, IOException {
 
-        verificarPermissao(TipoPerfil.ADMINISTRADOR, TipoPerfil.ORGANIZADOR);
+        verificarPermissao(TipoPerfil.ADMINISTRADOR, TipoPerfil.ORGANIZADOR, TipoPerfil.ARBITRO);
 
         return designacaoDAO.buscarPorPartida(numeroPartida).orElseThrow(() -> new DesignacaoNaoEncontradaException(numeroPartida));
     }
 
-    public List<DesignacaoArbitro> listarDesignacoes() throws IOException {verificarPermissao(TipoPerfil.ADMINISTRADOR, TipoPerfil.ORGANIZADOR);
+    public List<DesignacaoArbitro> listarDesignacoes() throws IOException {
+        verificarPermissao(TipoPerfil.ADMINISTRADOR, TipoPerfil.ORGANIZADOR, TipoPerfil.ARBITRO);
         return designacaoDAO.carregaLista();
     }
 
