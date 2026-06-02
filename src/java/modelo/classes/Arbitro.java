@@ -2,7 +2,9 @@ package src.java.modelo.classes;
 
 import src.java.modelo.enumerations.CategoriaArbitro;
 
-public class Arbitro {
+public class Arbitro implements Serializable{
+
+    private static final long serialVersionUID = 1L;
 
     private String nome;
     private int idade;

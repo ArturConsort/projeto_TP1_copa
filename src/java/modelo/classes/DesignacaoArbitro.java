@@ -3,7 +3,9 @@ package src.java.modelo.classes;
 import java.util.List;
 import src.java.modelo.excecoes.designacaoarbitro.NacionalidadeConflitanteException;
 
-public class DesignacaoArbitro {
+public class DesignacaoArbitro implements Serializable{
+
+    private static final long serialVersionUID = 1L;
 
     private Partida partida;
     private Arbitro principalArbitro;

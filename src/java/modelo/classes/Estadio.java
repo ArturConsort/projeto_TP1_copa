@@ -2,7 +2,10 @@ package src.java.modelo.classes;
 
 import src.java.modelo.enumerations.TipoGramado;
 
-public class Estadio{
+public class Estadio implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     private String nome, cidade, estado;
     private int capacidade;
     private TipoGramado tipoGramado;
