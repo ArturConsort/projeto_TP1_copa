@@ -250,9 +250,6 @@ public class Programa {
         limparTela();
         System.out.println("=== CADASTRAR INGRESSO ===");
         try {
-            System.out.print("ID do ingresso (ex: ING-001): ");
-            String id = entrada.nextLine();
-
             System.out.print("Nome da categoria: ");
             String nomeCategoria = entrada.nextLine();
 
@@ -263,9 +260,10 @@ public class Programa {
                 return;
             }
 
-            Ingresso ing = new Ingresso(id, null, cat, false);
+            Ingresso ing = new Ingresso(null, cat);
             ingressoServico.cadastrar(ing);
             System.out.println("\nIngresso cadastrado com sucesso!");
+            System.out.println("ID gerado: " + ing.getIdIngresso());
             System.out.println("Preço efetivo: R$" + String.format("%.2f", ing.getPrecoEfetivo()));
         } catch (Exception e) {
             System.out.println("Erro: " + e.getMessage());
@@ -279,7 +277,7 @@ public class Programa {
         System.out.println("=== BUSCAR INGRESSO ===");
         try {
             System.out.print("ID do ingresso: ");
-            String id = entrada.nextLine();
+            int id = Integer.parseInt(entrada.nextLine());
 
             Ingresso ing = ingressoServico.buscarPorId(id);
             if (ing == null) {
@@ -291,6 +289,8 @@ public class Programa {
                 System.out.println("Preço:     R$" + String.format("%.2f", ing.getPrecoEfetivo()));
                 System.out.println("Validado:  " + (ing.isFoiValidado() ? "sim" : "não"));
             }
+        } catch (NumberFormatException e) {
+            System.out.println("Erro: ID inválido. Digite apenas números.");
         } catch (Exception e) {
             System.out.println("Erro: " + e.getMessage());
         }
@@ -303,7 +303,7 @@ public class Programa {
         System.out.println("=== VALIDAR ENTRADA ===");
         try {
             System.out.print("ID do ingresso: ");
-            String id = entrada.nextLine();
+            int id = Integer.parseInt(entrada.nextLine());
 
             boolean resultado = ingressoServico.validarEntrada(id);
             if (resultado) {
@@ -311,6 +311,8 @@ public class Programa {
             } else {
                 System.out.println("\nIngresso já foi validado anteriormente.");
             }
+        } catch (NumberFormatException e) {
+            System.out.println("Erro: ID inválido. Digite apenas números.");
         } catch (Exception e) {
             System.out.println("Erro: " + e.getMessage());
         }
@@ -392,7 +394,7 @@ public class Programa {
             String idVenda = entrada.nextLine();
 
             System.out.print("ID do ingresso: ");
-            String idIngresso = entrada.nextLine();
+            int idIngresso = Integer.parseInt(entrada.nextLine());
 
             Ingresso ing = ingressoServico.buscarPorId(idIngresso);
             if (ing == null) {
@@ -404,6 +406,8 @@ public class Programa {
             vendaServico.adicionarIngresso(idVenda, ing);
             System.out.println("\nIngresso adicionado com sucesso!");
             System.out.println("Ingresso: " + idIngresso + " | Preço: R$" + String.format("%.2f", ing.getPrecoEfetivo()));
+        } catch (NumberFormatException e) {
+            System.out.println("Erro: ID do ingresso inválido. Digite apenas números.");
         } catch (Exception e) {
             System.out.println("Erro: " + e.getMessage());
         }
