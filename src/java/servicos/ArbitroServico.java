@@ -8,10 +8,11 @@ import src.java.modelo.excecoes.AcessoNegadoException;
 import src.java.modelo.excecoes.arbitro.ArbitroJaCadastradoException;
 import src.java.modelo.excecoes.arbitro.ArbitroNaoEncontradoException;
 import src.java.persistencia.ArbitroDAO;
+import src.java.servicos.usuario.SessaoUsuario;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
+
 
 public class ArbitroServico {
 
@@ -21,15 +22,13 @@ public class ArbitroServico {
         this.arbitroDAO = arbitroDAO;
     }
 
-    public void cadastrarArbitro(Usuario solicitante, String nome, int idade,
-                                 CategoriaArbitro categoria, int experiencia,
-                                 String nacionalidade)
-            throws AcessoNegadoException, ArbitroJaCadastradoException, IOException {
+    public void cadastrarArbitro(String nome, int idade, CategoriaArbitro categoria, int experiencia, String nacionalidade) throws AcessoNegadoException, ArbitroJaCadastradoException, IOException {
 
-        verificarPermissao(solicitante, TipoPerfil.ADMINISTRADOR, TipoPerfil.ORGANIZADOR);
+        verificarPermissao(TipoPerfil.ADMINISTRADOR, TipoPerfil.ORGANIZADOR);
 
-        Optional<Arbitro> existente = arbitroDAO.buscarPorNome(nome);
-        if (existente.isPresent()) {
+        Arbitro existente = arbitroDAO.buscarPorNome(nome);
+
+        if (existente != null) {
             throw new ArbitroJaCadastradoException(nome);
         }
 
@@ -37,27 +36,43 @@ public class ArbitroServico {
         arbitroDAO.salvar(arbitro);
     }
 
-    public void removerArbitro(Usuario solicitante, String nome)
-            throws AcessoNegadoException, ArbitroNaoEncontradoException, IOException {
+    public void removerArbitro(String nome) throws AcessoNegadoException, ArbitroNaoEncontradoException, IOException {
 
-        verificarPermissao(solicitante, TipoPerfil.ADMINISTRADOR, TipoPerfil.ORGANIZADOR);
+        verificarPermissao(TipoPerfil.ADMINISTRADOR, TipoPerfil.ORGANIZADOR);
 
-        Optional<Arbitro> existente = arbitroDAO.buscarPorNome(nome);
-        if (existente.isEmpty()) {
+        Arbitro arbitro = arbitroDAO.buscarPorNome(nome);
+
+        if (arbitro == null) {
             throw new ArbitroNaoEncontradoException(nome);
         }
 
         arbitroDAO.remover(nome);
     }
 
-    public Arbitro buscarPorNome(String nome)
-            throws ArbitroNaoEncontradoException, IOException {
+    public Arbitro buscarPorNome(String nome) throws ArbitroNaoEncontradoException, IOException {
 
-        return arbitroDAO.buscarPorNome(nome)
-                .orElseThrow(() -> new ArbitroNaoEncontradoException(nome));
+        Arbitro arbitro = arbitroDAO.buscarPorNome(nome);
+
+        if (arbitro == null) {
+            throw new ArbitroNaoEncontradoException(nome);
+        }
+
+        return arbitro;
     }
 
     public List<Arbitro> listarArbitros() throws IOException {
         return arbitroDAO.carregaLista();
+    }    private void verificarPermissao(TipoPerfil... perfisAceitos) {
+        Usuario logado = SessaoUsuario.getInstancia().getUsuarioLogado();
+
+        if (logado == null) {
+            throw new AcessoNegadoException("Nenhum usuário logado.");
+        }
+
+        for (TipoPerfil perfil : perfisAceitos) {
+            if (logado.getPerfil() == perfil) return;
+        }
+
+        throw new AcessoNegadoException("Acesso negado: permissão insuficiente.");
     }
 }

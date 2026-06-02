@@ -9,6 +9,11 @@ import src.java.modelo.excecoes.estadio.EstadioJaCadastradoException;
 import src.java.modelo.excecoes.estadio.EstadioNaoEncontradoException;
 import src.java.persistencia.EstadioDAO;
 import src.java.persistencia.PartidaDAO;
+import src.java.servicos.usuario.SessaoUsuario;
+import src.java.modelo.classes.Usuario;
+import src.java.modelo.excecoes.AcessoNegadoException;
+
+
 
 import java.io.IOException;
 import java.util.List;
@@ -28,8 +33,9 @@ public class EstadioServico {
 
         verificarPermissao(TipoPerfil.ORGANIZADOR, TipoPerfil.ADMINISTRADOR);
 
-        Optional<Estadio> existente = estadioDAO.buscarPorNome(nome);
-        if (existente.isPresent()) {
+        Estadio verificar = estadioDAO.buscarPorNome(nome);
+
+        if (verificar != null) {
             throw new EstadioJaCadastradoException(nome);
         }
 
@@ -42,8 +48,13 @@ public class EstadioServico {
 
         verificarPermissao(TipoPerfil.ORGANIZADOR, TipoPerfil.ADMINISTRADOR);
 
-        return estadioDAO.buscarPorNome(nome)
-                .orElseThrow(() -> new EstadioNaoEncontradoException(nome));
+        Estadio verificar = estadioDAO.buscarPorNome(nome);
+
+        if (verificar == null) {
+            throw new EstadioNaoEncontradoException(nome);
+        }
+
+        return verificar;
     }
 
     public List<Estadio> listarEstadios() throws IOException {
@@ -55,9 +66,8 @@ public class EstadioServico {
     public void removerEstadio(String nome) throws EstadioNaoEncontradoException, IOException {
 
         verificarPermissao(TipoPerfil.ORGANIZADOR, TipoPerfil.ADMINISTRADOR);
-
-        Optional<Estadio> existente = estadioDAO.buscarPorNome(nome);
-        if (existente.isEmpty()) {
+        Estadio verificar = estadioDAO.buscarPorNome(nome);
+        if (verificar == null) {
             throw new EstadioNaoEncontradoException(nome);
         }
 
@@ -79,15 +89,8 @@ public class EstadioServico {
             }
         }
     }
-    private void verificarPermissao(TipoPerfil perfilRequisitado) {
-        Usuario logado = SessaoUsuario.getInstancia().getUsuarioLogado();
-        if (logado == null || logado.getPerfil() != perfilRequisitado) {
-            throw new AcessoNegadoException("Acesso negado: esse usuario não tem permissao para fazer essa ação");
-        }
-    }
-
     // verifica se o usuario logado possui qualquer um dos perfis informados
-    private void verificarPermissaoMultipla(TipoPerfil... perfisAceitos) {
+    private void verificarPermissao(TipoPerfil... perfisAceitos) {
         Usuario logado = SessaoUsuario.getInstancia().getUsuarioLogado();
         if (logado == null) {
             throw new AcessoNegadoException("Nenhum usuario logado");

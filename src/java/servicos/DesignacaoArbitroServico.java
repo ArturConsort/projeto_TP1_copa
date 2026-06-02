@@ -11,6 +11,7 @@ import src.java.modelo.excecoes.designacaoarbitro.DesignacaoNaoEncontradaExcepti
 import src.java.modelo.excecoes.designacaoarbitro.NacionalidadeConflitanteException;
 import src.java.persistencia.DesignacaoArbitroDAO;
 import src.java.servicos.usuario.SessaoUsuario;
+import src.java.modelo.classes.Partida;
 
 import java.io.IOException;
 import java.util.List;
@@ -29,9 +30,9 @@ public class DesignacaoArbitroServico {
         verificarPermissao(TipoPerfil.ADMINISTRADOR, TipoPerfil.ORGANIZADOR);
 
         // não permite designação duplicada para a mesma partida
-        Optional<DesignacaoArbitro> existente = designacaoDAO.buscarPorPartida(partida.getNumeroPartida());
+        Optional<DesignacaoArbitro> existente = designacaoDAO.buscarPorPartida(partida.getNumeroPartidas());
         if (existente.isPresent()) {
-            throw new DesignacaoJaCadastradaException(partida.getNumeroPartida());
+            throw new DesignacaoJaCadastradaException(partida.getNumeroPartidas());
         }
 
         DesignacaoArbitro designacao = new DesignacaoArbitro(partida, principal, assistentes);

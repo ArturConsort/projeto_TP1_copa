@@ -1,15 +1,26 @@
 package src.java;
 
 import src.java.modelo.classes.*;
+import src.java.modelo.enumerations.CategoriaArbitro;
+import src.java.modelo.enumerations.TipoGramado;
 import src.java.modelo.enumerations.TipoPerfil;
+import src.java.persistencia.ArbitroDAO;
+import src.java.persistencia.DesignacaoArbitroDAO;
+import src.java.persistencia.EstadioDAO;
+import src.java.persistencia.PartidaDAO;
 import src.java.persistencia.UsuarioDAO;
+import src.java.servicos.ArbitroServico;
 import src.java.servicos.CategoriaIngressoServico;
+import src.java.servicos.DesignacaoArbitroServico;
+import src.java.servicos.EstadioServico;
 import src.java.servicos.IngressoServico;
 import src.java.servicos.VendaServico;
 import src.java.servicos.usuario.Relatorio;
 import src.java.servicos.usuario.SessaoUsuario;
 import src.java.servicos.usuario.UsuarioServico;
+import src.java.modelo.excecoes.arbitro.ArbitroNaoEncontradoException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -20,6 +31,9 @@ public class Programa {
     private static CategoriaIngressoServico categoriaServico = new CategoriaIngressoServico();
     private static IngressoServico ingressoServico = new IngressoServico();
     private static VendaServico vendaServico = new VendaServico();
+    private static ArbitroServico arbitroServico = new ArbitroServico(new ArbitroDAO());
+    private static DesignacaoArbitroServico designacaoServico = new DesignacaoArbitroServico(new DesignacaoArbitroDAO());
+    private static EstadioServico estadioServico = new EstadioServico(new EstadioDAO(), new PartidaDAO());
 
 
 
@@ -85,20 +99,17 @@ public class Programa {
                     else opInvalida = true;
                 }
 
-
                 case "4" -> {
                     if (perfil == TipoPerfil.ADMINISTRADOR || perfil == TipoPerfil.ORGANIZADOR)
                         gerirSelecao();
                     else opInvalida = true;
                 }
 
-
                 case "5" -> {
                     if (perfil == TipoPerfil.ADMINISTRADOR || perfil == TipoPerfil.ARBITRO)
                         visualizarPartida();
                     else opInvalida = true;
                 }
-
 
                 case "6" -> {
                     if (perfil == TipoPerfil.ADMINISTRADOR || perfil == TipoPerfil.OPERADOR)
@@ -112,27 +123,41 @@ public class Programa {
                     else opInvalida = true;
                 }
 
-
                 case "8" -> {
+                    if (perfil == TipoPerfil.ADMINISTRADOR || perfil == TipoPerfil.ORGANIZADOR)
+                        menuEstadios();
+                    else opInvalida = true;
+                }
+
+                case "9" -> {
+                    if (perfil == TipoPerfil.ADMINISTRADOR || perfil == TipoPerfil.ORGANIZADOR)
+                        menuArbitros();
+                    else opInvalida = true;
+                }
+
+                case "10" -> {
+                    if (perfil == TipoPerfil.ADMINISTRADOR || perfil == TipoPerfil.ORGANIZADOR)
+                        menuDesignacoes();
+                    else opInvalida = true;
+                }
+
+                case "11" -> {
                     if (perfil == TipoPerfil.ADMINISTRADOR)
                         criarConta();
                     else opInvalida = true;
                 }
 
-
-                case "9" -> {
+                case "12" -> {
                     if (perfil == TipoPerfil.ADMINISTRADOR)
                         removerConta();
                     else opInvalida = true;
                 }
 
-
-                case "10" -> {
+                case "13" -> {
                     if (perfil == TipoPerfil.ADMINISTRADOR)
                         editaConta();
                     else opInvalida = true;
                 }
-
 
                 case "0" ->{
                     entrada.close();
@@ -523,6 +548,566 @@ public class Programa {
 
 
     // ================================================================
+    //   MENU ESTÁDIOS  (opção 8)
+    // ================================================================
+
+    private static void menuEstadios() {
+        boolean rodando = true;
+        while (rodando) {
+            limparTela();
+            System.out.println("=== ESTÁDIOS ===");
+            System.out.println("(1) Cadastrar estádio");
+            System.out.println("(2) Listar estádios");
+            System.out.println("(3) Buscar estádio por nome");
+            System.out.println("(4) Verificar disponibilidade");
+            System.out.println("(5) Remover estádio");
+            System.out.println("(0) Voltar ao menu");
+            System.out.print("\nEscolha uma opção: ");
+            String op = entrada.nextLine();
+
+            switch (op) {
+                case "1" -> cadastrarEstadio();
+                case "2" -> listarEstadios();
+                case "3" -> buscarEstadio();
+                case "4" -> verificarDisponibilidadeEstadio();
+                case "5" -> removerEstadio();
+                case "0" -> rodando = false;
+                default  -> System.out.println("Opção inválida.");
+            }
+        }
+    }
+
+
+    private static void cadastrarEstadio() {
+        limparTela();
+        System.out.println("=== CADASTRAR ESTÁDIO ===");
+        try {
+            System.out.print("Nome: ");
+            String nome = entrada.nextLine();
+
+            System.out.print("Cidade: ");
+            String cidade = entrada.nextLine();
+
+            System.out.print("Estado: ");
+            String estado = entrada.nextLine();
+
+            System.out.print("Capacidade: ");
+            int capacidade = Integer.parseInt(entrada.nextLine());
+
+            System.out.println("Tipo de gramado (" + tiposGramadoDisponiveis() + "): ");
+            String tipoStr = entrada.nextLine().toUpperCase();
+            TipoGramado tipoGramado = TipoGramado.valueOf(tipoStr);
+
+            estadioServico.cadastrarEstadio(nome, cidade, estado, capacidade, tipoGramado);
+            System.out.println("\nEstádio cadastrado com sucesso!");
+        } catch (NumberFormatException e) {
+            System.out.println("Erro: capacidade inválida. Use apenas números.");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Erro: tipo de gramado inválido.");
+        } catch (Exception e) {
+            System.out.println("Erro: " + e.getMessage());
+        }
+        pausar();
+    }
+
+
+    private static void listarEstadios() {
+        limparTela();
+        System.out.println("=== LISTA DE ESTÁDIOS ===");
+        try {
+            List<Estadio> lista = estadioServico.listarEstadios();
+            if (lista.isEmpty()) {
+                System.out.println("Nenhum estádio cadastrado.");
+            } else {
+                lista.forEach(e -> System.out.println(
+                        "Nome: " + e.getNome() +
+                                " | Localização: " + e.getLocalizacao() +
+                                " | Capacidade: " + e.getCapacidade() +
+                                " | Gramado: " + e.getTipoGramado()
+                ));
+            }
+        }
+        catch (Exception e){
+            System.out.println("Erro: " + e.getMessage());
+        }
+        pausar();
+    }
+
+
+    private static void buscarEstadio() {
+        limparTela();
+        System.out.println("=== BUSCAR ESTÁDIO ===");
+        try {
+            System.out.print("Nome do estádio: ");
+            String nome = entrada.nextLine();
+
+            Estadio e = estadioServico.buscarPorNome(nome);
+            if (e == null) {
+                System.out.println("Estádio não encontrado.");
+            } else {
+                exibeEstadio(e);
+            }
+        } catch (Exception e) {
+            System.out.println("Erro: " + e.getMessage());
+        }
+        pausar();
+    }
+
+
+    private static void verificarDisponibilidadeEstadio() {
+        limparTela();
+        System.out.println("=== VERIFICAR DISPONIBILIDADE DE ESTÁDIO ===");
+        try {
+            System.out.print("Nome do estádio: ");
+            String nome = entrada.nextLine();
+
+            Estadio estadio = estadioServico.buscarPorNome(nome);
+            if (estadio == null) {
+                System.out.println("Estádio não encontrado: " + nome);
+                pausar();
+                return;
+            }
+
+            System.out.print("Data (ex: 2025-06-15): ");
+            String data = entrada.nextLine();
+
+            System.out.print("Horário (ex: 16:00): ");
+            String horario = entrada.nextLine();
+
+            estadioServico.verificarDisponibilidade(estadio, data, horario);
+            System.out.println("\nEstádio disponível na data e horário informados!");
+        } catch (Exception e) {
+            System.out.println("Estádio indisponível: " + e.getMessage());
+        }
+        pausar();
+    }
+
+
+    private static void removerEstadio() {
+        limparTela();
+        System.out.println("=== REMOVER ESTÁDIO ===");
+        try {
+            System.out.print("Nome do estádio: ");
+            String nome = entrada.nextLine();
+
+            Estadio encontrado = estadioServico.buscarPorNome(nome);
+            if (encontrado == null) {
+                System.out.println("Estádio não encontrado: " + nome);
+                pausar();
+                return;
+            }
+
+            exibeEstadio(encontrado);
+            System.out.println("\nATENÇÃO: você está prestes a remover este estádio permanentemente.");
+            System.out.print("(1) confirmar remoção  (2) cancelar: ");
+            String conf = entrada.nextLine();
+            if (!conf.equals("1")) {
+                System.out.println("Remoção cancelada.");
+                pausar();
+                return;
+            }
+
+            estadioServico.removerEstadio(nome);
+            System.out.println("\nEstádio removido com sucesso.");
+        } catch (Exception e) {
+            System.out.println("Erro: " + e.getMessage());
+        }
+        pausar();
+    }
+
+
+    private static void exibeEstadio(Estadio e) {
+        System.out.println("\n--- Detalhes do estádio ---");
+        System.out.println("Nome:        " + e.getNome());
+        System.out.println("Cidade:      " + e.getCidade());
+        System.out.println("Estado:      " + e.getEstado());
+        System.out.println("Localização: " + e.getLocalizacao());
+        System.out.println("Capacidade:  " + e.getCapacidade());
+        System.out.println("Gramado:     " + e.getTipoGramado());
+    }
+
+
+    private static String tiposGramadoDisponiveis() {
+        StringBuilder sb = new StringBuilder();
+        TipoGramado[] valores = TipoGramado.values();
+        for (int i = 0; i < valores.length; i++) {
+            sb.append(valores[i].name());
+            if (i < valores.length - 1) sb.append(", ");
+        }
+        return sb.toString();
+    }
+
+
+
+
+    // ================================================================
+    //   MENU ÁRBITROS  (opção 9)
+    // ================================================================
+
+    private static void menuArbitros() {
+        boolean rodando = true;
+        while (rodando) {
+            limparTela();
+            System.out.println("=== ÁRBITROS ===");
+            System.out.println("(1) Cadastrar árbitro");
+            System.out.println("(2) Listar árbitros");
+            System.out.println("(3) Buscar árbitro por nome");
+            System.out.println("(4) Remover árbitro");
+            System.out.println("(0) Voltar ao menu");
+            System.out.print("\nEscolha uma opção: ");
+            String op = entrada.nextLine();
+
+            switch (op) {
+                case "1" -> cadastrarArbitro();
+                case "2" -> listarArbitros();
+                case "3" -> buscarArbitro();
+                case "4" -> removerArbitro();
+                case "0" -> rodando = false;
+                default  -> System.out.println("Opção inválida.");
+            }
+        }
+    }
+
+
+    private static void cadastrarArbitro() {
+        limparTela();
+        System.out.println("=== CADASTRAR ÁRBITRO ===");
+        try {
+            System.out.print("Nome: ");
+            String nome = entrada.nextLine();
+
+            System.out.print("Idade: ");
+            int idade = Integer.parseInt(entrada.nextLine());
+
+            System.out.println("Categoria (" + categoriasArbitroDisponiveis() + "): ");
+            String catStr = entrada.nextLine().toUpperCase();
+            CategoriaArbitro categoria = CategoriaArbitro.valueOf(catStr);
+
+            System.out.print("Anos de experiência: ");
+            int experiencia = Integer.parseInt(entrada.nextLine());
+
+            System.out.print("Nacionalidade: ");
+            String nacionalidade = entrada.nextLine();
+
+            Usuario solicitante = SessaoUsuario.getInstancia().getUsuarioLogado();
+            arbitroServico.cadastrarArbitro(nome, idade, categoria, experiencia, nacionalidade);
+            System.out.println("\nÁrbitro cadastrado com sucesso!");
+        }
+        catch (NumberFormatException e) {
+            System.out.println("Erro: valor numérico inválido.");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Erro: categoria de árbitro inválida.");
+        } catch (Exception e) {
+            System.out.println("Erro: " + e.getMessage());
+        }
+        pausar();
+    }
+
+
+    private static void listarArbitros() {
+        limparTela();
+        System.out.println("=== LISTA DE ÁRBITROS ===");
+        try {
+            List<Arbitro> lista = arbitroServico.listarArbitros();
+            if (lista.isEmpty()) {
+                System.out.println("Nenhum árbitro cadastrado.");
+            } else {
+                lista.forEach(a -> System.out.println(
+                        "Nome: " + a.getNome() +
+                                " | Idade: " + a.getIdade() +
+                                " | Categoria: " + a.getCategoria() +
+                                " | Experiência: " + a.getExperiencia() + " anos" +
+                                " | Nacionalidade: " + a.getNacionalidade()
+                ));
+            }
+        }
+        catch (Exception e){
+            System.out.println("Erro: " + e.getMessage());
+        }
+        pausar();
+    }
+
+
+    private static void buscarArbitro() {
+        limparTela();
+        System.out.println("=== BUSCAR ÁRBITRO ===");
+        try {
+            System.out.print("Nome do árbitro: ");
+            String nome = entrada.nextLine();
+
+            Arbitro a = arbitroServico.buscarPorNome(nome);
+            if (a == null) {
+                System.out.println("Árbitro não encontrado.");
+            } else {
+                exibeArbitro(a);
+            }
+        } catch (Exception e) {
+            System.out.println("Erro: " + e.getMessage());
+        }
+        pausar();
+    }
+
+
+    private static void removerArbitro() {
+        limparTela();
+        System.out.println("=== REMOVER ÁRBITRO ===");
+        try {
+            System.out.print("Nome do árbitro: ");
+            String nome = entrada.nextLine();
+
+            Arbitro encontrado = arbitroServico.buscarPorNome(nome);
+            if (encontrado == null) {
+                System.out.println("Árbitro não encontrado: " + nome);
+                pausar();
+                return;
+            }
+
+            exibeArbitro(encontrado);
+            System.out.println("\nATENÇÃO: você está prestes a remover este árbitro permanentemente.");
+            System.out.print("(1) confirmar remoção  (2) cancelar: ");
+            String conf = entrada.nextLine();
+            if (!conf.equals("1")) {
+                System.out.println("Remoção cancelada.");
+                pausar();
+                return;
+            }
+
+            Usuario solicitante = SessaoUsuario.getInstancia().getUsuarioLogado();
+            arbitroServico.removerArbitro(nome);
+            System.out.println("\nÁrbitro removido com sucesso.");
+        } catch (Exception e) {
+            System.out.println("Erro: " + e.getMessage());
+        }
+        pausar();
+    }
+
+
+    private static void exibeArbitro(Arbitro a) {
+        System.out.println("\n--- Detalhes do árbitro ---");
+        System.out.println("Nome:          " + a.getNome());
+        System.out.println("Idade:         " + a.getIdade());
+        System.out.println("Categoria:     " + a.getCategoria());
+        System.out.println("Experiência:   " + a.getExperiencia() + " anos");
+        System.out.println("Nacionalidade: " + a.getNacionalidade());
+    }
+
+
+    private static String categoriasArbitroDisponiveis() {
+        StringBuilder sb = new StringBuilder();
+        CategoriaArbitro[] valores = CategoriaArbitro.values();
+        for (int i = 0; i < valores.length; i++) {
+            sb.append(valores[i].name());
+            if (i < valores.length - 1) sb.append(", ");
+        }
+        return sb.toString();
+    }
+
+
+
+
+    // ================================================================
+    //   MENU DESIGNAÇÕES  (opção 10)
+    // ================================================================
+
+    private static void menuDesignacoes() {
+        boolean rodando = true;
+        while (rodando) {
+            limparTela();
+            System.out.println("=== DESIGNAÇÕES DE ÁRBITROS ===");
+            System.out.println("(1) Criar designação");
+            System.out.println("(2) Listar designações");
+            System.out.println("(3) Buscar designação por partida");
+            System.out.println("(4) Remover designação");
+            System.out.println("(0) Voltar ao menu");
+            System.out.print("\nEscolha uma opção: ");
+            String op = entrada.nextLine();
+
+            switch (op) {
+                case "1" -> criarDesignacao();
+                case "2" -> listarDesignacoes();
+                case "3" -> buscarDesignacao();
+                case "4" -> removerDesignacao();
+                case "0" -> rodando = false;
+                default  -> System.out.println("Opção inválida.");
+            }
+        }
+    }
+
+
+    private static void criarDesignacao() {
+        limparTela();
+        System.out.println("=== CRIAR DESIGNAÇÃO DE ÁRBITRO ===");
+        try {
+            System.out.print("Número da partida: ");
+            int numeroPartida = Integer.parseInt(entrada.nextLine());
+
+            // Busca a partida pelo número
+            Partida partida = buscarPartidaPorNumero(numeroPartida);
+            if (partida == null) {
+                System.out.println("Partida não encontrada: " + numeroPartida);
+                pausar();
+                return;
+            }
+
+            System.out.print("Nome do árbitro principal: ");
+            String nomePrincipal = entrada.nextLine();
+            Arbitro principal = arbitroServico.buscarPorNome(nomePrincipal);
+            if (principal == null) {
+                System.out.println("Árbitro não encontrado: " + nomePrincipal);
+                pausar();
+                return;
+            }
+
+            List<Arbitro> assistentes = new ArrayList<>();
+            System.out.println("Adicionar árbitros assistentes (Enter em branco para finalizar):");
+            while (true) {
+                System.out.print("Nome do assistente: ");
+                String nomeAssistente = entrada.nextLine();
+                if (nomeAssistente.isBlank()) break;
+
+                Arbitro assistente = arbitroServico.buscarPorNome(nomeAssistente);
+                if (assistente == null) {
+                    System.out.println("Árbitro não encontrado: " + nomeAssistente + ". Ignorando.");
+                } else {
+                    assistentes.add(assistente);
+                    System.out.println("Assistente adicionado: " + assistente.getNome());
+                }
+            }
+
+            designacaoServico.criarDesignacao(partida, principal, assistentes);
+            System.out.println("\nDesignação criada com sucesso!");
+            System.out.println("Partida: " + numeroPartida +
+                    " | Principal: " + principal.getNome() +
+                    " | Assistentes: " + assistentes.size());
+        } catch (NumberFormatException e) {
+            System.out.println("Erro: número de partida inválido. Digite apenas números.");
+        } catch (Exception e) {
+            System.out.println("Erro: " + e.getMessage());
+        }
+        pausar();
+    }
+
+
+    private static void listarDesignacoes() {
+        limparTela();
+        System.out.println("=== LISTA DE DESIGNAÇÕES ===");
+        try {
+            List<DesignacaoArbitro> lista = designacaoServico.listarDesignacoes();
+            if (lista.isEmpty()) {
+                System.out.println("Nenhuma designação cadastrada.");
+            } else {
+                lista.forEach(d -> {
+                    Partida p = d.getPartida();
+                    String infoPartida = (p != null) ? "Partida " + p.getNumeroPartidas() : "Partida desconhecida";
+                    String principal = (d.getPrincipalArbitro() != null) ? d.getPrincipalArbitro().getNome() : "-";
+                    int qtdAssistentes = (d.getAssistentes() != null) ? d.getAssistentes().size() : 0;
+                    System.out.println(infoPartida +
+                            " | Principal: " + principal +
+                            " | Assistentes: " + qtdAssistentes);
+                });
+            }
+        }
+        catch (Exception e){
+            System.out.println("Erro: " + e.getMessage());
+        }
+        pausar();
+    }
+
+
+    private static void buscarDesignacao() {
+        limparTela();
+        System.out.println("=== BUSCAR DESIGNAÇÃO POR PARTIDA ===");
+        try {
+            System.out.print("Número da partida: ");
+            int numeroPartida = Integer.parseInt(entrada.nextLine());
+
+            DesignacaoArbitro designacao = designacaoServico.buscarPorPartida(numeroPartida);
+            if (designacao == null) {
+                System.out.println("Designação não encontrada para a partida " + numeroPartida + ".");
+            } else {
+                exibeDesignacao(designacao);
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Erro: número inválido. Digite apenas números.");
+        } catch (Exception e) {
+            System.out.println("Erro: " + e.getMessage());
+        }
+        pausar();
+    }
+
+
+    private static void removerDesignacao() {
+        limparTela();
+        System.out.println("=== REMOVER DESIGNAÇÃO ===");
+        try {
+            System.out.print("Número da partida: ");
+            int numeroPartida = Integer.parseInt(entrada.nextLine());
+
+            DesignacaoArbitro encontrada = designacaoServico.buscarPorPartida(numeroPartida);
+            if (encontrada == null) {
+                System.out.println("Designação não encontrada para a partida " + numeroPartida + ".");
+                pausar();
+                return;
+            }
+
+            exibeDesignacao(encontrada);
+            System.out.println("\nATENÇÃO: você está prestes a remover esta designação permanentemente.");
+            System.out.print("(1) confirmar remoção  (2) cancelar: ");
+            String conf = entrada.nextLine();
+            if (!conf.equals("1")) {
+                System.out.println("Remoção cancelada.");
+                pausar();
+                return;
+            }
+
+            designacaoServico.removerDesignacao(numeroPartida);
+            System.out.println("\nDesignação removida com sucesso.");
+        } catch (NumberFormatException e) {
+            System.out.println("Erro: número inválido. Digite apenas números.");
+        } catch (Exception e) {
+            System.out.println("Erro: " + e.getMessage());
+        }
+        pausar();
+    }
+
+
+    private static void exibeDesignacao(DesignacaoArbitro d) {
+        Partida p = d.getPartida();
+        System.out.println("\n--- Detalhes da designação ---");
+        System.out.println("Partida:    " + (p != null ? "Nº " + p.getNumeroPartidas() : "-"));
+        System.out.println("Principal:  " + (d.getPrincipalArbitro() != null ? d.getPrincipalArbitro().getNome() : "-"));
+
+        List<Arbitro> assistentes = d.getAssistentes();
+        if (assistentes == null || assistentes.isEmpty()) {
+            System.out.println("Assistentes: nenhum");
+        } else {
+            System.out.println("Assistentes:");
+            assistentes.forEach(a -> System.out.println(
+                    "  - " + a.getNome() +
+                            " | " + a.getCategoria() +
+                            " | " + a.getNacionalidade()
+            ));
+        }
+    }
+
+
+    /**
+     * Busca uma Partida pelo número a partir das designações existentes,
+     * já que PartidaDAO não está disponível diretamente nesta classe.
+     * Retorna null se não encontrada.
+     */
+    private static Partida buscarPartidaPorNumero(int numeroPartida) {
+        try {
+            DesignacaoArbitro d = designacaoServico.buscarPorPartida(numeroPartida);
+            if (d != null) return d.getPartida();
+        } catch (Exception ignored) {}
+        return null;
+    }
+
+
+
+
+    // ================================================================
     //   MÉTODOS AUXILIARES
     // ================================================================
 
@@ -554,10 +1139,15 @@ public class Programa {
             System.out.println("(6): Ingressos");
             System.out.println("(7): Vendas");
         }
+        if (perfil == TipoPerfil.ADMINISTRADOR || perfil == TipoPerfil.ORGANIZADOR) {
+            System.out.println("(8): Estádios");
+            System.out.println("(9): Árbitros");
+            System.out.println("(10): Designações");
+        }
         if (perfil == TipoPerfil.ADMINISTRADOR) {
-            System.out.println("(8): Criar conta");
-            System.out.println("(9): Remover conta");
-            System.out.println("(10): Editar conta");
+            System.out.println("(11): Criar conta");
+            System.out.println("(12): Remover conta");
+            System.out.println("(13): Editar conta");
         }
 
         System.out.println("(0): Sair");
