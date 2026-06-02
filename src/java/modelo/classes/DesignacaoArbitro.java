@@ -1,5 +1,6 @@
 package src.java.modelo.classes;
 
+import java.io.Serializable;
 import java.util.List;
 import src.java.modelo.excecoes.designacaoarbitro.NacionalidadeConflitanteException;
 

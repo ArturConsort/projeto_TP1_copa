@@ -4,28 +4,27 @@ import src.java.modelo.classes.Arbitro;
 import src.java.modelo.classes.DesignacaoArbitro;
 import src.java.modelo.classes.Partida;
 import src.java.modelo.classes.Usuario;
-import src.java.modelo.enumeracoes.TipoPerfil;
+import src.java.modelo.enumerations.TipoPerfil;
 import src.java.modelo.excecoes.AcessoNegadoException;
-import src.java.modelo.excecoes.ArbitroPrincipalAusenteException;
-import src.java.modelo.excecoes.DesignacaoJaCadastradaException;
-import src.java.modelo.excecoes.DesignacaoNaoEncontradaException;
-import src.java.modelo.excecoes.NacionalidadeConflitanteException;
+import src.java.modelo.excecoes.designacaoarbitro.DesignacaoJaCadastradaException;
+import src.java.modelo.excecoes.designacaoarbitro.DesignacaoNaoEncontradaException;
+import src.java.modelo.excecoes.designacaoarbitro.NacionalidadeConflitanteException;
 import src.java.persistencia.DesignacaoArbitroDAO;
-import src.java.servicos.SessaoUsuario;
+import src.java.servicos.usuario.SessaoUsuario;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-public class DesignacaoArbitroService {
+public class DesignacaoArbitroServico {
 
     private final DesignacaoArbitroDAO designacaoDAO;
 
-    public DesignacaoArbitroService(DesignacaoArbitroDAO designacaoDAO) {
+    public DesignacaoArbitroServico(DesignacaoArbitroDAO designacaoDAO) {
         this.designacaoDAO = designacaoDAO;
     }
 
-    public void criarDesignacao(Partida partida, Arbitro principal, List<Arbitro> assistentes) throws ArbitroPrincipalAusenteException, NacionalidadeConflitanteException, DesignacaoJaCadastradaException, IOException {
+    public void criarDesignacao(Partida partida, Arbitro principal, List<Arbitro> assistentes) throws NacionalidadeConflitanteException, DesignacaoJaCadastradaException, IOException {
 
         verificarPermissao(TipoPerfil.ADMINISTRADOR, TipoPerfil.ORGANIZADOR);
 

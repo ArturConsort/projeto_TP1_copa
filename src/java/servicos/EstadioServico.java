@@ -2,11 +2,11 @@ package src.java.servicos;
 
 import src.java.modelo.classes.Estadio;
 import src.java.modelo.classes.Partida;
-import src.java.modelo.enumeracoes.TipoGramado;
-import src.java.modelo.excecoes.EstadioException;
-import src.java.modelo.excecoes.EstadioIndisponivelException;
-import src.java.modelo.excecoes.EstadioJaCadastradoException;
-import src.java.modelo.excecoes.EstadioNaoEncontradoException;
+import src.java.modelo.enumerations.TipoGramado;
+import src.java.modelo.enumerations.TipoPerfil;
+import src.java.modelo.excecoes.estadio.EstadioIndisponivelException;
+import src.java.modelo.excecoes.estadio.EstadioJaCadastradoException;
+import src.java.modelo.excecoes.estadio.EstadioNaoEncontradoException;
 import src.java.persistencia.EstadioDAO;
 import src.java.persistencia.PartidaDAO;
 

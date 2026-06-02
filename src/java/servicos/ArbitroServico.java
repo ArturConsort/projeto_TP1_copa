@@ -1,8 +1,23 @@
-public class ArbitroService extends ServiceBase {
+package src.java.servicos;
+
+import src.java.modelo.classes.Arbitro;
+import src.java.modelo.classes.Usuario;
+import src.java.modelo.enumerations.CategoriaArbitro;
+import src.java.modelo.enumerations.TipoPerfil;
+import src.java.modelo.excecoes.AcessoNegadoException;
+import src.java.modelo.excecoes.arbitro.ArbitroJaCadastradoException;
+import src.java.modelo.excecoes.arbitro.ArbitroNaoEncontradoException;
+import src.java.persistencia.ArbitroDAO;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
+
+public class ArbitroServico {
 
     private final ArbitroDAO arbitroDAO;
 
-    public ArbitroService(ArbitroDAO arbitroDAO) {
+    public ArbitroServico(ArbitroDAO arbitroDAO) {
         this.arbitroDAO = arbitroDAO;
     }
 

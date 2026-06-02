@@ -1,6 +1,7 @@
 package src.java.modelo.classes;
 
 import src.java.modelo.enumerations.TipoGramado;
+import java.io.Serializable;
 
 public class Estadio implements Serializable {
 

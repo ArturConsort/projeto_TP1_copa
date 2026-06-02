@@ -1,6 +1,7 @@
 package src.java.modelo.classes;
 
 import src.java.modelo.enumerations.CategoriaArbitro;
+import java.io.Serializable;
 
 public class Arbitro implements Serializable{
 
