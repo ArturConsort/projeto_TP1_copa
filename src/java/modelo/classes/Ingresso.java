@@ -5,16 +5,20 @@ import java.io.Serializable;
 public class Ingresso implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private String idIngresso;
+    // contador estatico que garante IDs unicos na sessao.
+    // o IngressoDAO e responsavel por sincroniza-lo com o arquivo ao carregar a lista.
+    private static int proximoId = 1;
+
+    private int idIngresso;
     private Partida partida;
     private CategoriaIngresso categoria;
     private boolean foiValidado;
 
-    public Ingresso(String idIngresso, Partida partida, CategoriaIngresso categoria, boolean foiValidado) {
-        this.idIngresso = idIngresso;
+    public Ingresso(Partida partida, CategoriaIngresso categoria) {
+        this.idIngresso = proximoId++;
         this.partida = partida;
         this.categoria = categoria;
-        this.foiValidado = foiValidado;
+        this.foiValidado = false;
     }
 
     // ------- metodos do diagrama ------- //
@@ -32,13 +36,18 @@ public class Ingresso implements Serializable {
         return categoria.getPreco();
     }
 
+    // chamado pelo IngressoDAO ao carregar o arquivo, para que o contador
+    // nunca gere IDs repetidos entre sessoes
+    public static void sincronizarContador(int maiorIdExistente) {
+        if (maiorIdExistente >= proximoId) {
+            proximoId = maiorIdExistente + 1;
+        }
+    }
+
     // ------- getters e setters ------- //
 
-    public String getIdIngresso() {
+    public int getIdIngresso() {
         return idIngresso;
-    }
-    public void setIdIngresso(String idIngresso) {
-        this.idIngresso = idIngresso;
     }
 
     public Partida getPartida() {
@@ -60,5 +69,13 @@ public class Ingresso implements Serializable {
     }
     public void setFoiValidado(boolean foiValidado) {
         this.foiValidado = foiValidado;
+    }
+
+    @Override
+    public String toString() {
+        String nomePartida = (partida != null) ? partida.toString() : "sem partida";
+        String nomeCategoria = (categoria != null) ? categoria.getNome() : "sem categoria";
+        String validado = foiValidado ? "validado" : "não validado";
+        return "Ingresso #" + idIngresso + " | " + nomePartida + " | " + nomeCategoria + " | " + validado;
     }
 }

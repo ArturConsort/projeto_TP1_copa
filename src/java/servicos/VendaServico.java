@@ -1,12 +1,14 @@
 package src.java.servicos;
 
 import src.java.modelo.classes.Ingresso;
+import src.java.modelo.classes.CategoriaIngresso;
 import src.java.modelo.classes.Usuario;
 import src.java.modelo.classes.Venda;
 import src.java.modelo.enumerations.TipoPerfil;
+import src.java.modelo.excecoes.AcessoNegadoException;
+import src.java.persistencia.CategoriaIngressoDAO;
 import src.java.persistencia.VendaDAO;
 import src.java.servicos.usuario.SessaoUsuario;
-import src.java.modelo.excecoes.AcessoNegadoException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,16 +16,18 @@ import java.util.List;
 public class VendaServico {
 
     private VendaDAO dao;
+    private CategoriaIngressoDAO categoriaDAO;
 
     public VendaServico() {
         this.dao = new VendaDAO();
+        this.categoriaDAO = new CategoriaIngressoDAO();
     }
 
     // ------- abertura e gerenciamento de venda ------- //
 
     public void cadastrar(Venda novaVenda) throws AcessoNegadoException {
 
-        verificarPermissao(TipoPerfil.OPERADOR);
+        verificarPermissaoMultipla(TipoPerfil.OPERADOR, TipoPerfil.ADMINISTRADOR);
 
         if (novaVenda.getCliente() == null) {
             throw new IllegalArgumentException("A venda deve ter um cliente associado");
@@ -35,7 +39,7 @@ public class VendaServico {
 
     public void adicionarIngresso(String idVenda, Ingresso ingresso) throws AcessoNegadoException {
 
-        verificarPermissao(TipoPerfil.OPERADOR);
+        verificarPermissaoMultipla(TipoPerfil.OPERADOR, TipoPerfil.ADMINISTRADOR);
 
         Venda venda = dao.buscarPorId(idVenda);
         if (venda == null) {
@@ -57,7 +61,7 @@ public class VendaServico {
 
     public void finalizarVenda(String idVenda) throws AcessoNegadoException {
 
-        verificarPermissao(TipoPerfil.OPERADOR);
+        verificarPermissaoMultipla(TipoPerfil.OPERADOR, TipoPerfil.ADMINISTRADOR);
 
         Venda venda = dao.buscarPorId(idVenda);
         if (venda == null) {
@@ -68,7 +72,17 @@ public class VendaServico {
             throw new IllegalStateException("Não é possível finalizar uma venda sem ingressos");
         }
 
+        // finalizarVenda() reduz o estoque nos objetos em memoria.
+        // em seguida persistimos cada categoria alterada no arquivo.
         venda.finalizarVenda();
+
+        for (Ingresso ingresso : venda.getIngressos()) {
+            CategoriaIngresso categoria = ingresso.getCategoria();
+            if (categoria != null) {
+                categoriaDAO.atualizar(categoria);
+            }
+        }
+
         dao.atualizar(venda);
     }
 
@@ -97,12 +111,12 @@ public class VendaServico {
         return dao.buscarPorId(idVenda);
     }
 
-    public List<Venda> pesquisar(Usuario cliente, String status) { // esses criterios sao opcionais, passar null para ignorar algum deles
+    public List<Venda> pesquisar(Usuario cliente, String status) { // criterios opcionais, passar null para ignorar
         List<Venda> resultado = new ArrayList<>();
 
         for (Venda v : dao.carregaLista()) {
-            boolean clienteOk = cliente == null   ||   (v.getCliente() != null && v.getCliente().getLogin().equals(cliente.getLogin()));
-            boolean statusOk  = status  == null   ||   status.equals(v.getStatus());
+            boolean clienteOk = cliente == null || (v.getCliente() != null && v.getCliente().getLogin().equals(cliente.getLogin()));
+            boolean statusOk  = status  == null || status.equals(v.getStatus());
 
             if (clienteOk && statusOk) resultado.add(v);
         }
@@ -117,5 +131,17 @@ public class VendaServico {
         if (logado == null || logado.getPerfil() != perfilRequisitado) {
             throw new AcessoNegadoException("Acesso negado: esse usuario não tem permissao para fazer essa ação");
         }
+    }
+
+    // verifica se o usuario logado possui qualquer um dos perfis informados
+    private void verificarPermissaoMultipla(TipoPerfil... perfisAceitos) {
+        Usuario logado = SessaoUsuario.getInstancia().getUsuarioLogado();
+        if (logado == null) {
+            throw new AcessoNegadoException("Nenhum usuario logado");
+        }
+        for (TipoPerfil perfil : perfisAceitos) {
+            if (logado.getPerfil() == perfil) return;
+        }
+        throw new AcessoNegadoException("Acesso negado: esse usuario não tem permissao para fazer essa ação");
     }
 }
