@@ -89,7 +89,7 @@ class TipoGramado {
   NATURAL
 }
 class Ingresso {
-  -idIngresso: String
+  -idIngresso: int
   -partida: String
   -foiValidado: boolean
   +Ingresso(idIngresso: String, partida: String, foiValidado: boolean)
