@@ -74,22 +74,31 @@ public class SelecaoDAO {
         return null;
     }
 
-    public void adicionarJog(Jogador jog){
-        List<Selecao> lista = carregaLista();
-        for(Selecao s : lista){
-            if(s == jog.getSelecao()){
-                s.addJogadores(jog);
-            }
+    public List<Selecao> buscarPorGrupo(char grupo){
+        List<Selecao> listaSelecoes = new ArrayList<>();
+        for(Selecao u : carregaLista()){
+            if(u.getGrupo() == grupo) listaSelecoes.add(u);
         }
-        salvarLista(lista);
+        return listaSelecoes;
     }
 
-    public void atualizaSelecao(Selecao selecaoAtualizada) {
+    public void adicionarJog(Jogador jog) {
+        List<Selecao> lista = carregaLista();
+        for (Selecao s : lista) {
+            if (s.getPais().equals(jog.getSelecao().getPais())) {
+                s.addJogadores(jog);
+                atualizaSelecao(s); // salva o 's' que acabou de ser modificado
+                return;
+            }
+        }
+    }
+
+    public void atualizaSelecao(Selecao selecao_atualizada) {
         List<Selecao> lista = carregaLista();
 
         for (int i = 0; i < lista.size(); i++) {
-            if (lista.get(i).getPais().equals(selecaoAtualizada.getPais())) {
-                lista.set(i, selecaoAtualizada); // substitui a selecao antiga pela atualizada
+            if (lista.get(i).getPais().equals(selecao_atualizada.getPais())) {
+                lista.set(i, selecao_atualizada); // substitui a selecao antiga pela atualizada
                 break;
             }
         }

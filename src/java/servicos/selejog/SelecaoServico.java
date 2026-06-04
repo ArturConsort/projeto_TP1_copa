@@ -64,12 +64,31 @@ public class SelecaoServico {
         return s;
     }
 
+    public List<Selecao> buscarPorGrupo(char grupo) throws SelecaoNaoEncontradaException {
+        List<Selecao> s = dao.buscarPorGrupo(grupo);
+        return s;
+    }
+
     public void listarTodas() {
         List<Selecao> list = dao.carregaLista();
         System.out.printf("Lista seleções:\n\n");
         for(Selecao a : list){
             System.out.printf("%s\n\n", a.getPais());
         }
+    }
+
+    public void editarTecnicoSelecao(Selecao selecao, String novo_tecnico){
+        Selecao s = dao.buscarPorPais(selecao.getPais());
+        if (s == null) throw new SelecaoNaoEncontradaException("Seleção não encontrada: " + selecao);
+        s.setTecnico(novo_tecnico);
+        dao.atualizaSelecao(s);
+    }
+
+    public void editarGrupoSelecao(Selecao selecao, char novo_grupo){
+        Selecao s = dao.buscarPorPais(selecao.getPais());
+        if (s == null) throw new SelecaoNaoEncontradaException("Seleção não encontrada: " + selecao);
+        s.setGrupo(novo_grupo);
+        dao.atualizaSelecao(s);
     }
 
 }
