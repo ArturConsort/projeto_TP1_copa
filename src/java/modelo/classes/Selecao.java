@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Selecao implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private String pais;
     private char grupo;
     private String confederacao;
@@ -80,5 +82,23 @@ public class Selecao implements Serializable {
     }
     public void adicionarPartida(Partida partida) {
         partidas.add(partida);
+    }
+
+    @Override
+    public String toString() {
+        return pais;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Selecao)) return false;
+        Selecao outra = (Selecao) obj;
+        return this.pais.equalsIgnoreCase(outra.pais);
+    }
+
+    @Override
+    public int hashCode() {
+        return pais.toLowerCase().hashCode();
     }
 }

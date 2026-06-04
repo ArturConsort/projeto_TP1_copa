@@ -80,5 +80,22 @@ public class Estadio implements Serializable {
         return quantidade <= this.capacidade;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Estadio)) return false;
+        Estadio outro = (Estadio) obj;
+        return this.nome.equalsIgnoreCase(outro.nome);
+    }
+
+    @Override
+    public String toString() {
+        return nome + " - " + cidade;
+    }
+
+    @Override
+    public int hashCode() {
+        return nome.toLowerCase().hashCode();
+    }
 
 }
