@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="CENTER" spacing="20" xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllersJavaFX.LoginController"
+      style="-fx-padding: 40; -fx-background-color: #1a1a2e;">
+
+    <Label text="Copa do Mundo 2026" style="-fx-font-size: 24; -fx-text-fill: white; -fx-font-weight: bold;"/>
+
+    <VBox spacing="8" maxWidth="300">
+        <Label text="Login" style="-fx-text-fill: white;"/>
+        <TextField fx:id="campoLogin" promptText="Digite seu login"/>
+
+        <Label text="Senha" style="-fx-text-fill: white;"/>
+        <PasswordField fx:id="campoSenha" promptText="Digite sua senha"/>
+
+        <Button text="Entrar" onAction="#handleLogin"
+                maxWidth="Infinity"
+                style="-fx-background-color: #e94560; -fx-text-fill: white; -fx-font-size: 14;"/>
+
+        <Label fx:id="labelErro" style="-fx-text-fill: #ff6b6b;" text=""/>
+    </VBox>
+</VBox>
