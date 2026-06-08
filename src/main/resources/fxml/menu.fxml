@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
+
+<?import java.lang.String?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllersJavaFX.MenuController">
+
+    <!-- ===== NAVBAR TOPO ===== -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="0"
+              style="-fx-background-color: #0d0d0d; -fx-padding: 0 24 0 16; -fx-min-height: 56;">
+
+            <!-- Logo -->
+            <ImageView fitWidth="48" fitHeight="48" preserveRatio="true">
+                <image><Image url="@../images/worldcup_logo.png"/></image>
+            </ImageView>
+
+            <Region HBox.hgrow="NEVER" minWidth="24"/>
+
+            <!-- Itens de navegação — visibilidade controlada pelo controller -->
+            <Button fx:id="btnHome"        text="Home"       onAction="#irHome"
+                    styleClass="nav-btn"/>
+            <Button fx:id="btnJogadores"   text="Jogadores"  onAction="#irJogadores"
+                    styleClass="nav-btn"/>
+            <Button fx:id="btnEquipes"     text="Equipes"    onAction="#irEquipes"
+                    styleClass="nav-btn"/>
+            <Button fx:id="btnPartidas"    text="Partidas"   onAction="#irPartidas"
+                    styleClass="nav-btn"/>
+            <Button fx:id="btnEstadios"    text="Estádios"   onAction="#irEstadios"
+                    styleClass="nav-btn"/>
+            <Button fx:id="btnArbitros"    text="Árbitros"   onAction="#irArbitros"
+                    styleClass="nav-btn"/>
+            <Button fx:id="btnIngressos"   text="Ingressos"  onAction="#irIngressos"
+                    styleClass="nav-btn"/>
+            <Button fx:id="btnVendas"      text="Vendas"     onAction="#irVendas"
+                    styleClass="nav-btn"/>
+            <Button fx:id="btnDesignacoes" text="Designações" onAction="#irDesignacoes"
+                    styleClass="nav-btn"/>
+            <Button fx:id="btnUsuarios"    text="Usuários"   onAction="#irUsuarios"
+                    styleClass="nav-btn"/>
+
+            <!-- Espaço empurra logout para a direita -->
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <!-- Usuário logado + logout -->
+            <Label fx:id="labelUsuario"
+                   style="-fx-text-fill: #b0a898; -fx-font-size: 12; -fx-font-family: 'Segoe UI';"/>
+            <Region minWidth="16"/>
+            <Button text="Sair" onAction="#handleLogout"
+                    style="-fx-background-color: #c9982a;
+                           -fx-text-fill: #0a0a0a;
+                           -fx-font-weight: bold;
+                           -fx-font-size: 12;
+                           -fx-font-family: 'Segoe UI';
+                           -fx-background-radius: 14;
+                           -fx-padding: 6 18 6 18;
+                           -fx-cursor: hand;"/>
+        </HBox>
+    </top>
+
+    <!-- ===== FUNDO COM JOGADORES ===== -->
+    <center>
+        <StackPane>
+            <ImageView fx:id="imagemFundo"
+                       fitWidth="1200" fitHeight="700"
+                       preserveRatio="false"
+                       style="-fx-opacity: 0.85;">
+                <image><Image url="@../images/jogadores_fundo.png"/></image>
+            </ImageView>
+
+            <!-- Overlay escuro sutil no topo para legibilidade -->
+            <Pane style="-fx-background-color: linear-gradient(to bottom, rgba(13,13,13,0.55) 0%, transparent 30%);"/>
+        </StackPane>
+    </center>
+
+    <!-- ===== ESTILOS GLOBAIS ===== -->
+    <stylesheets>
+        <String fx:value="/css/menu.css"/>
+    </stylesheets>
+
+</BorderPane>

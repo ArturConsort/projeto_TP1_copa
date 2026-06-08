@@ -2,26 +2,102 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
 
-<VBox alignment="CENTER" spacing="20" xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="controllersJavaFX.LoginController"
-      style="-fx-padding: 40; -fx-background-color: #1a1a2e;">
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="controllersJavaFX.LoginController">
 
-    <Label text="Copa do Mundo 2026" style="-fx-font-size: 24; -fx-text-fill: white; -fx-font-weight: bold;"/>
+    <!-- Fundo escuro com brilho dourado central via dois retangulos sobrepostos -->
+    <Pane>
+        <style>
+            -fx-background-color: radial-gradient(center 50% 40%, radius 60%,
+            #3d2e0a 0%,
+            #1a1508 40%,
+            #0a0a0a 100%);
+        </style>
+    </Pane>
 
-    <VBox spacing="8" maxWidth="300">
-        <Label text="Login" style="-fx-text-fill: white;"/>
-        <TextField fx:id="campoLogin" promptText="Digite seu login"/>
+    <!-- Conteudo centralizado -->
+    <VBox alignment="CENTER" spacing="28"
+          maxWidth="420" maxHeight="520">
 
-        <Label text="Senha" style="-fx-text-fill: white;"/>
-        <PasswordField fx:id="campoSenha" promptText="Digite sua senha"/>
+        <!-- Logo da Copa — coloque o arquivo worldcup_logo.png em src/main/resources/images/ -->
+        <ImageView fitWidth="180" fitHeight="120" preserveRatio="true">
+            <image>
+                <Image url="@../images/worldcup_logo.png"/>
+            </image>
+        </ImageView>
 
-        <Button text="Entrar" onAction="#handleLogin"
-                maxWidth="Infinity"
-                style="-fx-background-color: #e94560; -fx-text-fill: white; -fx-font-size: 14;"/>
+        <!-- Formulario -->
+        <VBox spacing="14" maxWidth="320"
+              style="-fx-padding: 0 0 0 0;">
 
-        <Label fx:id="labelErro" style="-fx-text-fill: #ff6b6b;" text=""/>
+            <!-- Campo login -->
+            <VBox spacing="6">
+                <Label text="Preencha o login"
+                       style="-fx-text-fill: #e8e0cc;
+                              -fx-font-size: 13;
+                              -fx-font-family: 'Segoe UI';"/>
+                <TextField fx:id="campoLogin"
+                           promptText="login"
+                           style="-fx-background-color: #1e1e1e;
+                                  -fx-text-fill: #e8e0cc;
+                                  -fx-prompt-text-fill: #5a5545;
+                                  -fx-border-color: #3a3020;
+                                  -fx-border-radius: 20;
+                                  -fx-background-radius: 20;
+                                  -fx-padding: 10 16 10 16;
+                                  -fx-font-size: 13;
+                                  -fx-font-family: 'Segoe UI';"/>
+            </VBox>
+
+            <!-- Campo senha -->
+            <VBox spacing="6">
+                <Label text="Preencha a senha"
+                       style="-fx-text-fill: #e8e0cc;
+                              -fx-font-size: 13;
+                              -fx-font-family: 'Segoe UI';"/>
+                <PasswordField fx:id="campoSenha"
+                               promptText="senha"
+                               style="-fx-background-color: #1e1e1e;
+                                      -fx-text-fill: #e8e0cc;
+                                      -fx-prompt-text-fill: #5a5545;
+                                      -fx-border-color: #3a3020;
+                                      -fx-border-radius: 20;
+                                      -fx-background-radius: 20;
+                                      -fx-padding: 10 16 10 16;
+                                      -fx-font-size: 13;
+                                      -fx-font-family: 'Segoe UI';"/>
+            </VBox>
+
+            <!-- Mensagem de erro -->
+            <Label fx:id="labelErro"
+                   text=""
+                   wrapText="true"
+                   style="-fx-text-fill: #ff6b6b;
+                          -fx-font-size: 12;
+                          -fx-font-family: 'Segoe UI';"/>
+
+            <!-- Botao Entrar -->
+            <Button text="Entrar"
+                    onAction="#handleLogin"
+                    maxWidth="140"
+                    style="-fx-background-color: #c9982a;
+                           -fx-text-fill: #0a0a0a;
+                           -fx-font-weight: bold;
+                           -fx-font-size: 13;
+                           -fx-font-family: 'Segoe UI';
+                           -fx-background-radius: 20;
+                           -fx-padding: 9 32 9 32;
+                           -fx-cursor: hand;">
+                <VBox.margin>
+                    <Insets top="4"/>
+                </VBox.margin>
+            </Button>
+
+        </VBox>
     </VBox>
-</VBox>
+
+</StackPane>

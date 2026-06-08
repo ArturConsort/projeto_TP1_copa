@@ -1,0 +1,65 @@
+/* src/main/resources/css/gestao_usuarios.css */
+
+.lista-item {
+    -fx-background-color: transparent;
+    -fx-text-fill: #222222;
+    -fx-font-size: 13px;
+    -fx-font-family: 'Segoe UI';
+    -fx-padding: 10 16 10 16;
+    -fx-pref-width: Infinity;
+    -fx-alignment: CENTER_LEFT;
+    -fx-border-color: transparent transparent #e8e8e0 transparent;
+    -fx-border-width: 0 0 1 0;
+    -fx-cursor: hand;
+}
+
+.lista-item:hover {
+    -fx-background-color: #f0ede4;
+}
+
+.lista-item-selecionado {
+    -fx-background-color: #c9982a;
+    -fx-text-fill: #0a0a0a;
+    -fx-font-weight: bold;
+}
+
+.lista-item-selecionado:hover {
+    -fx-background-color: #b8871f;
+}
+
+.perfil-item {
+    -fx-background-color: transparent;
+    -fx-text-fill: #222222;
+    -fx-font-size: 13px;
+    -fx-font-family: 'Segoe UI';
+    -fx-padding: 10 16 10 16;
+    -fx-pref-width: Infinity;
+    -fx-alignment: CENTER_LEFT;
+    -fx-border-color: transparent transparent #eeeeee transparent;
+    -fx-cursor: hand;
+    -fx-background-radius: 0;
+}
+
+.perfil-item:hover {
+    -fx-background-color: #f0ede4;
+    -fx-text-fill: #c9982a;
+}
+
+/* Remove o fundo azul padrão do ListView */
+.list-view {
+    -fx-background-color: transparent;
+    -fx-control-inner-background: transparent;
+}
+
+.list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.list-cell:selected {
+    -fx-background-color: transparent;
+}
+
+.list-cell:focused {
+    -fx-background-color: transparent;
+}

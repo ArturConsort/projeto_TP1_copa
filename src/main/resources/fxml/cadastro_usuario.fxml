@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
+
+<?import java.lang.String?>
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="controllersJavaFX.CadastroUsuarioController">
+
+    <!-- Fundo degradê igual ao login -->
+    <Pane style="-fx-background-color: radial-gradient(center 50% 40%, radius 60%,
+                 #3d2e0a 0%, #1a1508 40%, #0a0a0a 100%);"/>
+
+    <VBox alignment="CENTER" spacing="24">
+
+        <!-- Logo -->
+        <ImageView fitWidth="140" fitHeight="90" preserveRatio="true">
+            <image><Image url="@../images/worldcup_logo.png"/></image>
+        </ImageView>
+
+        <!-- Card do formulário -->
+        <VBox spacing="14" alignment="CENTER_LEFT"
+              style="-fx-background-color: rgba(20,16,8,0.82);
+                     -fx-background-radius: 12;
+                     -fx-border-color: #3a3020;
+                     -fx-border-radius: 12;
+                     -fx-padding: 32 40 32 40;">
+
+            <Label text="Cadastro de Usuário"
+                   style="-fx-text-fill: #c9982a; -fx-font-size: 18;
+                          -fx-font-weight: bold; -fx-font-family: 'Segoe UI';"/>
+
+            <!-- Linha 1: Nome + CPF -->
+            <HBox spacing="16">
+                <VBox spacing="5" HBox.hgrow="ALWAYS">
+                    <Label text="Nome completo" styleClass="campo-label"/>
+                    <TextField fx:id="campoNome" promptText="Nome completo"
+                               styleClass="campo-texto" maxWidth="Infinity"/>
+                </VBox>
+                <VBox spacing="5" HBox.hgrow="ALWAYS">
+                    <Label text="CPF" styleClass="campo-label"/>
+                    <TextField fx:id="campoCpf" promptText="000.000.000-00"
+                               styleClass="campo-texto" maxWidth="Infinity"/>
+                </VBox>
+            </HBox>
+
+            <!-- Linha 2: Email + País -->
+            <HBox spacing="16">
+                <VBox spacing="5" HBox.hgrow="ALWAYS">
+                    <Label text="E-mail" styleClass="campo-label"/>
+                    <TextField fx:id="campoEmail" promptText="email@exemplo.com"
+                               styleClass="campo-texto" maxWidth="Infinity"/>
+                </VBox>
+                <VBox spacing="5" HBox.hgrow="ALWAYS">
+                    <Label text="País" styleClass="campo-label"/>
+                    <TextField fx:id="campoPais" promptText="País de origem"
+                               styleClass="campo-texto" maxWidth="Infinity"/>
+                </VBox>
+            </HBox>
+
+            <!-- Linha 3: Login + Perfil -->
+            <HBox spacing="16">
+                <VBox spacing="5" HBox.hgrow="ALWAYS">
+                    <Label text="Login" styleClass="campo-label"/>
+                    <TextField fx:id="campoLogin" promptText="Login de acesso"
+                               styleClass="campo-texto" maxWidth="Infinity"/>
+                </VBox>
+                <VBox spacing="5" HBox.hgrow="ALWAYS">
+                    <Label text="Perfil de acesso" styleClass="campo-label"/>
+                    <ComboBox fx:id="comboPerfil" promptText="ACESSO"
+                              maxWidth="Infinity"
+                              style="-fx-background-color: #1e1e1e;
+                                     -fx-text-fill: #e8e0cc;
+                                     -fx-border-color: #3a3020;
+                                     -fx-border-radius: 20;
+                                     -fx-background-radius: 20;
+                                     -fx-font-family: 'Segoe UI';
+                                     -fx-font-size: 13;"/>
+                </VBox>
+            </HBox>
+
+            <!-- Linha 4: Senha + Confirmar -->
+            <HBox spacing="16">
+                <VBox spacing="5" HBox.hgrow="ALWAYS">
+                    <Label text="Senha" styleClass="campo-label"/>
+                    <PasswordField fx:id="campoSenha" promptText="Mínimo 8 caracteres"
+                                   styleClass="campo-texto" maxWidth="Infinity"/>
+                </VBox>
+                <VBox spacing="5" HBox.hgrow="ALWAYS">
+                    <Label text="Confirmar senha" styleClass="campo-label"/>
+                    <PasswordField fx:id="campoConfirmarSenha" promptText="Repita a senha"
+                                   styleClass="campo-texto" maxWidth="Infinity"/>
+                </VBox>
+            </HBox>
+
+            <!-- Feedback -->
+            <Label fx:id="labelFeedback" text="" wrapText="true"
+                   style="-fx-text-fill: #ff6b6b; -fx-font-size: 12;
+                          -fx-font-family: 'Segoe UI';"/>
+
+            <!-- Botões -->
+            <HBox spacing="12" alignment="CENTER_LEFT">
+                <VBox.margin><Insets top="4"/></VBox.margin>
+
+                <Button text="Cadastrar" onAction="#handleCadastrar"
+                        style="-fx-background-color: #c9982a;
+                               -fx-text-fill: #0a0a0a;
+                               -fx-font-weight: bold;
+                               -fx-font-size: 13;
+                               -fx-font-family: 'Segoe UI';
+                               -fx-background-radius: 20;
+                               -fx-padding: 9 28 9 28;
+                               -fx-cursor: hand;"/>
+
+                <Button text="Voltar" onAction="#handleVoltar"
+                        style="-fx-background-color: transparent;
+                               -fx-text-fill: #b0a898;
+                               -fx-font-size: 13;
+                               -fx-font-family: 'Segoe UI';
+                               -fx-border-color: #3a3020;
+                               -fx-border-radius: 20;
+                               -fx-background-radius: 20;
+                               -fx-padding: 9 28 9 28;
+                               -fx-cursor: hand;"/>
+            </HBox>
+        </VBox>
+    </VBox>
+
+    <stylesheets>
+        <String fx:value="/css/menu.css"/>
+    </stylesheets>
+
+</StackPane>

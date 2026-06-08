@@ -27,6 +27,8 @@ public class LoginController {
             irParaMenu();
         } catch (Exception e) {
             labelErro.setText("Login ou senha inválidos.");
+            System.out.println("Erro: " + e.getMessage());
+            System.out.println("Diretório atual: " + System.getProperty("user.dir"));
         }
     }
 
