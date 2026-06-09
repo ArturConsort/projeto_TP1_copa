@@ -6,10 +6,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
-public class SelecaoInicialController {
-
+public class JogadoresInicialController {
     // ── Botões do HUD ───────────────────────────────────────
-    @FXML private Button btnHome;
+    @FXML
+    private Button btnHome;
     @FXML private Button btnJogadores;
     @FXML private Button btnEquipes;
     @FXML private Button btnPartidas;
@@ -28,8 +28,8 @@ public class SelecaoInicialController {
     // ── Navegação pelo HUD ──────────────────────────────────
 
     @FXML private void irHome()      { navegarPara("/fxml/menu.fxml",      "Home");      }
-    @FXML private void irJogadores() { navegarPara("/fxml/jogadores.fxml", "Jogadores"); }
-    @FXML private void irEquipes()   { /* já estamos aqui */ }
+    @FXML private void irJogadores() { }
+    @FXML private void irEquipes()   { navegarPara("/fxml/equipes.fxml", "Equipes"); /* já estamos aqui */ }
     @FXML private void irPartidas()  { navegarPara("/fxml/partidas.fxml",  "Partidas");  }
     @FXML private void irEstadios()  { navegarPara("/fxml/estadios.fxml",  "Estádios");  }
     @FXML private void irArbitros()  { navegarPara("/fxml/arbitros.fxml",  "Árbitros");  }
@@ -39,12 +39,12 @@ public class SelecaoInicialController {
 
     @FXML
     private void handleCadastro() {
-        navegarPara("/fxml/cadastro_selecao.fxml", "Equipes — Cadastro");
+        navegarPara("/fxml/cadastro_jogador.fxml", "Jogadores — Cadastro");
     }
 
     @FXML
     private void handleConsulta() {
-        navegarPara("/fxml/consulta_selecao.fxml", "Equipes — Consulta");
+        navegarPara("/fxml/consulta_jogador.fxml", "Jogadores — Consulta");
     }
 
     // ── Utilitário ──────────────────────────────────────────

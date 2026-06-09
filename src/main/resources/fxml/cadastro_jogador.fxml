@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<?import java.lang.String?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllersJavaFX.CadastroJogadorController"
+            prefWidth="900"
+            prefHeight="600"
+            styleClass="root">
+
+    <VBox alignment="TOP_CENTER"
+          spacing="25"
+          AnchorPane.topAnchor="20"
+          AnchorPane.leftAnchor="20"
+          AnchorPane.rightAnchor="20">
+
+        <ImageView fitWidth="80" fitHeight="80" preserveRatio="true">
+            <image>
+                <Image url="@/images/worldcup_logo.png"/>
+            </image>
+        </ImageView>
+
+        <VBox spacing="18" styleClass="card">
+
+            <Label text="Cadastro de Jogador"
+                   styleClass="titulo"/>
+
+            <GridPane hgap="15" vgap="15">
+
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="50"/>
+                    <ColumnConstraints percentWidth="50"/>
+                </columnConstraints>
+
+                <VBox spacing="5" GridPane.rowIndex="0" GridPane.columnIndex="0">
+                    <Label text="Nome" styleClass="label"/>
+                    <TextField fx:id="campoNome"
+                               promptText="Nome do jogador"/>
+                </VBox>
+
+                <VBox spacing="5" GridPane.rowIndex="0" GridPane.columnIndex="1">
+                    <Label text="Seleção" styleClass="label"/>
+                    <ComboBox fx:id="comboSelecao"
+                              promptText="Selecione a seleção"
+                              maxWidth="Infinity"/>
+                </VBox>
+
+                <VBox spacing="5" GridPane.rowIndex="1" GridPane.columnIndex="0">
+                    <Label text="Idade" styleClass="label"/>
+                    <TextField fx:id="campoIdade"
+                               promptText="Idade do jogador"/>
+                </VBox>
+
+                <VBox spacing="5" GridPane.rowIndex="1" GridPane.columnIndex="1">
+                    <Label text="Número da Camisa" styleClass="label"/>
+                    <TextField fx:id="campoNumeracao"
+                               promptText="Número (1 a 26)"/>
+                </VBox>
+
+                <VBox spacing="5" GridPane.rowIndex="2" GridPane.columnIndex="0">
+                    <Label text="Posição" styleClass="label"/>
+                    <ComboBox fx:id="comboPosicao"
+                              promptText="Posição"
+                              maxWidth="Infinity"/>
+                </VBox>
+
+                <VBox spacing="5" GridPane.rowIndex="2" GridPane.columnIndex="1">
+                    <Label text="Status" styleClass="label"/>
+                    <ComboBox fx:id="comboStatus"
+                              promptText="Status"
+                              maxWidth="Infinity"/>
+                </VBox>
+
+            </GridPane>
+
+            <HBox spacing="12">
+
+                <Button text="Cadastrar"
+                        onAction="#handleCadastrar"
+                        styleClass="btn-cadastrar"/>
+
+                <Button text="Voltar"
+                        onAction="#handleVoltar"
+                        styleClass="btn-voltar"/>
+
+            </HBox>
+
+            <Label fx:id="labelFeedback"/>
+
+        </VBox>
+
+    </VBox>
+
+    <stylesheets>
+        <String fx:value="/css/cadastro_selecao.css"/>
+    </stylesheets>
+
+</AnchorPane>

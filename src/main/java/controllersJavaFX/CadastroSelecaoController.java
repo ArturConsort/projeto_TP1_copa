@@ -95,7 +95,7 @@ public class CadastroSelecaoController {
 
     @FXML
     private void handleVoltar() {
-        navegarPara("/fxml/menu.fxml",
+        navegarPara("/fxml/equipes.fxml",
                 "Menu — Copa do Mundo 2026");
     }
 

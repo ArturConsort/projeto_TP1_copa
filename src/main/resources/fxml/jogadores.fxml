@@ -8,7 +8,7 @@
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="controllersJavaFX.SelecaoInicialController"
+      fx:controller="controllersJavaFX.JogadoresInicialController"
       prefWidth="900" prefHeight="540"
       styleClass="sel-root-v3">
 

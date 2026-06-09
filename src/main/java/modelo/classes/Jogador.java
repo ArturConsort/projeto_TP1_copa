@@ -53,4 +53,7 @@ public class Jogador implements Serializable {
     public void setSelecao(Selecao selecao) {
         this.selecao = selecao;
     }
+
+    public StatusJogador getStatus(){return status;}
+    public void setStatus(StatusJogador status){this.status = status;}
 }
