@@ -1,157 +1,140 @@
 package controllersJavaFX;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.*;
 import modelo.classes.Partida;
-import modelo.classes.ResultadoPartida;
-import modelo.enumerations.StatusPartida;
+import modelo.enumerations.FasePartida;
 import servicos.Partida.PartidaService;
-import servicos.Partida.ResultadoPartidaService;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class ListaPartidasController {
 
-    @FXML private TextField campoBuscarTime;
-    @FXML private TextField campoBuscarRodada;
-    @FXML private TextField campoBuscarData;
-    @FXML private VBox      listaPartidas;
+    @FXML private TextField               campoBuscarTime;
+    @FXML private ComboBox<FasePartida>   comboBuscarFase;
+    @FXML private TextField               campoBuscarData;
+    @FXML private TableView<Partida>      tabelaPartidas;
+    @FXML private TableColumn<Partida, String> colNumero;
+    @FXML private TableColumn<Partida, String> colTimeCasa;
+    @FXML private TableColumn<Partida, String> colVisitante;
+    @FXML private TableColumn<Partida, String> colEstadio;
+    @FXML private TableColumn<Partida, String> colData;
+    @FXML private TableColumn<Partida, String> colHorario;
+    @FXML private TableColumn<Partida, String> colFase;
+    @FXML private TableColumn<Partida, String> colStatus;
+    @FXML private Label                   labelTotal;
 
-    private final PartidaService          partidaService  = new PartidaService();
-    private final ResultadoPartidaService resultadoService = new ResultadoPartidaService();
+    private final PartidaService service = new PartidaService();
 
     @FXML
     public void initialize() {
+        // Popula ComboBox de fase com todos os valores + opção vazia
+        ObservableList<FasePartida> fases = FXCollections.observableArrayList(FasePartida.values());
+        comboBuscarFase.setItems(fases);
+        comboBuscarFase.setPromptText("Todas as fases");
+
+        // Liga cada coluna ao atributo certo de Partida
+        colNumero.setCellValueFactory(c ->
+                new SimpleStringProperty(String.valueOf(c.getValue().getNumeroPartidas())));
+        colTimeCasa.setCellValueFactory(c ->
+                new SimpleStringProperty(c.getValue().getTimeCasa().getPais()));
+        colVisitante.setCellValueFactory(c ->
+                new SimpleStringProperty(c.getValue().getTimeVisitante().getPais()));
+        colEstadio.setCellValueFactory(c ->
+                new SimpleStringProperty(c.getValue().getEstadio().getNome()));
+        colData.setCellValueFactory(c ->
+                new SimpleStringProperty(c.getValue().getData()));
+        colHorario.setCellValueFactory(c ->
+                new SimpleStringProperty(c.getValue().getHorario()));
+        colFase.setCellValueFactory(c ->
+                new SimpleStringProperty(c.getValue().getFase().name()));
+
+        // Coluna status com cor via CSS
+        colStatus.setCellValueFactory(c ->
+                new SimpleStringProperty(c.getValue().getStatus().name()));
+        colStatus.setCellFactory(col -> new TableCell<>() {
+            @Override
+            protected void updateItem(String status, boolean empty) {
+                super.updateItem(status, empty);
+                if (empty || status == null) {
+                    setText(null);
+                    setStyle("");
+                } else {
+                    setText(status);
+                    // Aplica cor conforme o status
+                    switch (status) {
+                        case "AGENDADA"     -> getStyleClass().add("status-agendada");
+                        case "EM_ANDAMENTO" -> getStyleClass().add("status-andamento");
+                        case "FINALIZADA"   -> getStyleClass().add("status-finalizada");
+                    }
+                }
+            }
+        });
+
         carregarTodas();
     }
 
-    // Carrega e exibe todas as partidas (pendentes + finalizadas)
     private void carregarTodas() {
-        listaPartidas.getChildren().clear();
-
-        // Partidas pendentes (em partidas.dat)
-        List<Partida> pendentes = partidaService.listarPartidas();
-        for (Partida p : pendentes) {
-            listaPartidas.getChildren().add(criarCardPendente(p));
-        }
-
-        // Partidas finalizadas (em resultados.dat)
-        List<ResultadoPartida> finalizadas = resultadoService.listarResultados();
-        for (ResultadoPartida r : finalizadas) {
-            listaPartidas.getChildren().add(criarCardFinalizado(r));
-        }
+        List<Partida> lista = service.listarPartidas();
+        tabelaPartidas.setItems(FXCollections.observableArrayList(lista));
+        labelTotal.setText("Total: " + lista.size() + " partida(s)");
     }
 
     @FXML
     private void aoBuscar() {
-        String time   = campoBuscarTime.getText().trim().toLowerCase();
-        String rodada = campoBuscarRodada.getText().trim().toLowerCase();
-        String data   = campoBuscarData.getText().trim();
+        String time  = campoBuscarTime.getText().trim().toLowerCase();
+        String data  = campoBuscarData.getText().trim();
+        FasePartida fase = comboBuscarFase.getValue();
 
-        listaPartidas.getChildren().clear();
-
-        // Filtra partidas pendentes
-        List<Partida> pendentes = partidaService.listarPartidas().stream()
-                .filter(p -> (time.isEmpty()
+        List<Partida> filtrado = service.listarPartidas().stream()
+                .filter(p -> time.isEmpty()
                         || p.getTimeCasa().getPais().toLowerCase().contains(time)
-                        || p.getTimeVisitante().getPais().toLowerCase().contains(time)))
+                        || p.getTimeVisitante().getPais().toLowerCase().contains(time))
                 .filter(p -> data.isEmpty() || p.getData().contains(data))
+                .filter(p -> fase == null || p.getFase() == fase)
                 .collect(Collectors.toList());
 
-        for (Partida p : pendentes) {
-            listaPartidas.getChildren().add(criarCardPendente(p));
-        }
-
-        // Filtra partidas finalizadas
-        List<ResultadoPartida> finalizadas = resultadoService.listarResultados().stream()
-                .filter(r -> (time.isEmpty()
-                        || r.getPartida().getTimeCasa().getPais().toLowerCase().contains(time)
-                        || r.getPartida().getTimeVisitante().getPais().toLowerCase().contains(time)))
-                .filter(r -> data.isEmpty() || r.getPartida().getData().contains(data))
-                .collect(Collectors.toList());
-
-        for (ResultadoPartida r : finalizadas) {
-            listaPartidas.getChildren().add(criarCardFinalizado(r));
-        }
+        tabelaPartidas.setItems(FXCollections.observableArrayList(filtrado));
+        labelTotal.setText("Total: " + filtrado.size() + " partida(s)");
     }
 
     @FXML
     private void aoLimpar() {
         campoBuscarTime.clear();
-        campoBuscarRodada.clear();
         campoBuscarData.clear();
+        comboBuscarFase.setValue(null);
         carregarTodas();
     }
 
-    // Card para partida ainda sem resultado
-    private HBox criarCardPendente(Partida p) {
-        // Status no centro
-        String statusTxt;
-        String statusStyle;
-        if (p.getStatus() == StatusPartida.EM_ANDAMENTO) {
-            statusTxt   = "Em andamento";
-            statusStyle = "card-status-andamento";
-        } else {
-            statusTxt   = "Agendado";
-            statusStyle = "card-status-agendado";
+    @FXML
+    private void aoExcluir() {
+        Partida selecionada = tabelaPartidas.getSelectionModel().getSelectedItem();
+        if (selecionada == null) {
+            new Alert(Alert.AlertType.WARNING,
+                    "Selecione uma partida na tabela para excluir.", ButtonType.OK).showAndWait();
+            return;
         }
-
-        Label lblStatus = new Label(statusTxt);
-        lblStatus.getStyleClass().add(statusStyle);
-
-        return montarCard(
-                p.getTimeCasa().getPais(),
-                statusTxt, statusStyle,
-                p.getTimeVisitante().getPais(),
-                p.getData() + "\n" + p.getHorario()
-        );
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
+                "Excluir partida " + selecionada.getNumeroPartidas() + "?",
+                ButtonType.YES, ButtonType.NO);
+        confirm.showAndWait().ifPresent(btn -> {
+            if (btn == ButtonType.YES) {
+                try {
+                    service.removerPartida(selecionada.getNumeroPartidas());
+                    carregarTodas();
+                } catch (Exception e) {
+                    new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK).showAndWait();
+                }
+            }
+        });
     }
 
-    // Card para partida finalizada com placar
-    private HBox criarCardFinalizado(ResultadoPartida r) {
-        Partida p = r.getPartida();
-        return montarCard(
-                p.getTimeCasa().getPais(),
-                r.getPlacar(),
-                "card-placar",
-                p.getTimeVisitante().getPais(),
-                p.getData() + "\n" + p.getHorario()
-        );
-    }
-
-    // Monta o layout do card: Time Casa | Centro | Time Visitante | Data
-    private HBox montarCard(String timeCasa, String centro, String centroStyle,
-                            String timeVisitante, String dataHora) {
-        HBox card = new HBox(16);
-        card.getStyleClass().add("card-partida");
-        card.setAlignment(Pos.CENTER_LEFT);
-
-        Label lblCasa = new Label(timeCasa);
-        lblCasa.getStyleClass().add("card-time");
-        HBox.setHgrow(lblCasa, Priority.ALWAYS);
-
-        Label lblCentro = new Label(centro);
-        lblCentro.getStyleClass().add(centroStyle);
-        lblCentro.setMinWidth(100);
-        lblCentro.setAlignment(Pos.CENTER);
-
-        Label lblVisitante = new Label(timeVisitante);
-        lblVisitante.getStyleClass().add("card-time");
-        lblVisitante.setAlignment(Pos.CENTER_RIGHT);
-        HBox.setHgrow(lblVisitante, Priority.ALWAYS);
-
-        Label lblData = new Label(dataHora);
-        lblData.getStyleClass().add("card-data");
-        lblData.setMinWidth(80);
-        lblData.setAlignment(Pos.CENTER_RIGHT);
-
-        card.getChildren().addAll(lblCasa, lblCentro, lblVisitante, lblData);
-        return card;
+    @FXML
+    private void aoAtualizar() {
+        carregarTodas();
     }
 }

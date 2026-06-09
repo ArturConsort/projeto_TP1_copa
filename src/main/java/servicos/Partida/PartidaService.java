@@ -3,6 +3,7 @@ import modelo.enumerations.FasePartida;
 import modelo.classes.Estadio;
 import modelo.classes.*;
 import modelo.enumerations.StatusPartida;
+import persistencia.ArbitroDAO;
 import persistencia.EstadioDAO;
 import persistencia.PartidaDAO;
 import persistencia.SelecaoDAO;
@@ -14,11 +15,13 @@ public class PartidaService {
     private PartidaDAO partidaDAO;
     private SelecaoDAO selecaoDAO;
     private EstadioDAO estadioDAO; // ← adicionado
+    private ArbitroDAO arbitroDAO;
 
     public PartidaService() {
         this.partidaDAO = new PartidaDAO();
         this.selecaoDAO = new SelecaoDAO();
-        this.estadioDAO = new EstadioDAO(); // ← adicionado
+        this.estadioDAO = new EstadioDAO();
+        this.arbitroDAO = new ArbitroDAO();
     }
 
     public List<Selecao> listarSelecoes() {
@@ -29,13 +32,17 @@ public class PartidaService {
         return estadioDAO.carregaLista();
     }
 
+    public List<Arbitro> listarArbitros() {
+        return arbitroDAO.carregaLista();
+    }
+
     public void cadastrarPartida(Selecao timeCasa,
                                  Selecao timeVisitante,
                                  Estadio estadio,
                                  String cidade,
                                  String data,
                                  String horario,
-                                 String rodada,
+                                 Arbitro arbitro,
                                  FasePartida fase) throws Exception {
 
         if (timeCasa == null || timeVisitante == null) {
@@ -73,7 +80,7 @@ public class PartidaService {
                 timeCasa, timeVisitante, numero,
                 cidade, data, horario, estadio, fase
         );
-
+        partida.setArbitroPrincipal(arbitro);
         validarConflitoHorario(timeCasa, timeVisitante, data, horario);
         validarConflitoEstadio(estadio, data, horario);
 

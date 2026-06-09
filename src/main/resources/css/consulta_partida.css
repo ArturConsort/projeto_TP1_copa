@@ -1,0 +1,110 @@
+.filtro-box {
+    -fx-padding: 10;
+}
+
+.filtro-box .label {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.filtro-box .text-field,
+.filtro-box .combo-box {
+    -fx-background-color: #1f1f1f;
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: #d4af37;
+}
+
+/* ===== TABLE VIEW ===== */
+
+.tabela-partidas {
+    -fx-background-color: rgba(0,0,0,0.70);
+    -fx-border-color: #d4af37;
+    -fx-border-width: 1;
+}
+
+.tabela-partidas .column-header {
+    -fx-background-color: #d4af37;
+}
+
+.tabela-partidas .column-header .label {
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+}
+
+.tabela-partidas .table-row-cell {
+    -fx-background-color: rgba(25,25,25,0.9);
+}
+
+.tabela-partidas .table-row-cell:filled:hover {
+    -fx-background-color: rgba(212,175,55,0.25);
+}
+
+.tabela-partidas .table-row-cell:selected {
+    -fx-background-color: #7f5f12;
+}
+
+.tabela-partidas .table-cell {
+    -fx-text-fill: white;
+}
+
+.btn-excluir {
+    -fx-background-color: #c62828;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-cursor: hand;
+}
+
+.btn-excluir:hover {
+    -fx-background-color: #e53935;
+}
+
+/* Badge de status */
+.status-agendada   { -fx-text-fill: #ffeb3b; -fx-font-weight: bold; }
+.status-andamento  { -fx-text-fill: #ff9800; -fx-font-weight: bold; }
+.status-finalizada { -fx-text-fill: #4caf50; -fx-font-weight: bold; }
+
+#labelTotal {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+/* Título da consulta */
+.sel-titulo-v3 {
+    -fx-font-size: 26;
+    -fx-font-weight: bold;
+    -fx-text-fill: #d4af37;
+}
+
+/* Botões da consulta */
+.sel-btn-cadastro-v3 {
+    -fx-background-color: #d4a32a;
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+    -fx-background-radius: 20;
+    -fx-padding: 7 20;
+    -fx-cursor: hand;
+}
+
+.sel-btn-cadastro-v3:hover {
+    -fx-background-color: #b8891f;
+}
+
+.sel-btn-consulta-v3 {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-border-color: #7f5a12;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-padding: 7 20;
+    -fx-cursor: hand;
+}
+
+.sel-btn-consulta-v3:hover {
+    -fx-border-color: #d4a32a;
+    -fx-text-fill: #d4a32a;
+}

@@ -1,49 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.geometry.Insets?>
+<?import java.lang.String?>
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="controllersJavaFX.ListaPartidasController"
-      styleClass="lista-container"
-      stylesheets="@../css/partida.css"
-      spacing="16">
+      prefWidth="1200"
+      prefHeight="700">
 
-    <padding><Insets top="24" right="32" bottom="24" left="32"/></padding>
+    <style>
+        -fx-background-color: radial-gradient(center 50% 60%, radius 70%,
+        #3d2e0a 0%, #1a1508 45%, #0a0a0a 100%);
+    </style>
 
-    <!-- Barra de busca -->
-    <HBox spacing="16" styleClass="search-bar">
-        <VBox spacing="4" HBox.hgrow="ALWAYS">
-            <Label text="Buscar por time" styleClass="search-label"/>
-            <TextField fx:id="campoBuscarTime" promptText="Digite o time"
-                       styleClass="search-input"/>
-        </VBox>
-        <VBox spacing="4" HBox.hgrow="ALWAYS">
-            <Label text="Buscar por rodada" styleClass="search-label"/>
-            <TextField fx:id="campoBuscarRodada" promptText="Digite a rodada"
-                       styleClass="search-input"/>
-        </VBox>
-        <VBox spacing="4" HBox.hgrow="ALWAYS">
-            <Label text="Buscar por data" styleClass="search-label"/>
-            <TextField fx:id="campoBuscarData" promptText="Digite a data"
-                       styleClass="search-input"/>
-        </VBox>
-        <VBox spacing="4" alignment="BOTTOM_LEFT">
-            <Button text="Buscar" styleClass="btn-buscar" onAction="#aoBuscar"/>
-            <Button text="Limpar" styleClass="btn-limpar" onAction="#aoLimpar"/>
-        </VBox>
-    </HBox>
+    <!-- CORPO -->
+    <VBox VBox.vgrow="ALWAYS" spacing="20" alignment="TOP_CENTER">
+        <padding><Insets top="30" right="40" bottom="20" left="40"/></padding>
 
-    <!-- Título da lista -->
-    <Label text="Lista de jogos" styleClass="lista-title"/>
+        <Label text="Consulta de Partidas" styleClass="sel-titulo-v3"/>
 
-    <!-- Lista de partidas — cada card é inserido dinamicamente pelo controller -->
-    <ScrollPane fitToWidth="true" styleClass="scroll-lista" VBox.vgrow="ALWAYS">
-        <VBox fx:id="listaPartidas" spacing="12" styleClass="cards-container">
-            <padding><Insets top="4" right="4" bottom="4" left="4"/></padding>
-        </VBox>
-    </ScrollPane>
+        <!-- FILTROS -->
+        <HBox spacing="15" alignment="CENTER_LEFT" styleClass="filtro-box">
+
+            <Label text="Time"/>
+            <TextField fx:id="campoBuscarTime"
+                       promptText="Nome do time"
+                       prefWidth="200"/>
+
+            <Label text="Fase"/>
+            <ComboBox fx:id="comboBuscarFase"
+                      promptText="Fase"
+                      prefWidth="160"/>
+
+            <Label text="Data"/>
+            <TextField fx:id="campoBuscarData"
+                       promptText="dd/mm/aaaa"
+                       prefWidth="140"/>
+
+            <Button text="Pesquisar" onAction="#aoBuscar"  styleClass="sel-btn-cadastro-v3"/>
+            <Button text="Limpar"    onAction="#aoLimpar"  styleClass="sel-btn-consulta-v3"/>
+            <Button text="Excluir"   onAction="#aoExcluir" styleClass="btn-excluir"/>
+
+        </HBox>
+
+        <!-- TABELA -->
+        <TableView fx:id="tabelaPartidas"
+                   VBox.vgrow="ALWAYS"
+                   styleClass="tabela-partidas">
+            <columns>
+                <TableColumn fx:id="colNumero"    text="Nº"           prefWidth="50"/>
+                <TableColumn fx:id="colTimeCasa"  text="Time Casa"    prefWidth="180"/>
+                <TableColumn fx:id="colVisitante" text="Visitante"    prefWidth="180"/>
+                <TableColumn fx:id="colEstadio"   text="Estádio"      prefWidth="180"/>
+                <TableColumn fx:id="colData"      text="Data"         prefWidth="110"/>
+                <TableColumn fx:id="colHorario"   text="Horário"      prefWidth="90"/>
+                <TableColumn fx:id="colFase"      text="Fase"         prefWidth="160"/>
+                <TableColumn fx:id="colStatus"    text="Status"       prefWidth="120"/>
+            </columns>
+        </TableView>
+
+        <!-- RODAPÉ -->
+        <HBox alignment="CENTER_RIGHT" spacing="15">
+            <Label fx:id="labelTotal"/>
+            <Button text="Atualizar" onAction="#aoAtualizar" styleClass="sel-btn-cadastro-v3"/>
+        </HBox>
+
+    </VBox>
+
+    <stylesheets>
+        <String fx:value="/css/consulta_partida.css"/>
+    </stylesheets>
 
 </VBox>

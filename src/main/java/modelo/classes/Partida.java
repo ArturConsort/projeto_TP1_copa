@@ -36,6 +36,7 @@ public class Partida implements Serializable {
         this.horario = horario;
         this.estadio = estadio;
         this.fase = fase;
+        this.arbitroPrincipal = arbitroPrincipal;
         this.listaAssistentes = new ArrayList<>(); // inicializa lista vazia
     }
 

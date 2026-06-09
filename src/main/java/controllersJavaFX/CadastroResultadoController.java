@@ -2,7 +2,10 @@ package controllersJavaFX;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 import modelo.classes.Partida;
 import modelo.classes.Selecao;
 import servicos.Partida.ResultadoPartidaService;
@@ -16,14 +19,14 @@ public class CadastroResultadoController {
     @FXML private TextField         campoPlacarPenaltis;
     @FXML private TextField         campoCartoesAmarelos;
     @FXML private TextField         campoCartoesVermelhos;
+    @FXML private Label             labelFeedback;
 
     private final ResultadoPartidaService service = new ResultadoPartidaService();
 
     @FXML
     public void initialize() {
         carregarPartidas();
-
-        // Quando o usuário troca a partida, atualiza os times disponíveis
+        // Quando trocar a partida, atualiza os times disponíveis
         comboPartida.setOnAction(e -> atualizarTimes());
     }
 
@@ -31,18 +34,16 @@ public class CadastroResultadoController {
         comboPartida.setItems(
                 FXCollections.observableArrayList(service.listarPartidasPendentes())
         );
-        // Seleciona a primeira e já carrega os times
         if (!comboPartida.getItems().isEmpty()) {
             comboPartida.getSelectionModel().selectFirst();
             atualizarTimes();
         }
     }
 
-    // Popula vencedor/perdedor apenas com os dois times da partida escolhida
+    // Só os dois times da partida selecionada ficam disponíveis
     private void atualizarTimes() {
         Partida p = comboPartida.getValue();
         if (p == null) return;
-
         comboVencedor.setItems(FXCollections.observableArrayList(
                 p.getTimeCasa(), p.getTimeVisitante()));
         comboPerdedor.setItems(FXCollections.observableArrayList(
@@ -61,24 +62,24 @@ public class CadastroResultadoController {
                     campoCartoesAmarelos.getText(),
                     campoCartoesVermelhos.getText()
             );
-
-            mostrarSucesso("Resultado registrado com sucesso!");
+            feedback("Resultado registrado com sucesso!", true);
             limpar();
-            carregarPartidas(); // recarrega pois a partida saiu da lista
+            carregarPartidas();
 
         } catch (Exception e) {
-            mostrarErro(e.getMessage());
+            feedback(e.getMessage(), false);
         }
     }
 
     @FXML
-    private void aoEditar() {
-        mostrarErro("Para editar um resultado, exclua e cadastre novamente.");
-    }
-
-    @FXML
-    private void aoExcluir() {
-        mostrarErro("Exclusão de resultados não é permitida pelo sistema.");
+    private void aoVoltar() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/lista_partidas.fxml"));
+            Stage stage = (Stage) comboPartida.getScene().getWindow();
+            stage.setScene(new Scene(loader.load(), 1200, 700));
+        } catch (Exception e) {
+            feedback("Erro ao navegar: " + e.getMessage(), false);
+        }
     }
 
     private void limpar() {
@@ -91,11 +92,8 @@ public class CadastroResultadoController {
         campoCartoesVermelhos.clear();
     }
 
-    private void mostrarSucesso(String msg) {
-        new Alert(Alert.AlertType.INFORMATION, msg, ButtonType.OK).showAndWait();
-    }
-
-    private void mostrarErro(String msg) {
-        new Alert(Alert.AlertType.ERROR, msg, ButtonType.OK).showAndWait();
+    private void feedback(String msg, boolean sucesso) {
+        labelFeedback.setText(msg);
+        labelFeedback.getStyleClass().setAll(sucesso ? "label-feedback-ok" : "label-feedback-erro");
     }
 }

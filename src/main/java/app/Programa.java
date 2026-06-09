@@ -1267,6 +1267,33 @@ public class Programa {
                 return;
             }
 
+            // exibe árbitros disponíveis para facilitar a escolha
+            List<Arbitro> arbitros = partidaServico.listarArbitros();
+            if (arbitros.isEmpty()) {
+                System.out.println("Nenhum árbitro cadastrado. Cadastre um árbitro antes de criar uma partida.");
+                pausar();
+                return;
+            }
+            System.out.println("\nÁrbitros disponíveis:");
+            arbitros.forEach(a -> System.out.println(
+                    "  " + a.getNome() +
+                            " | Categoria: " + a.getCategoria() +
+                            " | Nacionalidade: " + a.getNacionalidade()
+            ));
+            System.out.println();
+
+            System.out.print("Nome do árbitro principal: ");
+            String nomeArbitro = entrada.nextLine();
+            Arbitro arbitro = arbitros.stream()
+                    .filter(a -> a.getNome().equalsIgnoreCase(nomeArbitro))
+                    .findFirst()
+                    .orElse(null);
+            if (arbitro == null) {
+                System.out.println("Árbitro não encontrado: " + nomeArbitro);
+                pausar();
+                return;
+            }
+
             System.out.print("Cidade: ");
             String cidade = entrada.nextLine();
 
@@ -1276,14 +1303,11 @@ public class Programa {
             System.out.print("Horário (ex: 16:00): ");
             String horario = entrada.nextLine();
 
-            System.out.print("Rodada: ");
-            String rodada = entrada.nextLine();
-
             System.out.println("Fase (" + fasesDisponiveis() + "): ");
             String faseStr = entrada.nextLine().toUpperCase();
             FasePartida fase = FasePartida.valueOf(faseStr);
 
-            partidaServico.cadastrarPartida(timeCasa, timeVisitante, estadio, cidade, data, horario, rodada, fase);
+            partidaServico.cadastrarPartida(timeCasa, timeVisitante, estadio, cidade, data, horario, arbitro, fase);
             System.out.println("\nPartida cadastrada com sucesso!");
 
         } catch (IllegalArgumentException e) {
