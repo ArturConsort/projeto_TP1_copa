@@ -25,6 +25,7 @@ public class MenuController {
     @FXML private Button btnDesignacoes;
     @FXML private Button btnUsuarios;
     @FXML private Label labelUsuario;
+    @FXML private Button btnRelatorios;
 
     private Popup subMenuUsuarios;
     private Popup subMenuPartidas;
@@ -268,6 +269,9 @@ public class MenuController {
     }
 
     @FXML
+    private void irRelatorios() {navegarPara("/fxml/relatorios.fxml", "Relatórios");}
+
+    @FXML
     private void handleLogout() {
 
         SessaoUsuario
@@ -279,6 +283,8 @@ public class MenuController {
                 "Login — Copa do Mundo 2026"
         );
     }
+
+
 
     // =========================================================
     // UTILITÁRIOS

@@ -9,19 +9,16 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-
-        System.out.println(
-                getClass().getResource("/fxml/login.fxml")
-        );
-
         FXMLLoader loader = new FXMLLoader(
                 getClass().getResource("/fxml/login.fxml")
         );
 
-        Scene scene = new Scene(loader.load(), 500, 400);
+        Scene scene = new Scene(loader.load());
         stage.setTitle("Copa do Mundo 2026");
         stage.setScene(scene);
+        stage.setMinWidth(900);
+        stage.setMinHeight(600);
+        stage.setMaximized(true);
         stage.show();
-        System.out.println(getClass().getResource("/fxml/login.fxml"));
     }
 }

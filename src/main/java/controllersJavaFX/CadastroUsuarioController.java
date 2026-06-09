@@ -33,7 +33,6 @@ public class CadastroUsuarioController {
     private void handleCadastrar() {
         labelFeedback.setStyle("-fx-text-fill: #ff6b6b; -fx-font-size: 12; -fx-font-family: 'Segoe UI';");
 
-        // Validações básicas na UI antes de chamar o serviço
         if (campoNome.getText().isBlank()) {
             labelFeedback.setText("Informe o nome completo.");
             return;
@@ -79,7 +78,6 @@ public class CadastroUsuarioController {
             );
             usuarioServico.cadastrar(novo);
 
-            // Sucesso
             labelFeedback.setStyle("-fx-text-fill: #4caf82; -fx-font-size: 12; -fx-font-family: 'Segoe UI';");
             labelFeedback.setText("Usuário cadastrado com sucesso!");
             limparCampos();
@@ -111,8 +109,21 @@ public class CadastroUsuarioController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Stage stage = (Stage) campoNome.getScene().getWindow();
-            stage.setScene(new Scene(loader.load(), 900, 600));
+
+            // Salva o estado atual ANTES de trocar a cena
+            boolean eraMaximized  = stage.isMaximized();
+            boolean eraFullScreen = stage.isFullScreen();
+
+            stage.setScene(new Scene(loader.load()));
             stage.setTitle(titulo);
+
+            // Restaura o estado: fullscreen tem prioridade sobre maximized
+            if (eraFullScreen) {
+                stage.setFullScreen(true);
+            } else if (eraMaximized) {
+                stage.setMaximized(true);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

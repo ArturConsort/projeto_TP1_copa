@@ -247,8 +247,10 @@ public class GestaoUsuariosController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Stage stage = (Stage) listaUsuarios.getScene().getWindow();
-            stage.setScene(new Scene(loader.load(), 900, 600));
+            boolean fullScreen = stage.isFullScreen();
+            stage.setScene(new Scene(loader.load()));
             stage.setTitle(titulo);
+            stage.setFullScreen(fullScreen);
         } catch (Exception e) {
             e.printStackTrace();
         }

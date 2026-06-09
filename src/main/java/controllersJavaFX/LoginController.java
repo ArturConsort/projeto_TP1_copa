@@ -11,6 +11,8 @@ import servicos.usuario.UsuarioServico;
 
 public class LoginController {
 
+
+
     @FXML private TextField campoLogin;
     @FXML private PasswordField campoSenha;
     @FXML private Label labelErro;
@@ -34,10 +36,12 @@ public class LoginController {
 
     private void irParaMenu() throws Exception {
         FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/fxml/menu.fxml")
-        );
+                getClass().getResource("/fxml/menu.fxml"));
         Stage stage = (Stage) campoLogin.getScene().getWindow();
-        stage.setScene(new Scene(loader.load(), 800, 600));
-        stage.setTitle("Menu Principal");
+        stage.setScene(new Scene(loader.load()));
+        stage.setTitle("Menu Principal — Copa do Mundo 2026");
+        stage.setMinWidth(900);
+        stage.setMinHeight(600);
+        stage.setMaximized(true);
     }
 }

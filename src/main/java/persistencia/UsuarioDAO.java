@@ -38,7 +38,7 @@ public class UsuarioDAO {
     public List<Usuario> carregaLista(){
 
         File arquivo = new File(ARQUIVO);                   // carrega "usuarios.dat" pra variavel "arquivo"
-        if(arquivo == null) return new ArrayList<>();       // se "usuarios.dat" nao existe (no caso de primeira execucao), retorna uma nova lista em branco
+        if(!arquivo.exists()) return new ArrayList<>();       // se "usuarios.dat" nao existe (no caso de primeira execucao), retorna uma nova lista em branco
 
         try{
             ObjectInputStream leitura = new ObjectInputStream(new FileInputStream("usuarios.dat"));     //leitura recebe os dados dos arquivos, ainda em formato serializado que nao tem sentido proprio

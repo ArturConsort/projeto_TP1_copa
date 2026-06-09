@@ -43,6 +43,8 @@
                     styleClass="nav-btn"/>
             <Button fx:id="btnUsuarios"    text="Usuários"   onAction="#irUsuarios"
                     styleClass="nav-btn"/>
+            <Button fx:id="btnRelatorios"  text="Relatórios" onAction="#irRelatorios"
+                    styleClass="nav-btn"/>
 
             <!-- Espaço empurra logout para a direita -->
             <Region HBox.hgrow="ALWAYS"/>
