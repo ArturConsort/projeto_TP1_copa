@@ -1,64 +1,192 @@
+/* ===== FILTROS (coluna de busca) ===== */
 
-.lista-item {
-    -fx-background-color: transparent;
-    -fx-text-fill: #222222;
-    -fx-font-size: 13px;
+.filtro-campo {
+    -fx-background-color: #141008;
+    -fx-text-fill: #e8e0cc;
+    -fx-prompt-text-fill: #4a4030;
+    -fx-border-color: #2e2610;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-padding: 8 12 8 12;
+    -fx-font-size: 12;
     -fx-font-family: 'Segoe UI';
-    -fx-padding: 10 16 10 16;
-    -fx-pref-width: Infinity;
-    -fx-alignment: CENTER_LEFT;
-    -fx-border-color: transparent transparent #e8e8e0 transparent;
+    -fx-pref-height: 34;
+}
+
+.filtro-campo:focused {
+    -fx-border-color: #c9982a;
+    -fx-background-color: #1a1408;
+}
+
+.filtro-combo {
+    -fx-background-color: #141008;
+    -fx-border-color: #2e2610;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-font-size: 12;
+    -fx-font-family: 'Segoe UI';
+    -fx-pref-height: 34;
+}
+
+.filtro-combo .list-cell {
+    -fx-text-fill: #e8e0cc;
+    -fx-background-color: #141008;
+    -fx-font-family: 'Segoe UI';
+    -fx-font-size: 12;
+}
+
+.filtro-combo:focused {
+    -fx-border-color: #c9982a;
+}
+
+/* ===== LISTA DE USUÁRIOS ===== */
+
+.lista-usuarios {
+    -fx-background-color: #0d0b06;
+    -fx-border-color: #2e2610;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 4;
+}
+
+.lista-usuarios .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #e8e0cc;
+    -fx-font-size: 13;
+    -fx-font-family: 'Segoe UI';
+    -fx-padding: 9 14 9 14;
+    -fx-border-color: transparent transparent #1e1a0a transparent;
     -fx-border-width: 0 0 1 0;
     -fx-cursor: hand;
 }
 
-.lista-item:hover {
-    -fx-background-color: #f0ede4;
-}
-
-.lista-item-selecionado {
-    -fx-background-color: #c9982a;
-    -fx-text-fill: #0a0a0a;
-    -fx-font-weight: bold;
-}
-
-.lista-item-selecionado:hover {
-    -fx-background-color: #b8871f;
-}
-
-.perfil-item {
-    -fx-background-color: transparent;
-    -fx-text-fill: #222222;
-    -fx-font-size: 13px;
-    -fx-font-family: 'Segoe UI';
-    -fx-padding: 10 16 10 16;
-    -fx-pref-width: Infinity;
-    -fx-alignment: CENTER_LEFT;
-    -fx-border-color: transparent transparent #eeeeee transparent;
-    -fx-cursor: hand;
-    -fx-background-radius: 0;
-}
-
-.perfil-item:hover {
-    -fx-background-color: #f0ede4;
+.lista-usuarios .list-cell:hover {
+    -fx-background-color: #1a1408;
     -fx-text-fill: #c9982a;
 }
 
-/* Remove o fundo azul padrão do ListView */
-.list-view {
-    -fx-background-color: transparent;
-    -fx-control-inner-background: transparent;
+.lista-usuarios .list-cell:selected {
+    -fx-background-color: #2a1e08;
+    -fx-text-fill: #c9982a;
+    -fx-font-weight: bold;
 }
 
-.list-cell {
-    -fx-background-color: transparent;
-    -fx-padding: 0;
+.lista-usuarios .list-cell:focused {
+    -fx-background-color: #2a1e08;
 }
 
-.list-cell:selected {
-    -fx-background-color: transparent;
+/* Remove barra de scroll desnecessária */
+.lista-usuarios > .virtual-flow > .clipped-container > .sheet > .list-cell:filled:selected:focused,
+.lista-usuarios > .virtual-flow > .clipped-container > .sheet > .list-cell:filled:selected {
+    -fx-background-color: #2a1e08;
 }
 
-.list-cell:focused {
-    -fx-background-color: transparent;
+/* ===== CAMPOS DE DADOS ATUAIS ===== */
+
+.dado-label {
+    -fx-text-fill: #6a5e44;
+    -fx-font-size: 11;
+    -fx-font-family: 'Segoe UI';
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 3 0;
+}
+
+.dado-campo {
+    -fx-background-color: #0d0b06;
+    -fx-text-fill: #9a9080;
+    -fx-border-color: #1e1a0a;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-padding: 8 12 8 12;
+    -fx-font-size: 12;
+    -fx-font-family: 'Segoe UI';
+    -fx-pref-height: 34;
+    -fx-cursor: default;
+}
+
+/* ===== CAMPOS DE EDIÇÃO ===== */
+
+.edit-campo {
+    -fx-background-color: #141008;
+    -fx-text-fill: #e8e0cc;
+    -fx-prompt-text-fill: #4a4030;
+    -fx-border-color: #2e2610;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-padding: 8 12 8 12;
+    -fx-font-size: 12;
+    -fx-font-family: 'Segoe UI';
+    -fx-pref-height: 34;
+}
+
+.edit-campo:focused {
+    -fx-border-color: #c9982a;
+    -fx-background-color: #1a1408;
+}
+
+.edit-combo {
+    -fx-background-color: #141008;
+    -fx-border-color: #2e2610;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-font-size: 12;
+    -fx-font-family: 'Segoe UI';
+    -fx-pref-height: 34;
+}
+
+.edit-combo .list-cell {
+    -fx-text-fill: #e8e0cc;
+    -fx-background-color: #141008;
+    -fx-font-family: 'Segoe UI';
+    -fx-font-size: 12;
+}
+
+/* ===== BOTÕES DE AÇÃO ===== */
+
+.btn-salvar {
+    -fx-background-color: #c9982a;
+    -fx-text-fill: #0a0a0a;
+    -fx-font-size: 13;
+    -fx-font-weight: bold;
+    -fx-font-family: 'Segoe UI';
+    -fx-background-radius: 20;
+    -fx-padding: 10 0 10 0;
+    -fx-cursor: hand;
+}
+
+.btn-salvar:hover {
+    -fx-background-color: #dbb040;
+}
+
+.btn-salvar:pressed {
+    -fx-background-color: #a87820;
+}
+
+.btn-excluir {
+    -fx-background-color: #c0392b;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 13;
+    -fx-font-weight: bold;
+    -fx-font-family: 'Segoe UI';
+    -fx-background-radius: 20;
+    -fx-padding: 10 0 10 0;
+    -fx-cursor: hand;
+}
+
+.btn-excluir:hover {
+    -fx-background-color: #e74c3c;
+}
+
+.btn-excluir:pressed {
+    -fx-background-color: #922b21;
+}
+
+/* ===== FEEDBACK ===== */
+
+.feedback-sucesso {
+    -fx-text-fill: #4caf82;
+}
+
+.feedback-erro {
+    -fx-text-fill: #ff6b6b;
 }

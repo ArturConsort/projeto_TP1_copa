@@ -1,66 +1,134 @@
+/* ===== BOTÕES DE TIPO ===== */
 
-.btn-relatorio-ativo {
-    -fx-background-color: #c9982a;
-    -fx-text-fill: #0a0a0a;
+.btn-relatorio {
+    -fx-background-color: #1a1408;
+    -fx-text-fill: #8a7e64;
+    -fx-font-size: 13;
+    -fx-font-family: 'Segoe UI';
     -fx-font-weight: bold;
-    -fx-font-size: 12px;
-    -fx-font-family: 'Segoe UI';
-    -fx-background-radius: 16;
-    -fx-padding: 7 20 7 20;
+    -fx-background-radius: 20;
+    -fx-border-color: #2e2610;
+    -fx-border-radius: 20;
+    -fx-padding: 8 24 8 24;
     -fx-cursor: hand;
 }
 
-.btn-relatorio-ativo:hover {
-    -fx-background-color: #b8871f;
-}
-
-.btn-relatorio-inativo {
-    -fx-background-color: transparent;
-    -fx-text-fill: #b0a898;
-    -fx-font-size: 12px;
-    -fx-font-family: 'Segoe UI';
-    -fx-border-color: #3a3020;
-    -fx-border-radius: 16;
-    -fx-background-radius: 16;
-    -fx-padding: 7 20 7 20;
-    -fx-cursor: hand;
-}
-
-.btn-relatorio-inativo:hover {
+.btn-relatorio:hover {
+    -fx-background-color: #2a2010;
     -fx-text-fill: #c9982a;
     -fx-border-color: #c9982a;
 }
 
-/* Remove scrollbar padrão do TextArea */
-.text-area .scroll-pane {
-    -fx-background-color: transparent;
+.btn-relatorio-ativo {
+    -fx-background-color: #c9982a;
+    -fx-text-fill: #0a0a0a;
+    -fx-font-size: 13;
+    -fx-font-family: 'Segoe UI';
+    -fx-font-weight: bold;
+    -fx-background-radius: 20;
+    -fx-border-color: #c9982a;
+    -fx-border-radius: 20;
+    -fx-padding: 8 24 8 24;
+    -fx-cursor: hand;
 }
-.text-area .scroll-pane .viewport {
-    -fx-background-color: transparent;
+
+.btn-relatorio-ativo:hover {
+    -fx-background-color: #dbb040;
 }
-.text-area .scroll-pane .content {
-    -fx-background-color: transparent;
+
+/* ===== CONTAINER DO TERMINAL ===== */
+
+.terminal-container {
+    -fx-background-color: #111008;
+    -fx-border-color: #2a2410;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 12, 0, 0, 3);
+    /* Ocupa toda a altura disponível */
+    -fx-pref-height: 2000;
 }
-.text-area .scroll-bar:vertical {
-    -fx-background-color: #1a1608;
+
+/* ===== BARRA SUPERIOR DO TERMINAL ===== */
+
+.terminal-topbar {
+    -fx-background-color: #1a1710;
+    -fx-background-radius: 10 10 0 0;
+    -fx-border-color: transparent transparent #2a2410 transparent;
+    -fx-border-width: 0 0 1 0;
+    -fx-min-height: 36;
+    -fx-max-height: 36;
+}
+
+/* ===== ÁREA DE TEXTO DO TERMINAL ===== */
+
+.terminal-output {
+    -fx-background-color: #0d0c08;
+    -fx-control-inner-background: #0d0c08;
+    -fx-text-fill: #c8b87a;
+    -fx-font-family: 'Consolas', 'Courier New', monospace;
+    /* FONTE MAIOR — era ~10px, agora 14px */
+    -fx-font-size: 14;
+    -fx-background-radius: 0 0 10 10;
+    -fx-border-color: transparent;
+    -fx-padding: 16 20 16 20;
+    /* Sem highlight azul ao focar */
+    -fx-highlight-fill: #3a2e10;
+    -fx-highlight-text-fill: #e8d898;
+}
+
+/* Remove borda de foco padrão do JavaFX */
+.terminal-output:focused {
     -fx-border-color: transparent;
 }
-.text-area .scroll-bar:vertical .thumb {
+
+/* ScrollPane interno do TextArea */
+.terminal-output .scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.terminal-output .scroll-pane > .viewport {
+    -fx-background-color: #0d0c08;
+}
+
+.terminal-output .scroll-bar:vertical {
+    -fx-background-color: #0d0c08;
+    -fx-pref-width: 8;
+}
+
+.terminal-output .scroll-bar:vertical .thumb {
     -fx-background-color: #3a3020;
     -fx-background-radius: 4;
 }
-.text-area .scroll-bar:vertical .thumb:hover {
+
+.terminal-output .scroll-bar:vertical .thumb:hover {
     -fx-background-color: #c9982a;
 }
-.text-area .scroll-bar:vertical .track {
+
+.terminal-output .scroll-bar:vertical .track {
     -fx-background-color: transparent;
 }
-.text-area .scroll-bar:vertical .increment-button,
-.text-area .scroll-bar:vertical .decrement-button {
+
+.terminal-output .scroll-bar:vertical .increment-button,
+.terminal-output .scroll-bar:vertical .decrement-button {
     -fx-background-color: transparent;
-    -fx-padding: 0;
-}
-.text-area .scroll-bar:horizontal {
     -fx-pref-height: 0;
-    -fx-opacity: 0;
+}
+
+/* ===== BOTÃO LIMPAR ===== */
+
+.btn-limpar-terminal {
+    -fx-background-color: transparent;
+    -fx-text-fill: #6a5e44;
+    -fx-font-size: 11;
+    -fx-font-family: 'Segoe UI';
+    -fx-background-radius: 4;
+    -fx-border-color: #2e2610;
+    -fx-border-radius: 4;
+    -fx-padding: 3 10 3 10;
+    -fx-cursor: hand;
+}
+
+.btn-limpar-terminal:hover {
+    -fx-text-fill: #c9982a;
+    -fx-border-color: #c9982a;
 }
