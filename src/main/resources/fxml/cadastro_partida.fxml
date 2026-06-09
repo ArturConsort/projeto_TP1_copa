@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllersJavaFX.CadastroPartidaController"
+      styleClass="form-container"
+      stylesheets="@../css/partida.css">
+
+    <padding><Insets top="30" right="40" bottom="30" left="40"/></padding>
+
+    <Label text="Cadastro de Partida" styleClass="form-title"/>
+
+    <!-- Time da Casa -->
+    <Label text="Time da casa" styleClass="field-label"/>
+    <ComboBox fx:id="comboTimeCasa" promptText="Selecione o time da casa"
+              styleClass="field-input" maxWidth="Infinity"/>
+
+    <!-- Time Visitante -->
+    <Label text="Time visitante" styleClass="field-label"/>
+    <ComboBox fx:id="comboTimeVisitante" promptText="Selecione o time visitante"
+              styleClass="field-input" maxWidth="Infinity"/>
+
+    <!-- Estádio -->
+    <Label text="Estádio" styleClass="field-label"/>
+    <ComboBox fx:id="comboEstadio" promptText="Selecione o estádio"
+              styleClass="field-input" maxWidth="Infinity"/>
+
+    <!-- Cidade -->
+    <Label text="Cidade" styleClass="field-label"/>
+    <TextField fx:id="campoCidade" promptText="Digite a cidade"
+               styleClass="field-input"/>
+
+    <!-- Fase -->
+    <Label text="Fase" styleClass="field-label"/>
+    <ComboBox fx:id="comboFase" promptText="Selecione a fase"
+              styleClass="field-input" maxWidth="Infinity"/>
+
+    <!-- Rodada -->
+    <Label text="Rodada" styleClass="field-label"/>
+    <TextField fx:id="campoRodada" promptText="Digite a rodada do campeonato"
+               styleClass="field-input"/>
+
+    <!-- Data -->
+    <Label text="Data" styleClass="field-label"/>
+    <TextField fx:id="campoData" promptText="dd/mm/aaaa"
+               styleClass="field-input"/>
+
+    <!-- Horário -->
+    <Label text="Horário" styleClass="field-label"/>
+    <TextField fx:id="campoHorario" promptText="hh:mm"
+               styleClass="field-input"/>
+
+    <!-- Botões -->
+    <HBox styleClass="button-bar" spacing="10">
+        <VBox.margin><Insets top="20"/></VBox.margin>
+        <Button fx:id="btnSalvar"  text="Salvar"  styleClass="btn-salvar"
+                onAction="#aoSalvar"/>
+        <Button fx:id="btnEditar"  text="Editar"  styleClass="btn-editar"
+                onAction="#aoEditar"/>
+        <Button fx:id="btnExcluir" text="Excluir" styleClass="btn-excluir"
+                onAction="#aoExcluir"/>
+    </HBox>
+
+</VBox>

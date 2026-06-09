@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllersJavaFX.ListaPartidasController"
+      styleClass="lista-container"
+      stylesheets="@../css/partida.css"
+      spacing="16">
+
+    <padding><Insets top="24" right="32" bottom="24" left="32"/></padding>
+
+    <!-- Barra de busca -->
+    <HBox spacing="16" styleClass="search-bar">
+        <VBox spacing="4" HBox.hgrow="ALWAYS">
+            <Label text="Buscar por time" styleClass="search-label"/>
+            <TextField fx:id="campoBuscarTime" promptText="Digite o time"
+                       styleClass="search-input"/>
+        </VBox>
+        <VBox spacing="4" HBox.hgrow="ALWAYS">
+            <Label text="Buscar por rodada" styleClass="search-label"/>
+            <TextField fx:id="campoBuscarRodada" promptText="Digite a rodada"
+                       styleClass="search-input"/>
+        </VBox>
+        <VBox spacing="4" HBox.hgrow="ALWAYS">
+            <Label text="Buscar por data" styleClass="search-label"/>
+            <TextField fx:id="campoBuscarData" promptText="Digite a data"
+                       styleClass="search-input"/>
+        </VBox>
+        <VBox spacing="4" alignment="BOTTOM_LEFT">
+            <Button text="Buscar" styleClass="btn-buscar" onAction="#aoBuscar"/>
+            <Button text="Limpar" styleClass="btn-limpar" onAction="#aoLimpar"/>
+        </VBox>
+    </HBox>
+
+    <!-- Título da lista -->
+    <Label text="Lista de jogos" styleClass="lista-title"/>
+
+    <!-- Lista de partidas — cada card é inserido dinamicamente pelo controller -->
+    <ScrollPane fitToWidth="true" styleClass="scroll-lista" VBox.vgrow="ALWAYS">
+        <VBox fx:id="listaPartidas" spacing="12" styleClass="cards-container">
+            <padding><Insets top="4" right="4" bottom="4" left="4"/></padding>
+        </VBox>
+    </ScrollPane>
+
+</VBox>

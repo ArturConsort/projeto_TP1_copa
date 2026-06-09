@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllersJavaFX.CadastroResultadoController"
+      styleClass="form-container"
+      stylesheets="@../css/partida.css">
+
+    <padding><Insets top="30" right="40" bottom="30" left="40"/></padding>
+
+    <Label text="Registro de Resultado" styleClass="form-title"/>
+
+    <!-- Partida -->
+    <Label text="Partida" styleClass="field-label"/>
+    <ComboBox fx:id="comboPartida" promptText="Selecione a partida"
+              styleClass="field-input" maxWidth="Infinity"/>
+
+    <!-- Time Vencedor -->
+    <Label text="Time vencedor" styleClass="field-label"/>
+    <ComboBox fx:id="comboVencedor" promptText="Selecione o time vencedor"
+              styleClass="field-input" maxWidth="Infinity"/>
+
+    <!-- Time Perdedor -->
+    <Label text="Time perdedor" styleClass="field-label"/>
+    <ComboBox fx:id="comboPerdedor" promptText="Selecione o time perdedor"
+              styleClass="field-input" maxWidth="Infinity"/>
+
+    <!-- Placar -->
+    <Label text="Placar" styleClass="field-label"/>
+    <TextField fx:id="campoPlacar" promptText="Digite o placar (ex: 2x1)"
+               styleClass="field-input"/>
+
+    <!-- Placar Pênaltis -->
+    <Label text="Placar pênaltis" styleClass="field-label"/>
+    <TextField fx:id="campoPlacarPenaltis"
+               promptText="Digite o placar de pênaltis se houver"
+               styleClass="field-input"/>
+
+    <!-- Cartões Amarelos -->
+    <Label text="Número de cartões amarelos" styleClass="field-label"/>
+    <TextField fx:id="campoCartoesAmarelos"
+               promptText="Digite o número de cartões amarelos"
+               styleClass="field-input"/>
+
+    <!-- Cartões Vermelhos -->
+    <Label text="Número de cartões vermelhos" styleClass="field-label"/>
+    <TextField fx:id="campoCartoesVermelhos"
+               promptText="Digite o número de cartões vermelhos"
+               styleClass="field-input"/>
+
+    <!-- Botões -->
+    <HBox styleClass="button-bar" spacing="10">
+        <VBox.margin><Insets top="20"/></VBox.margin>
+        <Button fx:id="btnSalvar"  text="Salvar"  styleClass="btn-salvar"
+                onAction="#aoSalvar"/>
+        <Button fx:id="btnEditar"  text="Editar"  styleClass="btn-editar"
+                onAction="#aoEditar"/>
+        <Button fx:id="btnExcluir" text="Excluir" styleClass="btn-excluir"
+                onAction="#aoExcluir"/>
+    </HBox>
+
+</VBox>
