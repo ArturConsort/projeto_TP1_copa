@@ -24,7 +24,7 @@ public class PartidaService {
         return selecaoDAO.carregaLista();
     }
 
-    public List<Estadio> listarEstadios() { 
+    public List<Estadio> listarEstadios() {
         return estadioDAO.carregaLista();
     }
 
