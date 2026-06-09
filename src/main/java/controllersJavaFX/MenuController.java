@@ -21,7 +21,7 @@ public class MenuController {
     @FXML private Button btnEstadios;
     @FXML private Button btnArbitros;
     @FXML private Button btnIngressos;
-    @FXML private Button btnVendas;
+    @FXML private Button btnVendas; 
     @FXML private Button btnDesignacoes;
     @FXML private Button btnUsuarios;
     @FXML private Label  labelUsuario;

@@ -1,0 +1,49 @@
+.root {
+    -fx-background-color:
+            radial-gradient(center 50% 30%, radius 70%,
+            #3a2600, #050505);
+}
+
+.card {
+    -fx-background-color: rgba(15,10,0,0.95);
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: #7f5a12;
+    -fx-padding: 25;
+}
+
+.titulo {
+    -fx-font-size: 24;
+    -fx-font-weight: bold;
+    -fx-text-fill: #d4a32a;
+}
+
+.label {
+    -fx-text-fill: white;
+}
+
+.text-field,
+.combo-box {
+    -fx-background-color: #222;
+    -fx-text-fill: white;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-border-color: #444;
+}
+
+.btn-cadastrar {
+    -fx-background-color: #d4a32a;
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+    -fx-background-radius: 20;
+    -fx-padding: 8 25;
+}
+
+.btn-voltar {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-border-color: #7f5a12;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-padding: 8 25;
+}

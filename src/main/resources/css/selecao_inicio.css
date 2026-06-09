@@ -1,0 +1,99 @@
+/* ================================================================
+   HUD v3  –  Logo FIFA 2026 real, sem dropdown de login
+   Tela de Seleção de Atividade
+   ================================================================ */
+
+/* Raiz */
+.sel-root-v3 {
+    -fx-background-color: #0a0a0a;
+}
+
+/* ===== NAVBAR ===== */
+.nav-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #e8e0cc;
+    -fx-font-size: 13px;
+    -fx-font-family: 'Segoe UI';
+    -fx-font-weight: normal;
+    -fx-padding: 18 14 18 14;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0;
+}
+.nav-btn:hover {
+    -fx-text-fill: #c9982a;
+    -fx-border-color: transparent transparent #c9982a transparent;
+    -fx-border-width: 0 0 2 0;
+}
+.nav-btn:pressed {
+    -fx-text-fill: #a87820;
+}
+
+/* Busca */
+.hud-search-v3 {
+    -fx-background-color: rgba(255,255,255,0.08);
+    -fx-background-radius: 18px;
+    -fx-border-color: rgba(255,255,255,0.12);
+    -fx-border-radius: 18px;
+    -fx-border-width: 1px;
+    -fx-pref-height: 30px;
+}
+
+.hud-search-field-v3 {
+    -fx-background-color: transparent;
+    -fx-text-fill: #ffffff;
+    -fx-prompt-text-fill: #555555;
+    -fx-font-size: 12px;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+}
+
+.hud-search-icon-v3 {
+    -fx-font-size: 12px;
+    -fx-text-fill: #666666;
+}
+
+/* ── Corpo ───────────────────────────────────────────────────── */
+
+.sel-corpo-v3 {
+    -fx-background-color: radial-gradient(
+            center 50% 35%, radius 70%,
+            #4a3810,
+            #2e2208 40%,
+            #181208 65%,
+            #0c0b09 100%
+    );
+}
+
+.sel-titulo-v3 {
+    -fx-font-size: 24px;
+    -fx-font-weight: normal;
+    -fx-text-fill: #ffffff;
+}
+
+.sel-btn-cadastro-v3 {
+    -fx-background-color: #c8a84b;
+    -fx-background-radius: 26px;
+    -fx-text-fill: #0a0a0a;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+.sel-btn-cadastro-v3:hover   { -fx-background-color: #dbbf6e; }
+.sel-btn-cadastro-v3:pressed  { -fx-background-color: #a88530; }
+
+.sel-btn-consulta-v3 {
+    -fx-background-color: #2e4a7a;
+    -fx-background-radius: 26px;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+.sel-btn-consulta-v3:hover   { -fx-background-color: #3a5a90; }
+.sel-btn-consulta-v3:pressed  { -fx-background-color: #1e3560; }
+
+.sel-ilustracao-v3 {
+    -fx-font-size: 90px;
+    -fx-opacity: 0.82;
+}

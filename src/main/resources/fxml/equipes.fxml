@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.String?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllersJavaFX.SelecaoInicialController"
+      prefWidth="900" prefHeight="540"
+      styleClass="sel-root-v3">
+
+    <style>
+        -fx-background-color: radial-gradient(center 50% 60%, radius 70%,
+        #3d2e0a 0%, #1a1508 45%, #0a0a0a 100%);
+    </style>
+
+    <!-- ══════════════ HUD / NAVBAR ══════════════ -->
+    <HBox styleClass="hud-bar" alignment="CENTER_LEFT" spacing="0">    <!-- ← era hud-navbar-v3 -->
+
+        <ImageView fitHeight="48" fitWidth="48" preserveRatio="true"
+                   smooth="true" pickOnBounds="true">
+            <image><Image url="@/images/worldcup_logo.png"/></image>
+            <HBox.margin><Insets right="24"/></HBox.margin>
+        </ImageView>
+
+        <Button fx:id="btnHome"      text="Home"      onAction="#irHome"      styleClass="nav-btn"/>
+        <Button fx:id="btnJogadores" text="Jogadores" onAction="#irJogadores" styleClass="nav-btn"/>
+        <Button fx:id="btnEquipes"   text="Equipes"   onAction="#irEquipes"   styleClass="nav-btn nav-btn-active"/>  <!-- ← ativo -->
+        <Button fx:id="btnPartidas"  text="Partidas"  onAction="#irPartidas"  styleClass="nav-btn"/>
+        <Button fx:id="btnEstadios"  text="Estádios"  onAction="#irEstadios"  styleClass="nav-btn"/>
+        <Button fx:id="btnArbitros"  text="Árbitros"  onAction="#irArbitros"  styleClass="nav-btn"/>
+        <Button fx:id="btnIngressos" text="Ingressos" onAction="#irIngressos" styleClass="nav-btn"/>
+
+        <Region HBox.hgrow="ALWAYS"/>
+
+        <HBox styleClass="hud-search-v3" alignment="CENTER_LEFT" spacing="6">    <!-- busca mantém estilo próprio -->
+            <padding><Insets top="0" right="12" bottom="0" left="10"/></padding>
+            <Label text="☰"  styleClass="hud-search-icon-v3"/>
+            <TextField promptText="Procure equipes" styleClass="hud-search-field-v3" prefWidth="150"/>
+            <Label text="🔍" styleClass="hud-search-icon-v3"/>
+        </HBox>
+    </HBox>
+
+    <!-- ══════════════ CORPO ══════════════ -->
+    <StackPane VBox.vgrow="ALWAYS" styleClass="sel-corpo-v3">
+
+        <Label text="👥" styleClass="sel-ilustracao-v3"
+               StackPane.alignment="BOTTOM_RIGHT">
+            <StackPane.margin><Insets bottom="16" right="24"/></StackPane.margin>
+        </Label>
+
+        <VBox alignment="CENTER" spacing="22">
+            <padding><Insets bottom="36"/></padding>
+            <Label text="Seleção de atividade" styleClass="sel-titulo-v3"/>
+            <Button text="Cadastro" onAction="#handleCadastro"
+                    styleClass="sel-btn-cadastro-v3" prefWidth="190" prefHeight="48"/>
+            <Button text="Consulta" onAction="#handleConsulta"
+                    styleClass="sel-btn-consulta-v3" prefWidth="190" prefHeight="48"/>
+        </VBox>
+    </StackPane>
+
+    <stylesheets>
+        <String fx:value="/css/selecao_inicio.css"/>  <!-- ← adicione esta linha -->
+    </stylesheets>
+
+</VBox>

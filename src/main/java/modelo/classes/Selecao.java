@@ -8,7 +8,7 @@ public class Selecao implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String pais;
-    private char grupo;
+    private String grupo;
     private String confederacao;
     private String tecnico;
     private int rankingFIFA;
@@ -16,7 +16,7 @@ public class Selecao implements Serializable {
     private List<Jogador> jogadores;
     private List<Partida> partidas;
 
-    public Selecao(String pais, char grupo, String confederacao, String tecnico, int rankingFIFA, int titulos) {
+    public Selecao(String pais, String grupo, String confederacao, String tecnico, int rankingFIFA, int titulos) {
         this.pais = pais;
         this.grupo = grupo;
         this.confederacao = confederacao;
@@ -34,10 +34,10 @@ public class Selecao implements Serializable {
         this.pais = pais;
     }
 
-    public char getGrupo() {
+    public String getGrupo() {
         return grupo;
     }
-    public void setGrupo(char grupo) {
+    public void setGrupo(String grupo) {
         this.grupo = grupo;
     }
 
