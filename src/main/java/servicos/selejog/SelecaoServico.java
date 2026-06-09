@@ -21,7 +21,7 @@ public class SelecaoServico {
 
     // ------- manipulacao de selecoes pelo admin ------- //
 
-    public void cadastrar(String pais, char grupo, String confederacao, String tecnico, int rankingFIFA, int titulos) {
+    public void cadastrar(String pais, String grupo, String confederacao, String tecnico, int rankingFIFA, int titulos) {
 
 
         // --- validacoes de campos obrigatorios --- //
@@ -64,7 +64,7 @@ public class SelecaoServico {
         return s;
     }
 
-    public List<Selecao> buscarPorGrupo(char grupo) throws SelecaoNaoEncontradaException {
+    public List<Selecao> buscarPorGrupo(String grupo) throws SelecaoNaoEncontradaException {
         List<Selecao> s = dao.buscarPorGrupo(grupo);
         return s;
     }
@@ -84,7 +84,7 @@ public class SelecaoServico {
         dao.atualizaSelecao(s);
     }
 
-    public void editarGrupoSelecao(Selecao selecao, char novo_grupo){
+    public void editarGrupoSelecao(Selecao selecao, String novo_grupo){
         Selecao s = dao.buscarPorPais(selecao.getPais());
         if (s == null) throw new SelecaoNaoEncontradaException("Seleção não encontrada: " + selecao);
         s.setGrupo(novo_grupo);

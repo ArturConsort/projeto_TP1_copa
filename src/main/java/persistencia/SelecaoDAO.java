@@ -74,7 +74,7 @@ public class SelecaoDAO {
         return null;
     }
 
-    public List<Selecao> buscarPorGrupo(char grupo){
+    public List<Selecao> buscarPorGrupo(String grupo){
         List<Selecao> listaSelecoes = new ArrayList<>();
         for(Selecao u : carregaLista()){
             if(u.getGrupo() == grupo) listaSelecoes.add(u);
