@@ -4,18 +4,15 @@ class Pessoa {
   -nome: String
   -cpf: String
   -email: String
-  +Pessoa(String nome, String cpf, String email)
+  -pais: String
+  +Pessoa(String nome, String cpf, String email, String pais)
 }
 class Usuario {
-  <<abstract>>
   -login: String
   -senha: String
+  -perfil: TipoPerfil
   +Usuario(String nome, String cpf, String email, String login, String senha)
 }
-class Administrador
-class Organizador
-class UsuarioArbitro
-class Operador
 class Arbitro {
   -nome: String
   -idade: int
@@ -88,6 +85,13 @@ class TipoGramado {
   SINTETICO
   NATURAL
 }
+class TipoPerfil {
+  <<enumeration>>
+  ADMINISTRADOR
+  ORGANIZADOR
+  OPERADOR
+  ARBITRO
+}
 class Ingresso {
   -idIngresso: int
   -partida: String
@@ -116,11 +120,6 @@ class CategoriaIngresso {
   +temVagasDisponiveis() boolean
   +reduzirEstoque(quantidade: int) void
 }
-class RelatorioCompeticao{
-  -numeroDePartidas: int
-  -publico: int
-  +RelatorioCompeticao(numerodePartidas: int, publico: int)
-}
 class DesempenhoDeSelecoes {
   <<enumeration>>
     EXCELENTE
@@ -128,10 +127,8 @@ class DesempenhoDeSelecoes {
     MEDIO
     RUIM
 }
-Usuario <|-- Administrador
-Usuario<|-- Organizador
-Usuario <|-- UsuarioArbitro
-Usuario <|-- Operador
+
+TipoPerfil <-- Usuario : possui acesso de
 Pessoa <|-- Usuario
 Arbitro --> CategoriaArbitro : possui
 Estadio --> TipoGramado : possui
@@ -145,7 +142,6 @@ Partida "1" --> "0..*" Ingresso
 DesignacaoArbitro "1" --> "1" Partida
 DesignacaoArbitro "1" --> "1" Arbitro : principal
 DesignacaoArbitro "1" --> "2" Arbitro : assistentes
-RelatorioCompeticao --> DesempenhoDeSelecoes : usa
 Usuario "1" --> "0..*" Ingresso: possui
 Venda "1" *-- "1..*" Ingresso: contem
 Ingresso "*" --> "1" CategoriaIngresso : possui

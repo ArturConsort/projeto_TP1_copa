@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import modelo.classes.Partida;
 import modelo.classes.ResultadoPartida;
@@ -17,6 +18,10 @@ import persistencia.ResultadoPartidaDAO;
 import persistencia.UsuarioDAO;
 import servicos.usuario.SessaoUsuario;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -230,6 +235,47 @@ public class RelatoriosController {
     @FXML
     private void handleLimpar() {
         terminalOutput.clear();
+    }
+
+    // ════════════════════════════════════════════════════════
+//   GERAR ARQUIVO .TXT
+// ════════════════════════════════════════════════════════
+
+    @FXML
+    private void handleGerarArquivo() {
+        String conteudo = terminalOutput.getText();
+        if (conteudo == null || conteudo.isBlank()) {
+            new javafx.scene.control.Alert(
+                    javafx.scene.control.Alert.AlertType.WARNING,
+                    "Não há relatório gerado para salvar.",
+                    javafx.scene.control.ButtonType.OK
+            ).showAndWait();
+            return;
+        }
+
+        String nomeArquivo = "relatorio_"
+                + labelTitulo.getText().replace(" · ", "_").replace(" ", "_")
+                + "_"
+                + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"))
+                + ".txt";
+
+        // Salva direto na pasta raiz do projeto (onde ficam os .dat)
+        File arquivo = new File(System.getProperty("user.dir"), nomeArquivo);
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(arquivo))) {
+            writer.write(conteudo);
+            new javafx.scene.control.Alert(
+                    javafx.scene.control.Alert.AlertType.INFORMATION,
+                    "Arquivo salvo em:\n" + arquivo.getAbsolutePath(),
+                    javafx.scene.control.ButtonType.OK
+            ).showAndWait();
+        } catch (IOException e) {
+            new javafx.scene.control.Alert(
+                    javafx.scene.control.Alert.AlertType.ERROR,
+                    "Erro ao salvar o arquivo:\n" + e.getMessage(),
+                    javafx.scene.control.ButtonType.OK
+            ).showAndWait();
+        }
     }
 
     // ════════════════════════════════════════════════════════

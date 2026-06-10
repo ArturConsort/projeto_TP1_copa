@@ -95,6 +95,9 @@
 
                     <Region HBox.hgrow="ALWAYS"/>
 
+                    <Button text="gerar arquivo"
+                            onAction="#handleGerarArquivo"
+                            styleClass="btn-limpar-terminal"/>
                     <Button text="limpar"
                             onAction="#handleLimpar"
                             styleClass="btn-limpar-terminal"/>
