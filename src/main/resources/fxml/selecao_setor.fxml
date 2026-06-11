@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.String?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllersJavaFX.SelecaoSetorController"
+      prefWidth="1200"
+      prefHeight="700"
+      styleClass="sel-root-v3">
+
+    <style>
+        -fx-background-color: radial-gradient(center 50% 60%, radius 70%,
+        #3d2e0a 0%, #1a1508 45%, #0a0a0a 100%);
+    </style>
+
+    <!-- HUD -->
+
+    <HBox styleClass="hud-bar" alignment="CENTER_LEFT">
+
+        <ImageView fitHeight="48"
+                   fitWidth="48"
+                   preserveRatio="true">
+            <image>
+                <Image url="@/images/worldcup_logo.png"/>
+            </image>
+
+            <HBox.margin>
+                <Insets right="24"/>
+            </HBox.margin>
+        </ImageView>
+
+        <Button fx:id="btnHome"      text="Home"      onAction="#irHome"      styleClass="nav-btn"/>
+        <Button fx:id="btnJogadores" text="Jogadores" onAction="#irJogadores" styleClass="nav-btn"/>
+        <Button fx:id="btnEquipes"   text="Equipes"   onAction="#irEquipes"   styleClass="nav-btn"/>
+        <Button fx:id="btnPartidas"  text="Partidas"  onAction="#irPartidas"  styleClass="nav-btn"/>
+        <Button fx:id="btnEstadios"  text="Estádios"  onAction="#irEstadios"  styleClass="nav-btn"/>
+        <Button fx:id="btnArbitros"  text="Árbitros"  onAction="#irArbitros"  styleClass="nav-btn"/>
+        <Button fx:id="btnIngressos" text="Ingressos" onAction="#irIngressos" styleClass="nav-btn nav-btn-active"/>
+
+        <Region HBox.hgrow="ALWAYS"/>
+
+    </HBox>
+
+    <!-- CORPO -->
+
+    <HBox VBox.vgrow="ALWAYS"
+          spacing="24"
+          alignment="TOP_LEFT">
+
+        <padding>
+            <Insets top="30"
+                    right="40"
+                    bottom="30"
+                    left="40"/>
+        </padding>
+
+        <!-- CARD DA PARTIDA -->
+
+        <VBox styleClass="setor-card-partida"
+              spacing="16"
+              alignment="TOP_LEFT"
+              prefWidth="280"
+              minWidth="280">
+
+            <HBox fx:id="painelBandeiras"
+                  styleClass="setor-bandeiras"
+                  alignment="CENTER"
+                  spacing="0">
+
+                <!-- bandeiras das selecoes inseridas dinamicamente -->
+
+            </HBox>
+
+            <Label fx:id="labelConfronto"
+                   text="Seleção x Seleção"
+                   styleClass="setor-confronto"
+                   wrapText="true"/>
+
+            <Label fx:id="labelData"
+                   text="00/00/0000"
+                   styleClass="setor-info"/>
+
+            <Label fx:id="labelHorario"
+                   text="00h"
+                   styleClass="setor-info"/>
+
+        </VBox>
+
+        <!-- LISTA DE SETORES -->
+
+        <VBox styleClass="setor-card-lista"
+              spacing="12"
+              HBox.hgrow="ALWAYS"
+              prefWidth="380"
+              minWidth="320">
+
+            <Label text="Selecione um setor"
+                   styleClass="setor-titulo-secao"/>
+
+            <ScrollPane fitToWidth="true"
+                        styleClass="setor-scroll"
+                        VBox.vgrow="ALWAYS">
+
+                <VBox fx:id="painelSetores"
+                      spacing="14">
+
+                    <!-- itens de setor inseridos dinamicamente -->
+
+                </VBox>
+
+            </ScrollPane>
+
+        </VBox>
+
+        <!-- MAPA DE SETORES -->
+
+        <VBox styleClass="setor-card-mapa"
+              alignment="TOP_CENTER"
+              spacing="16"
+              prefWidth="380"
+              minWidth="320"
+              HBox.hgrow="ALWAYS">
+
+            <StackPane styleClass="setor-mapa-placeholder"
+                       prefWidth="320"
+                       prefHeight="220"
+                       minHeight="220">
+
+                <Label text="🏟"
+                       styleClass="setor-mapa-icone"/>
+
+                <Label text="Mapa do estádio"
+                       styleClass="setor-mapa-legenda"
+                       StackPane.alignment="BOTTOM_CENTER">
+                    <StackPane.margin>
+                        <Insets bottom="12"/>
+                    </StackPane.margin>
+                </Label>
+
+            </StackPane>
+
+            <FlowPane hgap="14"
+                      vgap="8"
+                      alignment="CENTER"
+                      styleClass="setor-legenda">
+
+                <HBox spacing="6" alignment="CENTER_LEFT" styleClass="legenda-item">
+                    <Region styleClass="legenda-cor-pcr"/>
+                    <Label text="PCR"/>
+                </HBox>
+
+                <HBox spacing="6" alignment="CENTER_LEFT" styleClass="legenda-item">
+                    <Region styleClass="legenda-cor-gold"/>
+                    <Label text="Gold"/>
+                </HBox>
+
+                <HBox spacing="6" alignment="CENTER_LEFT" styleClass="legenda-item">
+                    <Region styleClass="legenda-cor-premium"/>
+                    <Label text="Premium"/>
+                </HBox>
+
+                <HBox spacing="6" alignment="CENTER_LEFT" styleClass="legenda-item">
+                    <Region styleClass="legenda-cor-especial"/>
+                    <Label text="Especial"/>
+                </HBox>
+
+                <HBox spacing="6" alignment="CENTER_LEFT" styleClass="legenda-item">
+                    <Region styleClass="legenda-cor-vip"/>
+                    <Label text="VIP"/>
+                </HBox>
+
+                <HBox spacing="6" alignment="CENTER_LEFT" styleClass="legenda-item">
+                    <Region styleClass="legenda-cor-superior"/>
+                    <Label text="Superior"/>
+                </HBox>
+
+            </FlowPane>
+
+        </VBox>
+
+    </HBox>
+
+    <stylesheets>
+        <String fx:value="/css/selecao_inicio.css"/>
+        <String fx:value="/css/ingressos.css"/>
+    </stylesheets>
+
+</VBox>

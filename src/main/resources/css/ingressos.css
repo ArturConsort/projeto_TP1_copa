@@ -1,0 +1,243 @@
+/* ================================================================
+   INGRESSOS — estilos para listagem de partidas, selecao de setor
+   e finalizacao da compra
+   ================================================================ */
+
+/* HUD reforço — caso .hud-bar ainda nao tenha sido definido em outra folha */
+.hud-bar {
+    -fx-background-color: #0d0d0d;
+    -fx-padding: 0 24 0 16;
+    -fx-min-height: 56;
+}
+
+.nav-btn-active {
+    -fx-text-fill: #c9982a;
+    -fx-border-color: transparent transparent #c9982a transparent;
+    -fx-border-width: 0 0 2 0;
+}
+
+/* ===== SCROLL ===== */
+
+.ingressos-scroll {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+}
+
+.ingressos-scroll .viewport {
+    -fx-background-color: transparent;
+}
+
+/* ===== CARD DE PARTIDA (grade da listagem) ===== */
+
+.partida-card {
+    -fx-background-color: rgba(20, 16, 8, 0.85);
+    -fx-background-radius: 14;
+    -fx-border-color: #3a3020;
+    -fx-border-radius: 14;
+    -fx-border-width: 1;
+    -fx-padding: 18;
+    -fx-pref-width: 320;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.45), 12, 0, 0, 4);
+}
+
+.partida-card:hover {
+    -fx-border-color: #c9982a;
+    -fx-background-color: rgba(36, 28, 12, 0.95);
+}
+
+.partida-card-bandeiras {
+    -fx-background-color: #0d0d0d;
+    -fx-background-radius: 8;
+    -fx-padding: 18 0 18 0;
+    -fx-pref-height: 90;
+}
+
+.partida-card-bandeira {
+    -fx-font-size: 46px;
+}
+
+.partida-card-titulo {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+    -fx-font-family: 'Segoe UI';
+}
+
+.partida-card-info {
+    -fx-text-fill: #b0a898;
+    -fx-font-size: 13px;
+    -fx-font-family: 'Segoe UI';
+}
+
+/* ===== TELA DE SELECAO DE SETOR ===== */
+
+.setor-card-partida,
+.setor-card-lista,
+.setor-card-mapa {
+    -fx-background-color: rgba(20, 16, 8, 0.85);
+    -fx-background-radius: 14;
+    -fx-border-color: #3a3020;
+    -fx-border-radius: 14;
+    -fx-border-width: 1;
+    -fx-padding: 18;
+}
+
+.setor-bandeiras {
+    -fx-background-color: #0d0d0d;
+    -fx-background-radius: 8;
+    -fx-padding: 18 0 18 0;
+}
+
+.setor-bandeira {
+    -fx-font-size: 48px;
+}
+
+.setor-confronto {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-font-family: 'Segoe UI';
+}
+
+.setor-info {
+    -fx-text-fill: #b0a898;
+    -fx-font-size: 13px;
+    -fx-font-family: 'Segoe UI';
+}
+
+.setor-titulo-secao {
+    -fx-text-fill: #c9982a;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-font-family: 'Segoe UI';
+}
+
+.setor-scroll {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+}
+
+.setor-scroll .viewport {
+    -fx-background-color: transparent;
+}
+
+/* item de setor (linha clicavel na lista) */
+
+.setor-item {
+    -fx-background-color: rgba(255,255,255,0.04);
+    -fx-background-radius: 10;
+    -fx-border-color: #3a3020;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+    -fx-padding: 12 16 12 16;
+    -fx-cursor: hand;
+}
+
+.setor-item:hover {
+    -fx-border-color: #c9982a;
+    -fx-background-color: rgba(201,152,42,0.08);
+}
+
+.setor-item-selecionado {
+    -fx-border-color: #c9982a;
+    -fx-border-width: 2;
+    -fx-background-color: rgba(201,152,42,0.15);
+}
+
+.setor-item-nome {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-font-family: 'Segoe UI';
+}
+
+.setor-item-preco {
+    -fx-text-fill: #c9982a;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-font-family: 'Segoe UI';
+}
+
+.setor-item-obs {
+    -fx-text-fill: #6f8f6a;
+    -fx-font-size: 11px;
+    -fx-font-family: 'Segoe UI';
+}
+
+/* legenda do mapa de setores */
+
+.setor-legenda .label {
+    -fx-text-fill: #e8e0cc;
+    -fx-font-size: 12px;
+    -fx-font-family: 'Segoe UI';
+}
+
+.legenda-cor-pcr,
+.legenda-cor-gold,
+.legenda-cor-premium,
+.legenda-cor-especial,
+.legenda-cor-vip,
+.legenda-cor-superior {
+    -fx-min-width: 14;
+    -fx-min-height: 14;
+    -fx-max-width: 14;
+    -fx-max-height: 14;
+    -fx-background-radius: 3;
+}
+
+.legenda-cor-pcr      { -fx-background-color: #5bc8e8; }
+.legenda-cor-gold     { -fx-background-color: #e0c44a; }
+.legenda-cor-premium  { -fx-background-color: #e060a8; }
+.legenda-cor-especial { -fx-background-color: #c8d878; }
+.legenda-cor-vip      { -fx-background-color: #b89cd8; }
+.legenda-cor-superior { -fx-background-color: #6fa8e0; }
+
+/* placeholder do mapa de setores (sem imagem) */
+
+.setor-mapa-placeholder {
+    -fx-background-color: rgba(255,255,255,0.04);
+    -fx-background-radius: 12;
+    -fx-border-color: #3a3020;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+}
+
+.setor-mapa-icone {
+    -fx-font-size: 64px;
+    -fx-opacity: 0.6;
+}
+
+.setor-mapa-legenda {
+    -fx-text-fill: #6f6555;
+    -fx-font-size: 12px;
+    -fx-font-family: 'Segoe UI';
+}
+
+/* ===== TELA DE FINALIZACAO DA COMPRA ===== */
+
+.setor-total {
+    -fx-text-fill: #c9982a;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-font-family: 'Segoe UI';
+}
+
+.campo-spinner .text-field {
+    -fx-background-color: #1f1f1f;
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+}
+
+.campo-combo {
+    -fx-background-color: #1f1f1f;
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+    -fx-border-color: #d4af37;
+    -fx-border-radius: 8;
+}
+
+.campo-combo .list-cell {
+    -fx-text-fill: white;
+    -fx-background-color: #1f1f1f;
+}

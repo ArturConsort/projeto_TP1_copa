@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.String?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllersJavaFX.CompraIngressoController"
+      prefWidth="1200"
+      prefHeight="700"
+      styleClass="sel-root-v3">
+
+    <style>
+        -fx-background-color: radial-gradient(center 50% 60%, radius 70%,
+        #3d2e0a 0%, #1a1508 45%, #0a0a0a 100%);
+    </style>
+
+    <!-- HUD -->
+
+    <HBox styleClass="hud-bar" alignment="CENTER_LEFT">
+
+        <ImageView fitHeight="48"
+                   fitWidth="48"
+                   preserveRatio="true">
+            <image>
+                <Image url="@/images/worldcup_logo.png"/>
+            </image>
+
+            <HBox.margin>
+                <Insets right="24"/>
+            </HBox.margin>
+        </ImageView>
+
+        <Button fx:id="btnHome"      text="Home"      onAction="#irHome"      styleClass="nav-btn"/>
+        <Button fx:id="btnJogadores" text="Jogadores" onAction="#irJogadores" styleClass="nav-btn"/>
+        <Button fx:id="btnEquipes"   text="Equipes"   onAction="#irEquipes"   styleClass="nav-btn"/>
+        <Button fx:id="btnPartidas"  text="Partidas"  onAction="#irPartidas"  styleClass="nav-btn"/>
+        <Button fx:id="btnEstadios"  text="Estádios"  onAction="#irEstadios"  styleClass="nav-btn"/>
+        <Button fx:id="btnArbitros"  text="Árbitros"  onAction="#irArbitros"  styleClass="nav-btn"/>
+        <Button fx:id="btnIngressos" text="Ingressos" onAction="#irIngressos" styleClass="nav-btn nav-btn-active"/>
+
+        <Region HBox.hgrow="ALWAYS"/>
+
+    </HBox>
+
+    <!-- CORPO -->
+
+    <ScrollPane VBox.vgrow="ALWAYS"
+                fitToWidth="true"
+                styleClass="ingressos-scroll">
+
+        <VBox spacing="24"
+              alignment="TOP_CENTER">
+
+            <padding>
+                <Insets top="30"
+                        right="40"
+                        bottom="30"
+                        left="40"/>
+            </padding>
+
+            <Label text="Finalizar compra"
+                   styleClass="sel-titulo-v3"/>
+
+            <HBox spacing="24"
+                  alignment="TOP_CENTER">
+
+                <!-- RESUMO DO PEDIDO -->
+
+                <VBox styleClass="setor-card-partida"
+                      spacing="14"
+                      prefWidth="320"
+                      minWidth="300">
+
+                    <Label text="Resumo do pedido"
+                           styleClass="setor-titulo-secao"/>
+
+                    <Label fx:id="labelConfrontoResumo"
+                           text="Seleção x Seleção"
+                           styleClass="setor-confronto"
+                           wrapText="true"/>
+
+                    <Label fx:id="labelDataResumo"
+                           text="00/00/0000 - 00h"
+                           styleClass="setor-info"/>
+
+                    <Separator/>
+
+                    <Label fx:id="labelSetorResumo"
+                           text="Setor: -"
+                           styleClass="setor-info"/>
+
+                    <Label fx:id="labelPrecoResumo"
+                           text="Preço unitário: R$ 0,00"
+                           styleClass="setor-info"/>
+
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <Label text="Quantidade"
+                               styleClass="campo-label"/>
+                        <Spinner fx:id="spinnerQuantidade"
+                                 styleClass="campo-spinner"
+                                 prefWidth="90"
+                                 editable="true"/>
+                    </HBox>
+
+                    <Separator/>
+
+                    <Label fx:id="labelTotal"
+                           text="Total: R$ 0,00"
+                           styleClass="setor-total"/>
+
+                </VBox>
+
+                <!-- DADOS DO COMPRADOR -->
+
+                <VBox styleClass="setor-card-lista"
+                      spacing="14"
+                      prefWidth="360"
+                      minWidth="320">
+
+                    <Label text="Dados do comprador"
+                           styleClass="setor-titulo-secao"/>
+
+                    <VBox spacing="6">
+                        <Label text="Nome completo" styleClass="campo-label"/>
+                        <TextField fx:id="campoNome"
+                                   promptText="Digite seu nome completo"
+                                   styleClass="campo-texto"/>
+                    </VBox>
+
+                    <VBox spacing="6">
+                        <Label text="CPF" styleClass="campo-label"/>
+                        <TextField fx:id="campoCpf"
+                                   promptText="000.000.000-00"
+                                   styleClass="campo-texto"/>
+                    </VBox>
+
+                    <VBox spacing="6">
+                        <Label text="E-mail" styleClass="campo-label"/>
+                        <TextField fx:id="campoEmail"
+                                   promptText="seuemail@exemplo.com"
+                                   styleClass="campo-texto"/>
+                    </VBox>
+
+                    <VBox spacing="6">
+                        <Label text="País" styleClass="campo-label"/>
+                        <TextField fx:id="campoPais"
+                                   promptText="País de origem"
+                                   styleClass="campo-texto"/>
+                    </VBox>
+
+                </VBox>
+
+                <!-- PAGAMENTO -->
+
+                <VBox styleClass="setor-card-mapa"
+                      spacing="14"
+                      prefWidth="360"
+                      minWidth="320">
+
+                    <Label text="Pagamento"
+                           styleClass="setor-titulo-secao"/>
+
+                    <VBox spacing="6">
+                        <Label text="Meio de pagamento" styleClass="campo-label"/>
+                        <ComboBox fx:id="comboPagamento"
+                                  promptText="Selecione"
+                                  styleClass="campo-combo"
+                                  prefWidth="Infinity"/>
+                    </VBox>
+
+                    <VBox fx:id="painelDadosCartao"
+                          spacing="14">
+
+                        <VBox spacing="6">
+                            <Label text="Número do cartão" styleClass="campo-label"/>
+                            <TextField fx:id="campoNumeroCartao"
+                                       promptText="0000 0000 0000 0000"
+                                       styleClass="campo-texto"/>
+                        </VBox>
+
+                        <VBox spacing="6">
+                            <Label text="Nome impresso no cartão" styleClass="campo-label"/>
+                            <TextField fx:id="campoNomeCartao"
+                                       promptText="Nome como está no cartão"
+                                       styleClass="campo-texto"/>
+                        </VBox>
+
+                        <HBox spacing="14">
+                            <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                <Label text="Validade" styleClass="campo-label"/>
+                                <TextField fx:id="campoValidadeCartao"
+                                           promptText="MM/AA"
+                                           styleClass="campo-texto"/>
+                            </VBox>
+                            <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                <Label text="CVV" styleClass="campo-label"/>
+                                <TextField fx:id="campoCvvCartao"
+                                           promptText="000"
+                                           styleClass="campo-texto"/>
+                            </VBox>
+                        </HBox>
+
+                    </VBox>
+
+                    <Label fx:id="labelPagamentoInfo"
+                           text=""
+                           styleClass="setor-info"
+                           wrapText="true"/>
+
+                </VBox>
+
+            </HBox>
+
+            <!-- AÇÕES -->
+
+            <HBox spacing="16"
+                  alignment="CENTER_RIGHT">
+
+                <Button text="Voltar"
+                        onAction="#aoVoltar"
+                        styleClass="sel-btn-consulta-v3"
+                        prefWidth="160"
+                        prefHeight="46"/>
+
+                <Button text="Confirmar compra"
+                        onAction="#aoConfirmarCompra"
+                        styleClass="sel-btn-cadastro-v3"
+                        prefWidth="200"
+                        prefHeight="46"/>
+
+            </HBox>
+
+        </VBox>
+
+    </ScrollPane>
+
+    <stylesheets>
+        <String fx:value="/css/selecao_inicio.css"/>
+        <String fx:value="/css/ingressos.css"/>
+    </stylesheets>
+
+</VBox>
