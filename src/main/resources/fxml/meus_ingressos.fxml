@@ -8,7 +8,7 @@
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="controllersJavaFX.IngressosController"
+      fx:controller="controllersJavaFX.MeusIngressosController"
       prefWidth="1200"
       prefHeight="700"
       styleClass="sel-root-v3">
@@ -58,39 +58,27 @@
                 <Insets top="30" right="40" bottom="30" left="40"/>
             </padding>
 
-            <Label text="Comprar Ingressos"
+            <Label text="Meus Ingressos"
                    styleClass="sel-titulo-v3"/>
 
-            <!-- BARRA DE PESQUISA -->
-            <HBox spacing="10" alignment="CENTER_LEFT" styleClass="filtro-box">
-                <TextField fx:id="campoBusca"
-                           promptText="🔍  Buscar por time, data ou estádio..."
-                           prefWidth="400"
-                           styleClass="campo-texto"/>
-                <Button text="Buscar"
-                        onAction="#aoBuscar"
-                        styleClass="sel-btn-consulta-v3"
-                        prefHeight="36"/>
-                <Button text="Limpar"
-                        onAction="#aoLimparBusca"
-                        styleClass="sel-btn-consulta-v3"
-                        prefHeight="36"/>
+            <HBox alignment="CENTER_LEFT" spacing="12">
+                <Label fx:id="labelTotalIngressos"
+                       text="0 ingresso(s)"
+                       styleClass="setor-info"/>
                 <Region HBox.hgrow="ALWAYS"/>
-                <Button text="🎟 Meus Ingressos"
-                        onAction="#irMeusIngressos"
+                <Button text="🎟 Comprar Ingressos"
+                        onAction="#irIngressos"
                         styleClass="sel-btn-cadastro-v3"
-                        prefHeight="36"/>
+                        prefHeight="38"/>
             </HBox>
 
-            <!-- GRADE DE PARTIDAS -->
+            <!-- GRADE DE INGRESSOS -->
 
-            <FlowPane fx:id="painelPartidas"
+            <FlowPane fx:id="painelIngressos"
                       hgap="24"
                       vgap="24"
-                      alignment="CENTER">
-
-                <!-- os cards de partida sao adicionados dinamicamente pelo controller -->
-
+                      alignment="TOP_LEFT">
+                <!-- cards adicionados dinamicamente pelo controller -->
             </FlowPane>
 
         </VBox>

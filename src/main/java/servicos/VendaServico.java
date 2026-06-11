@@ -2,11 +2,12 @@ package servicos;
 
 import modelo.classes.Ingresso;
 import modelo.classes.CategoriaIngresso;
+import modelo.classes.Partida;
 import modelo.classes.Usuario;
 import modelo.classes.Venda;
 import modelo.enumerations.TipoPerfil;
 import modelo.excecoes.AcessoNegadoException;
-import persistencia.CategoriaIngressoDAO;
+import persistencia.PartidaDAO;
 import persistencia.VendaDAO;
 import servicos.usuario.SessaoUsuario;
 
@@ -16,11 +17,11 @@ import java.util.List;
 public class VendaServico {
 
     private VendaDAO dao;
-    private CategoriaIngressoDAO categoriaDAO;
+    private PartidaDAO partidaDAO;
 
     public VendaServico() {
         this.dao = new VendaDAO();
-        this.categoriaDAO = new CategoriaIngressoDAO();
+        this.partidaDAO = new PartidaDAO();
     }
 
     // ------- abertura e gerenciamento de venda ------- //
@@ -72,15 +73,34 @@ public class VendaServico {
             throw new IllegalStateException("Não é possível finalizar uma venda sem ingressos");
         }
 
-        // finalizarVenda() reduz o estoque nos objetos em memoria.
-        // em seguida persistimos cada categoria alterada no arquivo.
+        // finalizarVenda() reduz o estoque nos objetos CategoriaIngresso em memória.
         venda.finalizarVenda();
 
+        // ── CORREÇÃO: persiste o estoque atualizado dentro da própria Partida ──
+        // As CategoriaIngresso vivem dentro do objeto Partida (partidas.dat).
+        // Precisamos recarregar a Partida do arquivo, encontrar a categoria pelo nome,
+        // aplicar a redução e salvar a Partida atualizada de volta.
         for (Ingresso ingresso : venda.getIngressos()) {
-            CategoriaIngresso categoria = ingresso.getCategoria();
-            if (categoria != null) {
-                categoriaDAO.atualizar(categoria);
+            CategoriaIngresso categoriaVenda = ingresso.getCategoria();
+            Partida partidaVenda = ingresso.getPartida();
+            if (categoriaVenda == null || partidaVenda == null) continue;
+
+            // Recarrega a partida do arquivo (estado persistido mais recente)
+            Partida partidaPersistida = partidaDAO.buscarPorNumero(partidaVenda.getNumeroPartidas());
+            if (partidaPersistida == null) continue;
+
+            // Encontra a categoria correspondente dentro da partida pelo nome
+            CategoriaIngresso categoriaPersistida =
+                    partidaPersistida.buscarCategoriaPorNome(categoriaVenda.getNome());
+            if (categoriaPersistida == null) continue;
+
+            // Decrementa 1 por ingresso (já validado que há estoque antes da compra)
+            if (categoriaPersistida.getEstoque() > 0) {
+                categoriaPersistida.reduzirEstoque(1);
             }
+
+            // Persiste a partida com o novo estoque
+            partidaDAO.atualizar(partidaPersistida);
         }
 
         dao.atualizar(venda);

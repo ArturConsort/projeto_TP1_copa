@@ -241,3 +241,26 @@
     -fx-text-fill: white;
     -fx-background-color: #1f1f1f;
 }
+
+/* ===== BARRA DE PESQUISA ===== */
+
+.filtro-box {
+    -fx-background-color: rgba(20, 16, 8, 0.7);
+    -fx-background-radius: 10;
+    -fx-border-color: #3a3020;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+    -fx-padding: 12 16 12 16;
+}
+
+/* status de validação nos cards de ingresso */
+.status-agendada {
+    -fx-text-fill: #4caf50;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+}
+
+.status-finalizada {
+    -fx-text-fill: #9e9e9e;
+    -fx-font-size: 12px;
+}

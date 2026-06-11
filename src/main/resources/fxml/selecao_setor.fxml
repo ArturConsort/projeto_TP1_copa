@@ -144,40 +144,13 @@
 
             </StackPane>
 
-            <FlowPane hgap="14"
+            <FlowPane fx:id="painelLegenda"
+                      hgap="14"
                       vgap="8"
                       alignment="CENTER"
                       styleClass="setor-legenda">
 
-                <HBox spacing="6" alignment="CENTER_LEFT" styleClass="legenda-item">
-                    <Region styleClass="legenda-cor-pcr"/>
-                    <Label text="PCR"/>
-                </HBox>
-
-                <HBox spacing="6" alignment="CENTER_LEFT" styleClass="legenda-item">
-                    <Region styleClass="legenda-cor-gold"/>
-                    <Label text="Gold"/>
-                </HBox>
-
-                <HBox spacing="6" alignment="CENTER_LEFT" styleClass="legenda-item">
-                    <Region styleClass="legenda-cor-premium"/>
-                    <Label text="Premium"/>
-                </HBox>
-
-                <HBox spacing="6" alignment="CENTER_LEFT" styleClass="legenda-item">
-                    <Region styleClass="legenda-cor-especial"/>
-                    <Label text="Especial"/>
-                </HBox>
-
-                <HBox spacing="6" alignment="CENTER_LEFT" styleClass="legenda-item">
-                    <Region styleClass="legenda-cor-vip"/>
-                    <Label text="VIP"/>
-                </HBox>
-
-                <HBox spacing="6" alignment="CENTER_LEFT" styleClass="legenda-item">
-                    <Region styleClass="legenda-cor-superior"/>
-                    <Label text="Superior"/>
-                </HBox>
+                <!-- itens de legenda inseridos dinamicamente pelo SelecaoSetorController -->
 
             </FlowPane>
 

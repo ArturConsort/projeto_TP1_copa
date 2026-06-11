@@ -183,13 +183,36 @@ public class MenuController {
             );
         });
 
+        Button btnCategorias =
+                new Button("Categorias de Ingresso");
+
+        btnCategorias.getStyleClass().add("submenu-item");
+        btnCategorias.setOnAction(e -> {
+            subMenuPartidas.hide();
+            navegarPara(
+                    "/fxml/gerenciar_categorias_partida.fxml",
+                    "Gerenciar Categorias de Ingresso por Partida"
+            );
+        });
+
+        // Mostrar "Categorias de Ingresso" apenas para administradores
+        Usuario logadoAdmin = SessaoUsuario.getInstancia().getUsuarioLogado();
+        btnCategorias.setVisible(logadoAdmin != null &&
+                logadoAdmin.getPerfil() == TipoPerfil.ADMINISTRADOR);
+
         subMenuPartidas = criarPopup(
                 btnPartidas,
                 btnCadastrarPartida,
                 btnResultado,
-                btnConsulta
+                btnConsulta,
+                btnCategorias
         );
     }
+
+    // =========================================================
+    // SUBMENU ESTÁDIOS
+    // =========================================================
+
     private void configurarSubMenuEstadios() {
 
         Button btnCadastrar = new Button("Cadastrar Estádio");
@@ -208,12 +231,16 @@ public class MenuController {
 
         subMenuEstadios = criarPopup(btnEstadios, btnCadastrar, btnConsultar);
     }
+
+    // =========================================================
+    // SUBMENU ÁRBITROS
+    // =========================================================
+
     private void configurarSubMenuArbitros() {
 
         Button btnCadastrar = new Button("Cadastrar Árbitro");
 
         btnCadastrar.getStyleClass().add("submenu-item");
-
         btnCadastrar.setOnAction(e -> {
             subMenuArbitros.hide();
             navegarParaArbitros(
@@ -225,7 +252,6 @@ public class MenuController {
         Button btnConsultar = new Button("Consultar Árbitros");
 
         btnConsultar.getStyleClass().add("submenu-item");
-
         btnConsultar.setOnAction(e -> {
             subMenuArbitros.hide();
             navegarParaArbitros(
@@ -240,12 +266,16 @@ public class MenuController {
                 btnConsultar
         );
     }
+
+    // =========================================================
+    // SUBMENU DESIGNAÇÕES
+    // =========================================================
+
     private void configurarSubMenuDesignacoes() {
 
         Button btnCadastrar = new Button("Cadastrar Designação");
 
         btnCadastrar.getStyleClass().add("submenu-item");
-
         btnCadastrar.setOnAction(e -> {
             subMenuDesignacoes.hide();
             navegarParaDesignacoes(
@@ -257,7 +287,6 @@ public class MenuController {
         Button btnConsultar = new Button("Consultar Designações");
 
         btnConsultar.getStyleClass().add("submenu-item");
-
         btnConsultar.setOnAction(e -> {
             subMenuDesignacoes.hide();
             navegarParaDesignacoes(
@@ -356,13 +385,14 @@ public class MenuController {
     private void irDesignacoes() {
         // submenu
     }
+
     @FXML
     private void irUsuarios() {
         // submenu
     }
 
     @FXML
-    private void irRelatorios() {navegarPara("/fxml/relatorios.fxml", "Relatórios");}
+    private void irRelatorios() { navegarPara("/fxml/relatorios.fxml", "Relatórios"); }
 
     @FXML
     private void handleLogout() {
@@ -377,43 +407,26 @@ public class MenuController {
         );
     }
 
-
-
     // =========================================================
     // UTILITÁRIOS
     // =========================================================
 
-    private void navegarPara(
-            String fxmlPath,
-            String titulo
-    ) {
+    private void navegarPara(String fxmlPath, String titulo) {
 
         try {
-
             FXMLLoader loader =
-                    new FXMLLoader(
-                            getClass().getResource(fxmlPath)
-                    );
+                    new FXMLLoader(getClass().getResource(fxmlPath));
 
-            Stage stage =
-                    (Stage) btnHome.getScene().getWindow();
-
-            stage.setScene(
-                    new Scene(loader.load(), 900, 600)
-            );
-
+            Stage stage = (Stage) btnHome.getScene().getWindow();
+            stage.setScene(new Scene(loader.load(), 900, 600));
             stage.setTitle(titulo);
 
         } catch (Exception e) {
-
-            System.out.println(
-                    "Tela ainda não implementada: "
-                            + fxmlPath
-            );
-
+            System.out.println("Tela ainda não implementada: " + fxmlPath);
             e.printStackTrace();
         }
     }
+
     private void navegarParaEstadios(String fxmlPath, String titulo) {
 
         try {
@@ -422,7 +435,6 @@ public class MenuController {
             stage.setScene(new Scene(loader.load(), 900, 600));
             stage.setTitle(titulo);
 
-            // Injeta o serviço no controller carregado
             Object controller = loader.getController();
             if (controller instanceof CadastroEstadioController c) {
                 c.setServico(new servicos.EstadioServico(
@@ -443,6 +455,7 @@ public class MenuController {
             e.printStackTrace();
         }
     }
+
     private void navegarParaArbitros(String fxmlPath, String titulo) {
 
         try {
@@ -469,6 +482,7 @@ public class MenuController {
             e.printStackTrace();
         }
     }
+
     private void navegarParaDesignacoes(String fxmlPath, String titulo) {
 
         try {
@@ -495,6 +509,7 @@ public class MenuController {
             e.printStackTrace();
         }
     }
+
     private void esconderTodos() {
 
         for (Button b : new Button[]{
@@ -508,7 +523,6 @@ public class MenuController {
                 btnDesignacoes,
                 btnUsuarios
         }) {
-
             b.setVisible(false);
             b.setManaged(false);
         }
@@ -517,7 +531,6 @@ public class MenuController {
     private void mostrar(Button... botoes) {
 
         for (Button b : botoes) {
-
             b.setVisible(true);
             b.setManaged(true);
         }

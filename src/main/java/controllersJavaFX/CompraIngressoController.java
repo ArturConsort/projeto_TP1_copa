@@ -9,12 +9,14 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import modelo.classes.*;
 import modelo.enumerations.TipoPerfil;
+import persistencia.IngressoDAO;
 import servicos.IngressoServico;
 import servicos.VendaServico;
 import servicos.usuario.SessaoCompra;
 import servicos.usuario.SessaoUsuario;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 
 public class CompraIngressoController {
@@ -59,6 +61,11 @@ public class CompraIngressoController {
     @FXML
     public void initialize() {
 
+        // ── Sincroniza o contador de IDs antes de qualquer coisa ────────────
+        // Garante que novos Ingresso() criados nesta sessão nunca repitam IDs
+        // de ingressos já gravados em execuções anteriores.
+        new IngressoDAO().carregaLista();
+
         Partida partida = SessaoCompra.getInstancia().getPartidaSelecionada();
         CategoriaIngresso categoria = SessaoCompra.getInstancia().getCategoriaSelecionada();
 
@@ -95,6 +102,60 @@ public class CompraIngressoController {
             campoPais.setText(logado.getPais());
         }
 
+        // ── Formatação automática do CPF ────────────────────
+        campoCpf.textProperty().addListener((obs, antigo, novo) -> {
+            if (novo == null) return;
+            String digitos = novo.replaceAll("[^0-9]", "");
+            if (digitos.length() > 11) digitos = digitos.substring(0, 11);
+            String formatado = formatarCpf(digitos);
+            if (!formatado.equals(novo)) {
+                campoCpf.setText(formatado);
+                campoCpf.positionCaret(formatado.length());
+            }
+        });
+
+        // ── Formatação automática do número do cartão ───────
+        campoNumeroCartao.textProperty().addListener((obs, antigo, novo) -> {
+            if (novo == null) return;
+            String digitos = novo.replaceAll("[^0-9]", "");
+            if (digitos.length() > 16) digitos = digitos.substring(0, 16);
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < digitos.length(); i++) {
+                if (i > 0 && i % 4 == 0) sb.append(' ');
+                sb.append(digitos.charAt(i));
+            }
+            String formatado = sb.toString();
+            if (!formatado.equals(novo)) {
+                campoNumeroCartao.setText(formatado);
+                campoNumeroCartao.positionCaret(formatado.length());
+            }
+        });
+
+        // ── Formatação automática de validade (MM/AA) ───────
+        campoValidadeCartao.textProperty().addListener((obs, antigo, novo) -> {
+            if (novo == null) return;
+            String digitos = novo.replaceAll("[^0-9]", "");
+            if (digitos.length() > 4) digitos = digitos.substring(0, 4);
+            String formatado = digitos.length() > 2
+                    ? digitos.substring(0, 2) + "/" + digitos.substring(2)
+                    : digitos;
+            if (!formatado.equals(novo)) {
+                campoValidadeCartao.setText(formatado);
+                campoValidadeCartao.positionCaret(formatado.length());
+            }
+        });
+
+        // ── Apenas dígitos no CVV ────────────────────────────
+        campoCvvCartao.textProperty().addListener((obs, antigo, novo) -> {
+            if (novo == null) return;
+            String digitos = novo.replaceAll("[^0-9]", "");
+            if (digitos.length() > 4) digitos = digitos.substring(0, 4);
+            if (!digitos.equals(novo)) {
+                campoCvvCartao.setText(digitos);
+                campoCvvCartao.positionCaret(digitos.length());
+            }
+        });
+
         // meios de pagamento
         comboPagamento.setItems(FXCollections.observableArrayList(
                 "Cartão de crédito",
@@ -108,6 +169,66 @@ public class CompraIngressoController {
         // estado inicial: nenhum meio selecionado, oculta dados do cartao
         painelDadosCartao.setVisible(false);
         painelDadosCartao.setManaged(false);
+    }
+
+    // ── Formatação de CPF ────────────────────────────────────
+
+    private String formatarCpf(String digitos) {
+        StringBuilder sb = new StringBuilder(digitos);
+        if (sb.length() > 9) sb.insert(9, '-');
+        if (sb.length() > 6) sb.insert(6, '.');
+        if (sb.length() > 3) sb.insert(3, '.');
+        return sb.toString();
+    }
+
+    // ── Validações ───────────────────────────────────────────
+
+    private boolean cpfValido(String cpf) {
+        String digitos = cpf.replaceAll("[^0-9]", "");
+        if (digitos.length() != 11) return false;
+        if (digitos.matches("(\\d)\\1{10}")) return false;
+
+        int soma = 0;
+        for (int i = 0; i < 9; i++) soma += Character.getNumericValue(digitos.charAt(i)) * (10 - i);
+        int r1 = (soma * 10) % 11;
+        if (r1 == 10 || r1 == 11) r1 = 0;
+        if (r1 != Character.getNumericValue(digitos.charAt(9))) return false;
+
+        soma = 0;
+        for (int i = 0; i < 10; i++) soma += Character.getNumericValue(digitos.charAt(i)) * (11 - i);
+        int r2 = (soma * 10) % 11;
+        if (r2 == 10 || r2 == 11) r2 = 0;
+        return r2 == Character.getNumericValue(digitos.charAt(10));
+    }
+
+    private boolean emailValido(String email) {
+        return email != null && email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
+    }
+
+    private boolean cartaoValido(String numero) {
+        String digitos = numero.replaceAll("[^0-9]", "");
+        if (digitos.length() < 13 || digitos.length() > 19) return false;
+        int soma = 0;
+        boolean alternar = false;
+        for (int i = digitos.length() - 1; i >= 0; i--) {
+            int d = Character.getNumericValue(digitos.charAt(i));
+            if (alternar) { d *= 2; if (d > 9) d -= 9; }
+            soma += d;
+            alternar = !alternar;
+        }
+        return soma % 10 == 0;
+    }
+
+    private boolean validadeCartaoValida(String validade) {
+        if (validade == null || !validade.matches("\\d{2}/\\d{2}")) return false;
+        try {
+            int mes = Integer.parseInt(validade.substring(0, 2));
+            int ano = Integer.parseInt(validade.substring(3)) + 2000;
+            if (mes < 1 || mes > 12) return false;
+            return !YearMonth.of(ano, mes).isBefore(YearMonth.now());
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     private void atualizarTotal() {
@@ -163,6 +284,18 @@ public class CompraIngressoController {
             return;
         }
 
+        if (!cpfValido(campoCpf.getText())) {
+            mostrarAlerta(Alert.AlertType.WARNING, "CPF inválido. Verifique o número informado.");
+            campoCpf.requestFocus();
+            return;
+        }
+
+        if (!emailValido(campoEmail.getText())) {
+            mostrarAlerta(Alert.AlertType.WARNING, "E-mail inválido. Use o formato: usuario@dominio.com");
+            campoEmail.requestFocus();
+            return;
+        }
+
         String meioPagamento = comboPagamento.getValue();
         if (meioPagamento == null) {
             mostrarAlerta(Alert.AlertType.WARNING, "Selecione um meio de pagamento.");
@@ -170,13 +303,29 @@ public class CompraIngressoController {
         }
 
         boolean exigeCartao = meioPagamento.equals("Cartão de crédito") || meioPagamento.equals("Cartão de débito");
-        if (exigeCartao && (
-                campoNumeroCartao.getText().isBlank()
-                        || campoNomeCartao.getText().isBlank()
-                        || campoValidadeCartao.getText().isBlank()
-                        || campoCvvCartao.getText().isBlank())) {
-            mostrarAlerta(Alert.AlertType.WARNING, "Preencha os dados do cartão.");
-            return;
+        if (exigeCartao) {
+            if (campoNumeroCartao.getText().isBlank()
+                    || campoNomeCartao.getText().isBlank()
+                    || campoValidadeCartao.getText().isBlank()
+                    || campoCvvCartao.getText().isBlank()) {
+                mostrarAlerta(Alert.AlertType.WARNING, "Preencha todos os dados do cartão.");
+                return;
+            }
+            if (!cartaoValido(campoNumeroCartao.getText())) {
+                mostrarAlerta(Alert.AlertType.WARNING, "Número de cartão inválido.");
+                campoNumeroCartao.requestFocus();
+                return;
+            }
+            if (!validadeCartaoValida(campoValidadeCartao.getText())) {
+                mostrarAlerta(Alert.AlertType.WARNING, "Validade do cartão inválida ou expirada. Use o formato MM/AA.");
+                campoValidadeCartao.requestFocus();
+                return;
+            }
+            if (campoCvvCartao.getText().replaceAll("[^0-9]", "").length() < 3) {
+                mostrarAlerta(Alert.AlertType.WARNING, "CVV inválido. Deve conter 3 ou 4 dígitos.");
+                campoCvvCartao.requestFocus();
+                return;
+            }
         }
 
         int quantidade = spinnerQuantidade.getValue();
@@ -214,13 +363,14 @@ public class CompraIngressoController {
                 vendaServico.adicionarIngresso(idVenda, ingresso);
             }
 
+            // finalizarVenda persiste o estoque atualizado dentro de partidas.dat
             vendaServico.finalizarVenda(idVenda);
 
             mostrarAlerta(Alert.AlertType.INFORMATION,
                     "Compra realizada com sucesso!\nPagamento via " + meioPagamento + ".\nID da venda: " + idVenda);
 
             SessaoCompra.getInstancia().encerrar();
-            navegarPara("/fxml/ingressos.fxml", "Ingressos");
+            navegarPara("/fxml/meus_ingressos.fxml", "Meus Ingressos");
 
         } catch (Exception e) {
             mostrarAlerta(Alert.AlertType.ERROR, "Erro ao concluir a compra: " + e.getMessage());

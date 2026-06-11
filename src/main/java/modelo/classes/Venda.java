@@ -40,11 +40,10 @@ public class Venda implements Serializable {
     public void finalizarVenda() {
         calcularTotal();
         this.status = "FINALIZADA";
-        for (Ingresso i : ingressos) {
-            if (i.getCategoria() != null) {
-                i.getCategoria().reduzirEstoque(1);
-            }
-        }
+        // Nota: a redução de estoque é responsabilidade de VendaServico.finalizarVenda(),
+        // que recarrega a Partida do arquivo, aplica o decremento e persiste corretamente.
+        // Fazer reduzirEstoque() aqui operaria sobre cópias em memória que são descartadas,
+        // fazendo com que o estoque nunca seja salvo no disco.
     }
 
     // ------- getters e setters ------- //

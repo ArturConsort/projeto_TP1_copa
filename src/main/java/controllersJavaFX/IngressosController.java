@@ -7,6 +7,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -16,6 +17,7 @@ import servicos.Partida.PartidaService;
 import servicos.usuario.SessaoCompra;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class IngressosController {
 
@@ -29,25 +31,60 @@ public class IngressosController {
     @FXML private Button btnIngressos;
 
     @FXML private FlowPane painelPartidas;
+    @FXML private TextField campoBusca;
 
     private final PartidaService partidaService = new PartidaService();
+    private List<Partida> todasAsPartidas;
 
     // ── Inicialização ───────────────────────────────────────
 
     @FXML
     public void initialize() {
-        carregarPartidas();
+        todasAsPartidas = partidaService.listarPartidas();
+        renderizarPartidas(todasAsPartidas);
+
+        // busca em tempo real ao digitar
+        if (campoBusca != null) {
+            campoBusca.textProperty().addListener((obs, antigo, novo) -> filtrarPartidas(novo));
+        }
     }
 
-    private void carregarPartidas() {
+    private void filtrarPartidas(String texto) {
+        if (texto == null || texto.isBlank()) {
+            renderizarPartidas(todasAsPartidas);
+            return;
+        }
+        String termo = texto.trim().toLowerCase();
+        List<Partida> filtradas = todasAsPartidas.stream()
+                .filter(p -> {
+                    String casa = p.getTimeCasa() != null ? p.getTimeCasa().getPais().toLowerCase() : "";
+                    String visitante = p.getTimeVisitante() != null ? p.getTimeVisitante().getPais().toLowerCase() : "";
+                    String data = p.getData() != null ? p.getData().toLowerCase() : "";
+                    String estadio = p.getEstadio() != null ? p.getEstadio().getNome().toLowerCase() : "";
+                    return casa.contains(termo) || visitante.contains(termo)
+                            || data.contains(termo) || estadio.contains(termo);
+                })
+                .collect(Collectors.toList());
+        renderizarPartidas(filtradas);
+    }
+
+    @FXML
+    private void aoBuscar() {
+        if (campoBusca != null) filtrarPartidas(campoBusca.getText());
+    }
+
+    @FXML
+    private void aoLimparBusca() {
+        if (campoBusca != null) campoBusca.clear();
+        renderizarPartidas(todasAsPartidas);
+    }
+
+    private void renderizarPartidas(List<Partida> partidas) {
 
         painelPartidas.getChildren().clear();
 
-        List<Partida> partidas = partidaService.listarPartidas();
-
         if (partidas == null || partidas.isEmpty()) {
-
-            Label vazio = new Label("Nenhuma partida disponível no momento.");
+            Label vazio = new Label("Nenhuma partida encontrada.");
             vazio.getStyleClass().add("setor-info");
             painelPartidas.getChildren().add(vazio);
             return;
@@ -138,6 +175,10 @@ public class IngressosController {
     @FXML private void irEstadios()  { navegarPara("/fxml/estadios.fxml",  "Estádios");  }
     @FXML private void irArbitros()  { navegarPara("/fxml/arbitros.fxml",  "Árbitros");  }
     @FXML private void irIngressos() { /* já estamos aqui */ }
+
+    @FXML private void irMeusIngressos() {
+        navegarPara("/fxml/meus_ingressos.fxml", "Meus Ingressos");
+    }
 
     // ── Utilitário ──────────────────────────────────────────
 

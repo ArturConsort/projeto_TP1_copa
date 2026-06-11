@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.String?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllersJavaFX.GerenciarCategoriasPartidaController"
+            prefWidth="1000"
+            prefHeight="680"
+            styleClass="root">
+
+    <VBox spacing="20"
+          AnchorPane.topAnchor="20"
+          AnchorPane.leftAnchor="20"
+          AnchorPane.rightAnchor="20"
+          AnchorPane.bottomAnchor="20">
+
+        <!-- Cabeçalho / HUD mínimo -->
+        <HBox spacing="12" alignment="CENTER_LEFT">
+            <Button fx:id="btnHome" text="← Menu" onAction="#irHome" styleClass="btn-voltar"/>
+            <Label text="Gerenciar Categorias de Ingresso por Partida" styleClass="titulo"/>
+        </HBox>
+
+        <!-- Seleção da partida -->
+        <VBox spacing="6" styleClass="card">
+            <Label text="1. Selecione a partida" styleClass="label"/>
+            <ComboBox fx:id="comboPartida"
+                      promptText="Selecione uma partida..."
+                      maxWidth="Infinity"/>
+        </VBox>
+
+        <!-- Tabela + formulário -->
+        <HBox spacing="20" VBox.vgrow="ALWAYS">
+
+            <!-- Tabela de categorias atuais -->
+            <VBox spacing="8" HBox.hgrow="ALWAYS" styleClass="card">
+                <Label text="Categorias desta partida" styleClass="label"/>
+
+                <TableView fx:id="tabelaCategorias" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colNome"    text="Categoria" prefWidth="160"/>
+                        <TableColumn fx:id="colPreco"   text="Preço"     prefWidth="130"/>
+                        <TableColumn fx:id="colEstoque" text="Estoque"   prefWidth="100"/>
+                    </columns>
+                    <placeholder><Label text="Nenhuma categoria cadastrada para esta partida."/></placeholder>
+                </TableView>
+
+                <HBox spacing="10">
+                    <Button text="Remover selecionada" onAction="#aoRemover" styleClass="btn-excluir"/>
+                    <Button text="Restaurar padrão (Superior/Inferior/VIP)" onAction="#aoRestaurarPadrao" styleClass="btn-voltar"/>
+                </HBox>
+            </VBox>
+
+            <!-- Formulário de adição / edição -->
+            <VBox spacing="12" prefWidth="300" styleClass="card">
+                <Label text="2. Adicionar ou editar categoria" styleClass="label"/>
+
+                <VBox spacing="4">
+                    <Label text="Nome da categoria" styleClass="label"/>
+                    <TextField fx:id="campoNome" promptText="Ex: Cadeira Especial"/>
+                </VBox>
+
+                <VBox spacing="4">
+                    <Label text="Preço (R$)" styleClass="label"/>
+                    <TextField fx:id="campoPreco" promptText="Ex: 750.00"/>
+                </VBox>
+
+                <VBox spacing="4">
+                    <Label text="Estoque (vagas)" styleClass="label"/>
+                    <TextField fx:id="campoEstoque" promptText="Ex: 5000"/>
+                </VBox>
+
+                <HBox spacing="10">
+                    <Button text="Adicionar"  onAction="#aoAdicionar"  styleClass="btn-cadastrar"/>
+                    <Button text="Atualizar"  onAction="#aoAtualizar"  styleClass="btn-voltar"/>
+                </HBox>
+
+                <Label fx:id="labelFeedback" wrapText="true"/>
+
+                <!-- Resumo das categorias padrão -->
+                <Separator/>
+                <VBox spacing="4">
+                    <Label text="Categorias padrão ao criar partida:" styleClass="label"/>
+                    <Label text="• Superior — R$ 500,00 — 60% capacidade" styleClass="setor-info"/>
+                    <Label text="• Inferior — R$ 900,00 — 30% capacidade" styleClass="setor-info"/>
+                    <Label text="• VIP      — R$1200,00 — 10% capacidade" styleClass="setor-info"/>
+                </VBox>
+            </VBox>
+
+        </HBox>
+
+    </VBox>
+
+    <stylesheets>
+        <String fx:value="/css/cadastro_partida.css"/>
+    </stylesheets>
+
+</AnchorPane>
