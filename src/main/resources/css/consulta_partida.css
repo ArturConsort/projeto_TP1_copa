@@ -108,3 +108,36 @@
     -fx-border-color: #d4a32a;
     -fx-text-fill: #d4a32a;
 }
+
+/* ===== CELULAS DE RESULTADO ===== */
+.cell-vencedor {
+    -fx-text-fill: #4caf50;
+    -fx-font-weight: bold;
+}
+
+.cell-perdedor {
+    -fx-text-fill: #ef5350;
+    -fx-font-weight: bold;
+}
+
+/* Botão de mudar status na tabela */
+.btn-status {
+    -fx-background-color: #5c4200;
+    -fx-text-fill: #d4af37;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-font-size: 11px;
+    -fx-padding: 3 8;
+}
+
+.btn-status:hover {
+    -fx-background-color: #7a5800;
+}
+
+/* Separador de seções */
+.section-label {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #d4af37;
+}

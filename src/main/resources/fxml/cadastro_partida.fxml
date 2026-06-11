@@ -10,7 +10,7 @@
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="controllersJavaFX.CadastroPartidaController"
             prefWidth="900"
-            prefHeight="680"
+            prefHeight="580"
             styleClass="root">
 
     <VBox alignment="TOP_CENTER"
@@ -57,22 +57,8 @@
                               maxWidth="Infinity"/>
                 </VBox>
 
-                <!-- Árbitro -->
-                <VBox spacing="5" GridPane.rowIndex="1" GridPane.columnIndex="1">
-                    <Label text="Árbitro principal" styleClass="label"/>
-                    <ComboBox fx:id="comboArbitro"
-                              promptText="Selecione o árbitro"
-                              maxWidth="Infinity"/>
-                </VBox>
-
-                <!-- Cidade -->
-                <VBox spacing="5" GridPane.rowIndex="2" GridPane.columnIndex="0">
-                    <Label text="Cidade" styleClass="label"/>
-                    <TextField fx:id="campoCidade" promptText="Cidade da partida"/>
-                </VBox>
-
                 <!-- Fase -->
-                <VBox spacing="5" GridPane.rowIndex="2" GridPane.columnIndex="1">
+                <VBox spacing="5" GridPane.rowIndex="1" GridPane.columnIndex="1">
                     <Label text="Fase" styleClass="label"/>
                     <ComboBox fx:id="comboFase"
                               promptText="Selecione a fase"
@@ -80,7 +66,7 @@
                 </VBox>
 
                 <!-- Data — DatePicker com calendário visual -->
-                <VBox spacing="5" GridPane.rowIndex="3" GridPane.columnIndex="0">
+                <VBox spacing="5" GridPane.rowIndex="2" GridPane.columnIndex="0">
                     <Label text="Data" styleClass="label"/>
                     <DatePicker fx:id="campoData"
                                 promptText="Selecione a data"
@@ -88,7 +74,7 @@
                 </VBox>
 
                 <!-- Horário -->
-                <VBox spacing="5" GridPane.rowIndex="3" GridPane.columnIndex="1">
+                <VBox spacing="5" GridPane.rowIndex="2" GridPane.columnIndex="1">
                     <Label text="Horário (hh:mm)" styleClass="label"/>
                     <TextField fx:id="campoHorario" promptText="Ex: 16:00"/>
                 </VBox>
@@ -98,8 +84,7 @@
             <!-- Botões -->
             <HBox spacing="12">
                 <Button text="Salvar"  onAction="#aoSalvar"  styleClass="btn-cadastrar"/>
-                <Button text="Editar"  onAction="#aoEditar"  styleClass="btn-voltar"/>
-                <Button text="Excluir" onAction="#aoExcluir" styleClass="btn-excluir"/>
+                <Button text="Voltar"  onAction="#aoVoltar"  styleClass="btn-voltar"/>
             </HBox>
 
             <Label fx:id="labelFeedback"/>

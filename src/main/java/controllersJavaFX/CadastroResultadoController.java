@@ -26,7 +26,6 @@ public class CadastroResultadoController {
     @FXML
     public void initialize() {
         carregarPartidas();
-        // Quando trocar a partida, atualiza os times disponíveis
         comboPartida.setOnAction(e -> atualizarTimes());
     }
 
@@ -40,7 +39,6 @@ public class CadastroResultadoController {
         }
     }
 
-    // Só os dois times da partida selecionada ficam disponíveis
     private void atualizarTimes() {
         Partida p = comboPartida.getValue();
         if (p == null) return;
@@ -65,20 +63,21 @@ public class CadastroResultadoController {
             feedback("Resultado registrado com sucesso!", true);
             limpar();
             carregarPartidas();
-
         } catch (Exception e) {
             feedback(e.getMessage(), false);
         }
     }
 
+    // Volta para a tela Home
     @FXML
     private void aoVoltar() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/lista_partidas.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/menu.fxml"));
             Stage stage = (Stage) comboPartida.getScene().getWindow();
             stage.setScene(new Scene(loader.load(), 1200, 700));
+            stage.setTitle("Copa do Mundo 2026");
         } catch (Exception e) {
-            feedback("Erro ao navegar: " + e.getMessage(), false);
+            feedback("Erro ao voltar: " + e.getMessage(), false);
         }
     }
 

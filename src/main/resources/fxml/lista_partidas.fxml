@@ -2,14 +2,13 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import java.lang.String?>
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="controllersJavaFX.ListaPartidasController"
-      prefWidth="1200"
+      prefWidth="1400"
       prefHeight="700">
 
     <style>
@@ -17,49 +16,56 @@
         #3d2e0a 0%, #1a1508 45%, #0a0a0a 100%);
     </style>
 
-    <!-- CORPO -->
-    <VBox VBox.vgrow="ALWAYS" spacing="20" alignment="TOP_CENTER">
+    <VBox VBox.vgrow="ALWAYS" spacing="16" alignment="TOP_CENTER">
         <padding><Insets top="30" right="40" bottom="20" left="40"/></padding>
 
         <Label text="Consulta de Partidas" styleClass="sel-titulo-v3"/>
 
         <!-- FILTROS -->
         <HBox spacing="15" alignment="CENTER_LEFT" styleClass="filtro-box">
-
             <Label text="Time"/>
-            <TextField fx:id="campoBuscarTime"
-                       promptText="Nome do time"
-                       prefWidth="200"/>
-
+            <TextField fx:id="campoBuscarTime" promptText="Nome do time" prefWidth="180"/>
             <Label text="Fase"/>
-            <ComboBox fx:id="comboBuscarFase"
-                      promptText="Fase"
-                      prefWidth="160"/>
-
+            <ComboBox fx:id="comboBuscarFase" promptText="Fase" prefWidth="150"/>
             <Label text="Data"/>
-            <TextField fx:id="campoBuscarData"
-                       promptText="dd/mm/aaaa"
-                       prefWidth="140"/>
-
-            <Button text="Pesquisar" onAction="#aoBuscar"  styleClass="sel-btn-cadastro-v3"/>
-            <Button text="Limpar"    onAction="#aoLimpar"  styleClass="sel-btn-consulta-v3"/>
-            <Button text="Excluir"   onAction="#aoExcluir" styleClass="btn-excluir"/>
-
+            <TextField fx:id="campoBuscarData" promptText="dd/mm/aaaa" prefWidth="130"/>
+            <Button text="Pesquisar" onAction="#aoBuscar" styleClass="sel-btn-cadastro-v3"/>
+            <Button text="Limpar"    onAction="#aoLimpar" styleClass="sel-btn-consulta-v3"/>
         </HBox>
 
-        <!-- TABELA -->
-        <TableView fx:id="tabelaPartidas"
-                   VBox.vgrow="ALWAYS"
-                   styleClass="tabela-partidas">
+        <!-- TABELA DE PARTIDAS PENDENTES/EM ANDAMENTO -->
+        <Label text="Partidas" styleClass="sel-titulo-v3"
+               style="-fx-font-size: 15; -fx-text-fill: #d4af37;"/>
+
+        <TableView fx:id="tabelaPartidas" VBox.vgrow="ALWAYS" styleClass="tabela-partidas">
             <columns>
-                <TableColumn fx:id="colNumero"    text="Nº"           prefWidth="50"/>
-                <TableColumn fx:id="colTimeCasa"  text="Time Casa"    prefWidth="180"/>
-                <TableColumn fx:id="colVisitante" text="Visitante"    prefWidth="180"/>
-                <TableColumn fx:id="colEstadio"   text="Estádio"      prefWidth="180"/>
-                <TableColumn fx:id="colData"      text="Data"         prefWidth="110"/>
-                <TableColumn fx:id="colHorario"   text="Horário"      prefWidth="90"/>
-                <TableColumn fx:id="colFase"      text="Fase"         prefWidth="160"/>
-                <TableColumn fx:id="colStatus"    text="Status"       prefWidth="120"/>
+                <TableColumn fx:id="colNumero"    text="Nº"        prefWidth="45"/>
+                <TableColumn fx:id="colTimeCasa"  text="Time Casa" prefWidth="130"/>
+                <TableColumn fx:id="colVisitante" text="Visitante" prefWidth="130"/>
+                <TableColumn fx:id="colEstadio"   text="Estádio"   prefWidth="130"/>
+                <TableColumn fx:id="colData"      text="Data"      prefWidth="100"/>
+                <TableColumn fx:id="colHorario"   text="Horário"   prefWidth="75"/>
+                <TableColumn fx:id="colFase"      text="Fase"      prefWidth="140"/>
+                <TableColumn fx:id="colStatus"    text="Status"    prefWidth="110"/>
+                <TableColumn fx:id="colStatus2"   text="Mudar Status" prefWidth="130"/>
+                <TableColumn fx:id="colAcoes"     text="Ações"     prefWidth="160"/>
+            </columns>
+        </TableView>
+
+        <!-- TABELA DE RESULTADOS FINALIZADOS -->
+        <Label text="Resultados Finalizados" styleClass="sel-titulo-v3"
+               style="-fx-font-size: 15; -fx-text-fill: #d4af37;"/>
+
+        <TableView fx:id="tabelaResultados" VBox.vgrow="ALWAYS" styleClass="tabela-partidas">
+            <columns>
+                <TableColumn fx:id="rColPartida"   text="Partida"           prefWidth="70"/>
+                <TableColumn fx:id="rColVencedor"  text="Vencedor"          prefWidth="150"/>
+                <TableColumn fx:id="rColPerdedor"  text="Perdedor"          prefWidth="150"/>
+                <TableColumn fx:id="rColPlacar"    text="Placar"            prefWidth="100"/>
+                <TableColumn fx:id="rColPenaltis"  text="Pênaltis"          prefWidth="100"/>
+                <TableColumn fx:id="rColAmarelos"  text="Cartões Amarelos"  prefWidth="140"/>
+                <TableColumn fx:id="rColVermelhos" text="Cartões Vermelhos" prefWidth="150"/>
+                <TableColumn fx:id="rColFase"      text="Fase"              prefWidth="140"/>
             </columns>
         </TableView>
 
@@ -67,6 +73,7 @@
         <HBox alignment="CENTER_RIGHT" spacing="15">
             <Label fx:id="labelTotal"/>
             <Button text="Atualizar" onAction="#aoAtualizar" styleClass="sel-btn-cadastro-v3"/>
+            <Button text="Voltar"    onAction="#aoVoltar"    styleClass="sel-btn-consulta-v3"/>
         </HBox>
 
     </VBox>

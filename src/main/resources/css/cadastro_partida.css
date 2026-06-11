@@ -146,3 +146,25 @@
     -fx-text-fill: #69db7c;
     -fx-font-size: 13;
 }
+
+/* Números dos dias do calendário em preto */
+.date-picker-popup .day-cell .label {
+    -fx-text-fill: black;
+}
+
+.date-picker-popup .day-cell:hover .label {
+    -fx-text-fill: black;
+}
+
+.date-picker-popup .day-cell:selected .label,
+.date-picker-popup .selected .label {
+    -fx-text-fill: black;
+}
+
+.date-picker-popup .today .label {
+    -fx-text-fill: #d4a32a;
+}
+
+.date-picker-popup .day-cell.other-month .label {
+    -fx-text-fill: #666;
+}

@@ -45,17 +45,13 @@
                 <!-- Time Vencedor -->
                 <VBox spacing="5" GridPane.rowIndex="1" GridPane.columnIndex="0">
                     <Label text="Time vencedor" styleClass="label"/>
-                    <ComboBox fx:id="comboVencedor"
-                              promptText="Selecione o vencedor"
-                              maxWidth="Infinity"/>
+                    <ComboBox fx:id="comboVencedor" promptText="Selecione o vencedor" maxWidth="Infinity"/>
                 </VBox>
 
                 <!-- Time Perdedor -->
                 <VBox spacing="5" GridPane.rowIndex="1" GridPane.columnIndex="1">
                     <Label text="Time perdedor" styleClass="label"/>
-                    <ComboBox fx:id="comboPerdedor"
-                              promptText="Selecione o perdedor"
-                              maxWidth="Infinity"/>
+                    <ComboBox fx:id="comboPerdedor" promptText="Selecione o perdedor" maxWidth="Infinity"/>
                 </VBox>
 
                 <!-- Placar -->
@@ -86,8 +82,8 @@
 
             <!-- Botões -->
             <HBox spacing="12">
-                <Button text="Salvar"  onAction="#aoSalvar"  styleClass="btn-cadastrar"/>
-                <Button text="Voltar"  onAction="#aoVoltar"  styleClass="btn-voltar"/>
+                <Button text="Salvar" onAction="#aoSalvar" styleClass="btn-cadastrar"/>
+                <Button text="Voltar" onAction="#aoVoltar" styleClass="btn-voltar"/>
             </HBox>
 
             <Label fx:id="labelFeedback"/>
