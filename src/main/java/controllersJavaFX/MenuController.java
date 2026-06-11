@@ -29,6 +29,9 @@ public class MenuController {
 
     private Popup subMenuUsuarios;
     private Popup subMenuPartidas;
+    private Popup subMenuEstadios;
+    private Popup subMenuArbitros;
+    private Popup subMenuDesignacoes;
 
     @FXML
     public void initialize() {
@@ -91,6 +94,15 @@ public class MenuController {
 
         if (btnPartidas.isVisible()) {
             configurarSubMenuPartidas();
+        }
+        if (btnEstadios.isVisible()) {
+            configurarSubMenuEstadios();
+        }
+        if (btnArbitros.isVisible()) {
+            configurarSubMenuArbitros();
+        }
+        if (btnDesignacoes.isVisible()) {
+            configurarSubMenuDesignacoes();
         }
     }
 
@@ -178,6 +190,88 @@ public class MenuController {
                 btnConsulta
         );
     }
+    private void configurarSubMenuEstadios() {
+
+        Button btnCadastrar = new Button("Cadastrar Estádio");
+        btnCadastrar.getStyleClass().add("submenu-item");
+        btnCadastrar.setOnAction(e -> {
+            subMenuEstadios.hide();
+            navegarParaEstadios("/fxml/cadastro_estadio.fxml", "Cadastro de Estádio");
+        });
+
+        Button btnConsultar = new Button("Consultar Estádios");
+        btnConsultar.getStyleClass().add("submenu-item");
+        btnConsultar.setOnAction(e -> {
+            subMenuEstadios.hide();
+            navegarParaEstadios("/fxml/consulta_estadio.fxml", "Consulta de Estádios");
+        });
+
+        subMenuEstadios = criarPopup(btnEstadios, btnCadastrar, btnConsultar);
+    }
+    private void configurarSubMenuArbitros() {
+
+        Button btnCadastrar = new Button("Cadastrar Árbitro");
+
+        btnCadastrar.getStyleClass().add("submenu-item");
+
+        btnCadastrar.setOnAction(e -> {
+            subMenuArbitros.hide();
+            navegarParaArbitros(
+                    "/fxml/cadastro_arbitro.fxml",
+                    "Cadastro de Árbitro"
+            );
+        });
+
+        Button btnConsultar = new Button("Consultar Árbitros");
+
+        btnConsultar.getStyleClass().add("submenu-item");
+
+        btnConsultar.setOnAction(e -> {
+            subMenuArbitros.hide();
+            navegarParaArbitros(
+                    "/fxml/consulta_arbitro.fxml",
+                    "Consulta de Árbitros"
+            );
+        });
+
+        subMenuArbitros = criarPopup(
+                btnArbitros,
+                btnCadastrar,
+                btnConsultar
+        );
+    }
+    private void configurarSubMenuDesignacoes() {
+
+        Button btnCadastrar = new Button("Cadastrar Designação");
+
+        btnCadastrar.getStyleClass().add("submenu-item");
+
+        btnCadastrar.setOnAction(e -> {
+            subMenuDesignacoes.hide();
+            navegarParaDesignacoes(
+                    "/fxml/cadastro_designacao.fxml",
+                    "Cadastro de Designação"
+            );
+        });
+
+        Button btnConsultar = new Button("Consultar Designações");
+
+        btnConsultar.getStyleClass().add("submenu-item");
+
+        btnConsultar.setOnAction(e -> {
+            subMenuDesignacoes.hide();
+            navegarParaDesignacoes(
+                    "/fxml/consulta_designacao.fxml",
+                    "Consulta de Designações"
+            );
+        });
+
+        subMenuDesignacoes = criarPopup(
+                btnDesignacoes,
+                btnCadastrar,
+                btnConsultar
+        );
+    }
 
     // =========================================================
     // MÉTODO GENÉRICO PARA POPUPS
@@ -240,12 +334,12 @@ public class MenuController {
 
     @FXML
     private void irEstadios() {
-        navegarPara("/fxml/estadios.fxml", "Estádios");
+        // submenu
     }
 
     @FXML
     private void irArbitros() {
-        navegarPara("/fxml/arbitros.fxml", "Árbitros");
+        // submenu
     }
 
     @FXML
@@ -260,9 +354,8 @@ public class MenuController {
 
     @FXML
     private void irDesignacoes() {
-        navegarPara("/fxml/designacoes.fxml", "Designações");
+        // submenu
     }
-
     @FXML
     private void irUsuarios() {
         // submenu
@@ -321,7 +414,87 @@ public class MenuController {
             e.printStackTrace();
         }
     }
+    private void navegarParaEstadios(String fxmlPath, String titulo) {
 
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Stage stage = (Stage) btnHome.getScene().getWindow();
+            stage.setScene(new Scene(loader.load(), 900, 600));
+            stage.setTitle(titulo);
+
+            // Injeta o serviço no controller carregado
+            Object controller = loader.getController();
+            if (controller instanceof CadastroEstadioController c) {
+                c.setServico(new servicos.EstadioServico(
+                        new persistencia.EstadioDAO(),
+                        new persistencia.PartidaDAO()
+                ));
+            } else if (controller instanceof ConsultaEstadioController c) {
+                servicos.EstadioServico svc = new servicos.EstadioServico(
+                        new persistencia.EstadioDAO(),
+                        new persistencia.PartidaDAO()
+                );
+                c.setServico(svc);
+                c.carregarDadosIniciais();
+            }
+
+        } catch (Exception e) {
+            System.out.println("Erro ao carregar tela de estádios: " + fxmlPath);
+            e.printStackTrace();
+        }
+    }
+    private void navegarParaArbitros(String fxmlPath, String titulo) {
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Stage stage = (Stage) btnHome.getScene().getWindow();
+            stage.setScene(new Scene(loader.load(), 900, 600));
+            stage.setTitle(titulo);
+
+            Object controller = loader.getController();
+            if (controller instanceof CadastroArbitroController c) {
+                c.setServico(new servicos.ArbitroServico(
+                        new persistencia.ArbitroDAO()
+                ));
+            } else if (controller instanceof ConsultaArbitroController c) {
+                servicos.ArbitroServico svc = new servicos.ArbitroServico(
+                        new persistencia.ArbitroDAO()
+                );
+                c.setServico(svc);
+                c.carregarDadosIniciais();
+            }
+
+        } catch (Exception e) {
+            System.out.println("Erro ao carregar tela de árbitros: " + fxmlPath);
+            e.printStackTrace();
+        }
+    }
+    private void navegarParaDesignacoes(String fxmlPath, String titulo) {
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Stage stage = (Stage) btnHome.getScene().getWindow();
+            stage.setScene(new Scene(loader.load(), 900, 600));
+            stage.setTitle(titulo);
+
+            Object controller = loader.getController();
+            if (controller instanceof CadastroDesignacaoController c) {
+                c.setServicos(
+                        new servicos.DesignacaoArbitroServico(new persistencia.DesignacaoArbitroDAO()),
+                        new servicos.ArbitroServico(new persistencia.ArbitroDAO()),
+                        new servicos.Partida.PartidaService()
+                );
+                c.carregarDadosIniciais();
+            } else if (controller instanceof ConsultaDesignacaoController c) {
+                c.setServico(new servicos.DesignacaoArbitroServico(new persistencia.DesignacaoArbitroDAO()));
+                c.carregarDadosIniciais();
+            }
+
+        } catch (Exception e) {
+            System.out.println("Erro ao carregar tela de designações: " + fxmlPath);
+            e.printStackTrace();
+        }
+    }
     private void esconderTodos() {
 
         for (Button b : new Button[]{

@@ -3,7 +3,7 @@ package modelo.classes;
 import modelo.enumerations.CategoriaArbitro;
 import java.io.Serializable;
 
-public class Arbitro implements Serializable{
+public class Arbitro implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -11,7 +11,7 @@ public class Arbitro implements Serializable{
     private int idade;
     private CategoriaArbitro categoria;
     private int experiencia;
-    private String nacionalidade; // nome do país de origem
+    private String nacionalidade;
 
     public Arbitro(String nome, int idade, CategoriaArbitro categoria, int experiencia, String nacionalidade) {
         setNome(nome);
@@ -19,6 +19,11 @@ public class Arbitro implements Serializable{
         setCategoria(categoria);
         setExperiencia(experiencia);
         setNacionalidade(nacionalidade);
+    }
+
+    @Override
+    public String toString() {
+        return nome + " (" + nacionalidade + " · " + categoria + ")";
     }
 
     public String getNome() {
@@ -62,7 +67,6 @@ public class Arbitro implements Serializable{
         if (experiencia < 0) {
             throw new IllegalArgumentException("A experiência não pode ser negativa.");
         }
-
         this.experiencia = experiencia;
     }
 

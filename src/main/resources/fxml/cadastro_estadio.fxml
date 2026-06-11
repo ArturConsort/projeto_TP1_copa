@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.String?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllersJavaFX.CadastroEstadioController"
+            prefWidth="900"
+            prefHeight="680"
+            styleClass="root">
+
+    <VBox alignment="TOP_CENTER"
+          spacing="20"
+          AnchorPane.topAnchor="20"
+          AnchorPane.leftAnchor="20"
+          AnchorPane.rightAnchor="20">
+
+        <ImageView fitWidth="70" fitHeight="70" preserveRatio="true">
+            <image><Image url="@/images/worldcup_logo.png"/></image>
+        </ImageView>
+
+        <VBox spacing="16" styleClass="card">
+
+            <Label text="Cadastro de Estádio" styleClass="titulo"/>
+
+            <GridPane hgap="15" vgap="12">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="50"/>
+                    <ColumnConstraints percentWidth="50"/>
+                </columnConstraints>
+
+                <VBox spacing="5" GridPane.rowIndex="0" GridPane.columnIndex="0">
+                    <Label text="Nome do estádio" styleClass="label"/>
+                    <TextField fx:id="txtNome"
+                               promptText="Digite o nome do estádio"
+                               maxWidth="Infinity"/>
+                </VBox>
+
+                <VBox spacing="5" GridPane.rowIndex="0" GridPane.columnIndex="1">
+                    <Label text="Cidade" styleClass="label"/>
+                    <TextField fx:id="txtCidade"
+                               promptText="Digite a cidade"
+                               maxWidth="Infinity"/>
+                </VBox>
+
+                <VBox spacing="5" GridPane.rowIndex="1" GridPane.columnIndex="0">
+                    <Label text="Estado (UF)" styleClass="label"/>
+                    <TextField fx:id="txtEstado"
+                               promptText="Ex.: SP, RJ, MG"
+                               maxWidth="Infinity"/>
+                </VBox>
+
+                <VBox spacing="5" GridPane.rowIndex="1" GridPane.columnIndex="1">
+                    <Label text="Capacidade" styleClass="label"/>
+                    <TextField fx:id="txtCapacidade"
+                               promptText="Número de lugares"
+                               maxWidth="Infinity"/>
+                </VBox>
+
+                <VBox spacing="5" GridPane.rowIndex="2" GridPane.columnIndex="0"
+                      GridPane.columnSpan="2">
+                    <Label text="Tipo de gramado" styleClass="label"/>
+                    <ComboBox fx:id="cbTipoGramado"
+                              promptText="Selecione o tipo de gramado"
+                              maxWidth="Infinity"/>
+                </VBox>
+
+            </GridPane>
+
+            <HBox spacing="12">
+                <Button fx:id="btnCadastrar" text="Salvar"  onAction="#cadastrar" styleClass="btn-cadastrar"/>
+                <Button text="Limpar"                       onAction="#limpar"    styleClass="btn-voltar"/>
+                <Button fx:id="btnVoltar"    text="Voltar"  onAction="#voltar"    styleClass="btn-excluir"/>
+            </HBox>
+
+        </VBox>
+    </VBox>
+
+    <stylesheets>
+        <String fx:value="/css/cadastro_partida.css"/>
+    </stylesheets>
+
+</AnchorPane>

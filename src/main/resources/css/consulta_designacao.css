@@ -1,0 +1,100 @@
+.filtro-box {
+    -fx-padding: 10;
+}
+
+.filtro-box .label {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.filtro-box .text-field,
+.filtro-box .combo-box {
+    -fx-background-color: #1f1f1f;
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: #d4af37;
+}
+
+/* ===== TABLE VIEW ===== */
+
+.tabela-selecoes {
+    -fx-background-color: rgba(0,0,0,0.70);
+    -fx-border-color: #d4af37;
+    -fx-border-width: 1;
+}
+
+.btn-excluir {
+
+    -fx-background-color: #c62828;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+}
+
+.btn-excluir:hover {
+
+    -fx-background-color: #e53935;
+}
+
+.tabela-selecoes .column-header {
+    -fx-background-color: #d4af37;
+}
+
+.tabela-selecoes .column-header .label {
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+}
+
+.tabela-selecoes .table-row-cell {
+    -fx-background-color: rgba(25,25,25,0.9);
+}
+
+.tabela-selecoes .table-row-cell:filled:hover {
+    -fx-background-color: rgba(212,175,55,0.25);
+}
+
+.tabela-selecoes .table-row-cell:selected {
+    -fx-background-color: #7f5f12;
+}
+
+.tabela-selecoes .table-cell {
+    -fx-text-fill: white;
+}
+
+#labelTotal {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+/* ── ComboBox — células do popup ─────────────────────────── */
+.combo-box-popup .list-view {
+    -fx-background-color: #222;
+    -fx-border-color: #444;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}
+
+.combo-box-popup .list-cell {
+    -fx-background-color: #222;
+    -fx-text-fill: white;
+    -fx-padding: 6 12;
+}
+
+.combo-box-popup .list-cell:hover {
+    -fx-background-color: rgba(212,163,42,0.25);
+    -fx-text-fill: white;
+}
+
+.combo-box-popup .list-cell:selected,
+.combo-box-popup .list-cell:focused {
+    -fx-background-color: #d4a32a;
+    -fx-text-fill: black;
+}
+
+/* ── ComboBox — célula do botão (item selecionado visível) ── */
+.combo-box .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+}

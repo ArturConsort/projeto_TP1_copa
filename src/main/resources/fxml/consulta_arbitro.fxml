@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.String?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllersJavaFX.ConsultaArbitroController"
+            prefWidth="900"
+            prefHeight="680"
+            styleClass="root">
+
+    <VBox alignment="TOP_CENTER"
+          spacing="20"
+          AnchorPane.topAnchor="20"
+          AnchorPane.leftAnchor="20"
+          AnchorPane.rightAnchor="20">
+
+        <ImageView fitWidth="70" fitHeight="70" preserveRatio="true">
+            <image><Image url="@/images/worldcup_logo.png"/></image>
+        </ImageView>
+
+        <VBox spacing="16" styleClass="card">
+
+            <Label text="Consulta de Árbitros" styleClass="titulo"/>
+
+            <GridPane hgap="15" vgap="12">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="50"/>
+                    <ColumnConstraints percentWidth="50"/>
+                </columnConstraints>
+
+                <VBox spacing="5" GridPane.rowIndex="0" GridPane.columnIndex="0">
+                    <Label text="Nome" styleClass="label"/>
+                    <TextField fx:id="campoNome"
+                               promptText="Buscar por nome"
+                               maxWidth="Infinity"/>
+                </VBox>
+
+                <VBox spacing="5" GridPane.rowIndex="0" GridPane.columnIndex="1">
+                    <Label text="Nacionalidade" styleClass="label"/>
+                    <TextField fx:id="campoNacionalidade"
+                               promptText="Filtrar por nacionalidade"
+                               maxWidth="Infinity"/>
+                </VBox>
+
+                <VBox spacing="5" GridPane.rowIndex="1" GridPane.columnIndex="0"
+                      GridPane.columnSpan="2">
+                    <Label text="Categoria" styleClass="label"/>
+                    <ComboBox fx:id="comboCategoria"
+                              promptText="Selecione a categoria"
+                              maxWidth="Infinity"/>
+                </VBox>
+
+            </GridPane>
+
+            <HBox spacing="12">
+                <Button text="Pesquisar" onAction="#handlePesquisar" styleClass="btn-cadastrar"/>
+                <Button text="Limpar"    onAction="#handleLimpar"    styleClass="btn-voltar"/>
+                <Button text="Excluir"   onAction="#handleExcluir"   styleClass="btn-excluir"/>
+            </HBox>
+
+            <TableView fx:id="tabelaArbitros"
+                       prefHeight="280"
+                       maxWidth="Infinity">
+                <columns>
+                    <TableColumn fx:id="colNome"         text="Nome"          prefWidth="180"/>
+                    <TableColumn fx:id="colIdade"        text="Idade"         prefWidth="80"/>
+                    <TableColumn fx:id="colCategoria"    text="Categoria"     prefWidth="120"/>
+                    <TableColumn fx:id="colExperiencia"  text="Experiência"   prefWidth="110"/>
+                    <TableColumn fx:id="colNacionalidade" text="Nacionalidade" prefWidth="150"/>
+                </columns>
+                <placeholder>
+                    <Label text="Nenhum árbitro encontrado."/>
+                </placeholder>
+            </TableView>
+
+            <HBox spacing="12" alignment="CENTER_LEFT">
+                <Label fx:id="labelTotal" styleClass="label"/>
+                <HBox HBox.hgrow="ALWAYS"/>
+                <Button text="Atualizar" onAction="#handleAtualizar" styleClass="btn-voltar"/>
+                <Button fx:id="btnVoltar" text="Voltar" onAction="#handleVoltar" styleClass="btn-excluir"/>
+            </HBox>
+
+        </VBox>
+    </VBox>
+
+    <stylesheets>
+        <String fx:value="/css/cadastro_partida.css"/>
+    </stylesheets>
+
+</AnchorPane>

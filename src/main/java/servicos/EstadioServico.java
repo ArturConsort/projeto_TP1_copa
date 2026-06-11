@@ -4,20 +4,18 @@ import modelo.classes.Estadio;
 import modelo.classes.Partida;
 import modelo.enumerations.TipoGramado;
 import modelo.enumerations.TipoPerfil;
+import modelo.excecoes.AcessoNegadoException;
 import modelo.excecoes.estadio.EstadioIndisponivelException;
 import modelo.excecoes.estadio.EstadioJaCadastradoException;
 import modelo.excecoes.estadio.EstadioNaoEncontradoException;
+import modelo.classes.Usuario;
 import persistencia.EstadioDAO;
 import persistencia.PartidaDAO;
 import servicos.usuario.SessaoUsuario;
-import modelo.classes.Usuario;
-import modelo.excecoes.AcessoNegadoException;
-
-
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class EstadioServico {
 
@@ -89,15 +87,42 @@ public class EstadioServico {
             }
         }
     }
-    // verifica se o usuario logado possui qualquer um dos perfis informados
+
+    public List<Estadio> filtrar(String nome, String cidade, String estado, TipoGramado tipoGramado) throws IOException {
+
+        verificarPermissao(TipoPerfil.ORGANIZADOR, TipoPerfil.ADMINISTRADOR);
+
+        final String filtroNome = nome != null ? nome.trim() : "";
+        final String filtroCidade = cidade != null ? cidade.trim() : "";
+        final String filtroEstado = estado != null ? estado.trim() : "";
+
+        return estadioDAO.carregaLista()
+                .stream()
+                .filter(e -> filtroNome.isEmpty()
+                        || e.getNome().toLowerCase().contains(filtroNome.toLowerCase()))
+                .filter(e -> filtroCidade.isEmpty()
+                        || e.getCidade().toLowerCase().contains(filtroCidade.toLowerCase()))
+                .filter(e -> filtroEstado.isEmpty()
+                        || e.getEstado().toLowerCase().contains(filtroEstado.toLowerCase()))
+                .filter(e -> tipoGramado == null
+                        || e.getTipoGramado() == tipoGramado)
+                .collect(Collectors.toList());
+    }
+
     private void verificarPermissao(TipoPerfil... perfisAceitos) {
+
         Usuario logado = SessaoUsuario.getInstancia().getUsuarioLogado();
+
         if (logado == null) {
-            throw new AcessoNegadoException("Nenhum usuario logado");
+            throw new AcessoNegadoException("Nenhum usuário logado.");
         }
+
         for (TipoPerfil perfil : perfisAceitos) {
-            if (logado.getPerfil() == perfil) return;
+            if (logado.getPerfil() == perfil) {
+                return;
+            }
         }
-        throw new AcessoNegadoException("Acesso negado: esse usuario não tem permissao para fazer essa ação");
+
+        throw new AcessoNegadoException("Acesso negado: o usuário não tem permissão para esta ação.");
     }
 }

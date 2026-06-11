@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.String?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllersJavaFX.CadastroDesignacaoController"
+            prefWidth="900"
+            prefHeight="680"
+            styleClass="root">
+
+    <VBox alignment="TOP_CENTER"
+          spacing="20"
+          AnchorPane.topAnchor="20"
+          AnchorPane.leftAnchor="20"
+          AnchorPane.rightAnchor="20">
+
+        <ImageView fitWidth="70" fitHeight="70" preserveRatio="true">
+            <image><Image url="@/images/worldcup_logo.png"/></image>
+        </ImageView>
+
+        <VBox spacing="16" styleClass="card">
+
+            <Label text="Cadastro de Designação" styleClass="titulo"/>
+
+            <GridPane hgap="15" vgap="12">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="50"/>
+                    <ColumnConstraints percentWidth="50"/>
+                </columnConstraints>
+
+                <VBox spacing="5" GridPane.rowIndex="0" GridPane.columnIndex="0"
+                      GridPane.columnSpan="2">
+                    <Label text="Partida" styleClass="label"/>
+                    <ComboBox fx:id="cbPartida"
+                              promptText="Selecione a partida"
+                              maxWidth="Infinity"/>
+                </VBox>
+
+                <VBox spacing="5" GridPane.rowIndex="1" GridPane.columnIndex="0"
+                      GridPane.columnSpan="2">
+                    <Label text="Árbitro Principal" styleClass="label"/>
+                    <ComboBox fx:id="cbArbitroPrincipal"
+                              promptText="Selecione o árbitro principal"
+                              maxWidth="Infinity"/>
+                </VBox>
+
+                <VBox spacing="5" GridPane.rowIndex="2" GridPane.columnIndex="0">
+                    <Label text="Árbitro Assistente 1" styleClass="label"/>
+                    <ComboBox fx:id="cbAssistente1"
+                              promptText="Selecione o assistente 1"
+                              maxWidth="Infinity"/>
+                </VBox>
+
+                <VBox spacing="5" GridPane.rowIndex="2" GridPane.columnIndex="1">
+                    <Label text="Árbitro Assistente 2" styleClass="label"/>
+                    <ComboBox fx:id="cbAssistente2"
+                              promptText="Selecione o assistente 2"
+                              maxWidth="Infinity"/>
+                </VBox>
+
+            </GridPane>
+
+            <HBox spacing="12">
+                <Button text="Salvar"  onAction="#cadastrar" styleClass="btn-cadastrar"/>
+                <Button text="Limpar"  onAction="#limpar"    styleClass="btn-voltar"/>
+                <Button fx:id="btnVoltar" text="Voltar" onAction="#voltar" styleClass="btn-excluir"/>
+            </HBox>
+
+        </VBox>
+    </VBox>
+
+    <stylesheets>
+        <String fx:value="/css/cadastro_partida.css"/>
+    </stylesheets>
+
+</AnchorPane>
