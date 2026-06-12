@@ -103,12 +103,12 @@ public class UsuarioServico {
                 u.setSenha(novaSenha);
             }
             catch (SenhaFracaException e){
-                avisos.add("Senha inválida:" + e.getMessage());
+                avisos.add("Senha fraca: " + e.getMessage());
             }
         }
 
         dao.atualizaUsuario(u);
-        avisos.add("todos os campos válido preenchidos foram atualizados");
+        avisos.add("Campos válido atualizados");
         return avisos;
 
     }
@@ -116,6 +116,7 @@ public class UsuarioServico {
 
     public void excluir(String login) throws AcessoNegadoException, UsuarioNaoEncontradoException{
         verificarPermissao(TipoPerfil.ADMINISTRADOR);
+        if(SessaoUsuario.getInstancia().getUsuarioLogado().getLogin().equals(login)) throw new AutoDeleteException("não delete sua propria conta!!!");
         dao.remover(login);
     }
 
@@ -183,13 +184,13 @@ public class UsuarioServico {
         // @[\w\-] -> '@' + sequencia de 1 ou mais caracteres, mas dessa vez so letras, pois representa o dominio (email, hotmail)
         // \.[a-z]{2,}$ -> '.' + 2 ou mais letras minusculas (.com, .br)
         if(email == null || !email.matches("^[\\w.+\\-]+@[\\w\\-]+\\.[a-z]{2,}$")){
-            throw new EmailInvalidoException("Email invalido:" + email);
+            throw new EmailInvalidoException(email);
         }
     }
 
     private void validarSenha(String senha){
         if(senha == null || senha.length()<8 || !senha.matches(".*[a-zA-Z].*") || !senha.matches(".*[0-9].*")){
-            throw new SenhaFracaException("Senha fraca. A senha deve conter letras, numeros e ao menos 8 caracteres");
+            throw new SenhaFracaException(senha);
         }
     }
 

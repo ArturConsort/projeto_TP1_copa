@@ -207,12 +207,22 @@ public class GestaoUsuariosController {
         novaSenha = novaSenha.isEmpty()  ? null : novaSenha;
 
         try {
-            usuarioServico.editar(
+            List<String> warnings = usuarioServico.editar(
                     usuarioSelecionado.getLogin(),
                     novoNome, novoCpf, novoEmail, novoPais, novaSenha, novoPerfil
             );
 
-            mostrarFeedbackSucesso("Operação realizada com sucesso");
+            String mensagem = "";
+
+            if (warnings.isEmpty()) {
+                mensagem = "Operação realizada com sucesso";
+            } else {
+                for (String warning : warnings) {
+                    mensagem += "• " + warning + "\n";
+                }
+
+            }
+            mostrarFeedbackSucesso(mensagem);
 
             // Recarrega lista e atualiza dados exibidos
             carregarLista();

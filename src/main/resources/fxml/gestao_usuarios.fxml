@@ -150,9 +150,27 @@
                 <!-- Senha -->
                 <Label text="Senha" styleClass="dado-label"/>
                 <TextField fx:id="dadoSenha" editable="false" styleClass="dado-campo"/>
+
+                <Region minWidth="24"/>
+
+                <!-- feedback -->
+                <VBox minWidth="220" maxWidth="220">
+                    <Label fx:id="labelFeedback"
+                           wrapText="true"
+                           style="..."/>
+                </VBox>
+
+                <Region minWidth="24"/>
+
             </VBox>
 
+            <Region minHeight="16"/>
+
             <Region minWidth="24"/>
+
+
+
+
 
             <!-- ========== COLUNA 3: EDITAR DADOS ========== -->
             <VBox fx:id="painelEdicao" spacing="0" minWidth="280" maxWidth="280"
@@ -198,12 +216,6 @@
                 <Label text="Senha" styleClass="dado-label"/>
                 <TextField fx:id="editSenha" promptText="Mínimo 8 caracteres" styleClass="edit-campo"/>
                 <Region minHeight="16"/>
-
-                <!-- Mensagem de feedback -->
-                <Label fx:id="labelFeedback" text="" wrapText="true"
-                       style="-fx-font-size: 12;
-                              -fx-font-family: 'Segoe UI';
-                              -fx-padding: 0 0 10 0;"/>
 
                 <!-- Botões -->
                 <VBox spacing="10">
