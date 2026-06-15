@@ -62,19 +62,27 @@
                    styleClass="sel-titulo-v3"/>
 
             <!-- BARRA DE PESQUISA -->
-            <HBox spacing="10" alignment="CENTER_LEFT" styleClass="filtro-box">
-                <TextField fx:id="campoBusca"
-                           promptText="🔍  Buscar por time, data ou estádio..."
-                           prefWidth="400"
-                           styleClass="campo-texto"/>
-                <Button text="Buscar"
-                        onAction="#aoBuscar"
-                        styleClass="sel-btn-consulta-v3"
-                        prefHeight="36"/>
-                <Button text="Limpar"
-                        onAction="#aoLimparBusca"
-                        styleClass="sel-btn-consulta-v3"
-                        prefHeight="36"/>
+            <HBox alignment="CENTER" styleClass="filtro-box">
+                <!-- Espaço à esquerda (espelha o largura do botão Meus Ingressos) -->
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <!-- Grupo central: campo + botões -->
+                <HBox spacing="10" alignment="CENTER">
+                    <TextField fx:id="campoBusca"
+                               promptText="🔍  Buscar por time, data ou estádio..."
+                               prefWidth="400"
+                               styleClass="campo-texto"/>
+                    <Button text="Buscar"
+                            onAction="#aoBuscar"
+                            styleClass="sel-btn-consulta-v3"
+                            prefHeight="36"/>
+                    <Button text="Limpar"
+                            onAction="#aoLimparBusca"
+                            styleClass="sel-btn-consulta-v3"
+                            prefHeight="36"/>
+                </HBox>
+
+                <!-- Espaço à direita + botão ancorado -->
                 <Region HBox.hgrow="ALWAYS"/>
                 <Button text="🎟 Meus Ingressos"
                         onAction="#irMeusIngressos"
