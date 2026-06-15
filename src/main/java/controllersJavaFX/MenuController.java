@@ -334,6 +334,18 @@ public class MenuController {
             popup.show(botaoPai, x, y);
         });
 
+        botaoPai.setOnMouseExited(e -> {
+            // Só esconde se o mouse não foi para dentro do popup
+            if (!conteudo.isHover()) {
+                popup.hide();
+            }
+        });
+
+        conteudo.setOnMouseExited(e -> {
+            // Esconde quando o mouse sai do conteúdo do popup
+            popup.hide();
+        });
+
         return popup;
     }
 
