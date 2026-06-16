@@ -5,17 +5,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import modelo.classes.Ingresso;
 import modelo.classes.Partida;
 import modelo.classes.Usuario;
 import modelo.classes.Venda;
-import modelo.enumerations.TipoPerfil;
 import servicos.VendaServico;
 import servicos.usuario.SessaoUsuario;
 
@@ -24,16 +21,7 @@ import java.util.List;
 
 public class MeusIngressosController {
 
-    // ── Botões do HUD ───────────────────────────────────────
-    @FXML private Button btnHome;
-    @FXML private Button btnJogadores;
-    @FXML private Button btnEquipes;
-    @FXML private Button btnPartidas;
-    @FXML private Button btnEstadios;
-    @FXML private Button btnArbitros;
-    @FXML private Button btnIngressos;
-    @FXML private Button btnRelatorios;
-
+    @FXML private Label labelUsuarioLogado;
     @FXML private FlowPane painelIngressos;
     @FXML private Label labelTotalIngressos;
 
@@ -41,7 +29,10 @@ public class MeusIngressosController {
 
     @FXML
     public void initialize() {
-        ajustarNavbarPorPerfil();
+        Usuario logado = SessaoUsuario.getInstancia().getUsuarioLogado();
+        if (logado != null) {
+            labelUsuarioLogado.setText(logado.getNome() + " · " + logado.getPerfil());
+        }
         carregarMeusIngressos();
     }
 
@@ -88,11 +79,9 @@ public class MeusIngressosController {
         card.setAlignment(Pos.TOP_LEFT);
         card.setPrefWidth(280);
 
-        // ── ID do ingresso ───────────────────────────────────
         Label idLabel = new Label("Ingresso #" + ingresso.getIdIngresso());
         idLabel.getStyleClass().add("partida-card-titulo");
 
-        // ── Partida ──────────────────────────────────────────
         Partida p = ingresso.getPartida();
         String confronto = "Partida não disponível";
         String dataHora = "";
@@ -112,7 +101,6 @@ public class MeusIngressosController {
         Label dataLabel = new Label(dataHora);
         dataLabel.getStyleClass().add("partida-card-info");
 
-        // ── Setor e preço ────────────────────────────────────
         String nomeSetor = ingresso.getCategoria() != null ? ingresso.getCategoria().getNome() : "-";
         String preco = ingresso.getCategoria() != null
                 ? String.format("R$ %.2f", ingresso.getCategoria().getPreco()) : "-";
@@ -123,8 +111,7 @@ public class MeusIngressosController {
         Label precoLabel = new Label("Preço: " + preco);
         precoLabel.getStyleClass().add("partida-card-info");
 
-        // ── Status de validação ──────────────────────────────
-        Label statusLabel = new Label(ingresso.isFoiValidado() ? "✔ Utilizado" : "✔ Válido");
+        Label statusLabel = new Label(ingresso.isFoiValidado() ? "✘ Entrada utilizada" : "✔ Ingresso válido");
         statusLabel.getStyleClass().add(ingresso.isFoiValidado() ? "status-finalizada" : "status-agendada");
 
         if (!estadio.isBlank()) {
@@ -140,39 +127,31 @@ public class MeusIngressosController {
         return card;
     }
 
-    // ── Controle de visibilidade por perfil ─────────────────
+    // ── Navegação ────────────────────────────────────────────
 
-    private void ajustarNavbarPorPerfil() {
-        Usuario logado = SessaoUsuario.getInstancia().getUsuarioLogado();
-        if (logado == null || logado.getPerfil() != TipoPerfil.OPERADOR) return;
-        for (Button b : new Button[]{ btnJogadores, btnEquipes, btnPartidas, btnEstadios, btnArbitros }) {
-            b.setVisible(false);
-            b.setManaged(false);
-        }
+    @FXML
+    private void irIngressos() {
+        navegarPara("/fxml/ingressos.fxml", "Ingressos");
     }
 
-    // ── Navegação pelo HUD ──────────────────────────────────
+    @FXML
+    private void handleVoltar() {
+        navegarPara("/fxml/ingressos.fxml", "Ingressos");
+    }
 
-    @FXML private void irHome()      { navegarPara("/fxml/menu.fxml",      "Home");      }
-    @FXML private void irJogadores() { navegarPara("/fxml/jogadores.fxml", "Jogadores"); }
-    @FXML private void irEquipes()   { navegarPara("/fxml/equipes.fxml",   "Equipes");   }
-    @FXML private void irPartidas()  { navegarPara("/fxml/partidas.fxml",  "Partidas");  }
-    @FXML private void irEstadios()  { navegarPara("/fxml/estadios.fxml",  "Estádios");  }
-    @FXML private void irArbitros()  { navegarPara("/fxml/arbitros.fxml",  "Árbitros");  }
-    @FXML private void irRelatorios(){ navegarPara("/fxml/relatorios.fxml", "Relatórios"); }
-
-    @FXML private void irIngressos() { navegarPara("/fxml/ingressos.fxml", "Ingressos"); }
-
-    // ── Utilitário ──────────────────────────────────────────
+    @FXML
+    private void handleLogout() {
+        SessaoUsuario.getInstancia().encerrarSessao();
+        navegarPara("/fxml/login.fxml", "Login — Copa do Mundo 2026");
+    }
 
     private void navegarPara(String fxmlPath, String titulo) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            Stage stage = (Stage) btnHome.getScene().getWindow();
+            Stage stage = (Stage) painelIngressos.getScene().getWindow();
             stage.setScene(new Scene(loader.load(), 1200, 700));
             stage.setTitle(titulo);
         } catch (Exception e) {
-            System.out.println("Tela ainda não implementada: " + fxmlPath);
             e.printStackTrace();
         }
     }
