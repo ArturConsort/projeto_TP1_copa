@@ -101,4 +101,12 @@ public class PartidaDAO {
         }
         return resultado;
     }
+
+    public int carregarMaiorNumero() {
+        List<Partida> lista = carregaLista();
+        return lista.stream()
+                .mapToInt(Partida::getNumeroPartidas)
+                .max()
+                .orElse(0); // retorna 0 se não houver partidas
+    }
 }
