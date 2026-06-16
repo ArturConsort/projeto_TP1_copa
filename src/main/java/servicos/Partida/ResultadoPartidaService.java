@@ -3,6 +3,7 @@ package servicos.Partida;
 import modelo.classes.*;
 import persistencia.PartidaDAO;
 import persistencia.ResultadoPartidaDAO;
+import persistencia.SelecaoDAO;
 
 import java.util.List;
 
@@ -10,7 +11,8 @@ public class ResultadoPartidaService {
 
     private ResultadoPartidaDAO resultadoDAO;
     private PartidaDAO partidaDAO;
-
+    private ClassificacaoService classificacaoService = new ClassificacaoService();
+    private SelecaoDAO selecaoDAO = new SelecaoDAO();
     public ResultadoPartidaService() {
         this.resultadoDAO = new ResultadoPartidaDAO();
         this.partidaDAO = new PartidaDAO();
@@ -91,9 +93,18 @@ public class ResultadoPartidaService {
         );
 
         resultadoDAO.salvar(resultado);
-
         // --- Remove a partida de partidas.dat pois já foi finalizada ---
         partidaDAO.remover(partida.getNumeroPartidas());
+        classificacaoService.processarResultado(resultado);
+        classificacaoService.processarEliminacao(resultado, selecaoDAO);
+
+        if (partida.getFase() == modelo.enumerations.FasePartida.FASE_DE_GRUPOS) {
+            try {
+                classificacaoService.processarEliminacaoGrupos(selecaoDAO);
+            } catch (Exception e) {
+                // Grupos ainda não terminaram todos — sem problema, continua
+            }
+        }
     }
 
     public List<ResultadoPartida> listarResultados() {

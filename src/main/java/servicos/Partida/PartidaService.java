@@ -1,12 +1,9 @@
 package servicos.Partida;
-import modelo.enumerations.FasePartida;
-import modelo.classes.Estadio;
+
 import modelo.classes.*;
+import modelo.enumerations.FasePartida;
 import modelo.enumerations.StatusPartida;
-import persistencia.ArbitroDAO;
-import persistencia.EstadioDAO;
-import persistencia.PartidaDAO;
-import persistencia.SelecaoDAO;
+import persistencia.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -15,19 +12,20 @@ import java.util.List;
 
 public class PartidaService {
 
-    private PartidaDAO partidaDAO;
-    private SelecaoDAO selecaoDAO;
-    private EstadioDAO estadioDAO;
-    private ArbitroDAO arbitroDAO;
+    private PartidaDAO             partidaDAO;
+    private SelecaoDAO             selecaoDAO;
+    private EstadioDAO             estadioDAO;
+    private ArbitroDAO             arbitroDAO;
+    private ClassificacaoGrupoDAO  classificacaoDAO;
 
-    // Formato de data usado no sistema — dd/MM/yyyy
     private static final DateTimeFormatter FMT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public PartidaService() {
-        this.partidaDAO = new PartidaDAO();
-        this.selecaoDAO = new SelecaoDAO();
-        this.estadioDAO = new EstadioDAO();
-        this.arbitroDAO = new ArbitroDAO();
+        this.partidaDAO       = new PartidaDAO();
+        this.selecaoDAO       = new SelecaoDAO();
+        this.estadioDAO       = new EstadioDAO();
+        this.arbitroDAO       = new ArbitroDAO();
+        this.classificacaoDAO = new ClassificacaoGrupoDAO();
     }
 
     public List<Selecao> listarSelecoes() { return selecaoDAO.carregaLista(); }
@@ -69,10 +67,17 @@ public class PartidaService {
             throw new Exception("O horário é obrigatório!");
         }
 
-        // --- Converte a data da nova partida para LocalDate ---
-        LocalDate dataNovaPartida = converterData(data);
+        // --- Validação 1: mata-mata só depois que grupos terminarem ---
+        if (fase != FasePartida.FASE_DE_GRUPOS) {
+            validarGruposEncerrados();
+        }
+
+        // --- Validação 2: seleções ativas e elegíveis para a fase ---
+        validarElegibilidade(timeCasa, fase);
+        validarElegibilidade(timeVisitante, fase);
 
         // --- Validações de conflito ---
+        LocalDate dataNovaPartida = converterData(data);
         validarConflitoHorario(timeCasa, timeVisitante, data, horario);
         validarConflitoEstadio(estadio, data, horario);
         validarOrdemCronologica(timeCasa, timeVisitante, dataNovaPartida);
@@ -86,62 +91,118 @@ public class PartidaService {
                 cidade, data, horario, estadio, fase
         );
         partida.setArbitroPrincipal(arbitro);
-
         partidaDAO.salvar(partida);
     }
 
     // ================================================================
-    //  NOVA VALIDAÇÃO — ordem cronológica
+    //  VALIDAÇÃO 1 — Grupos encerrados antes do mata-mata
     // ================================================================
 
-    // Regra: se um time já tem uma partida agendada para uma data POSTERIOR,
-    // não é possível cadastrar uma nova partida para ele em data ANTERIOR.
-    // Isso garante que as partidas de cada time seguem uma ordem cronológica.
-    private void validarOrdemCronologica(Selecao timeCasa, Selecao timeVisitante,
-                                         LocalDate dataNovaPartida) throws Exception {
+    private void validarGruposEncerrados() throws Exception {
+        List<Selecao> todasSelecoes = selecaoDAO.carregaLista();
 
-        for (Partida p : partidaDAO.carregaLista()) {
+        if (todasSelecoes.isEmpty()) {
+            throw new Exception("Nenhuma seleção cadastrada!");
+        }
 
-            // Verifica se a partida existente envolve algum dos dois times
-            boolean envolveTimeCasa = p.getTimeCasa().equals(timeCasa)
-                    || p.getTimeVisitante().equals(timeCasa);
+        List<ClassificacaoGrupo> grupos = classificacaoDAO.carregaLista();
 
-            boolean envolveTimeVisitante = p.getTimeCasa().equals(timeVisitante)
-                    || p.getTimeVisitante().equals(timeVisitante);
+        for (Selecao selecao : todasSelecoes) {
+            // Busca a pontuação dessa seleção no seu grupo
+            ClassificacaoGrupo grupo = classificacaoDAO.buscarPorGrupo(selecao.getGrupo());
 
-            if (!envolveTimeCasa && !envolveTimeVisitante) continue;
-
-            // Tenta converter a data da partida existente
-            LocalDate dataExistente = converterData(p.getData());
-
-            // Se a partida existente é POSTERIOR à nova, não pode cadastrar
-            // pois criaria uma partida "antes" de uma já agendada
-            if (dataExistente.isAfter(dataNovaPartida)) {
-
-                if (envolveTimeCasa) {
-                    throw new Exception(
-                            timeCasa.getPais() + " já tem uma partida agendada para " +
-                                    p.getData() + " (Partida Nº " + p.getNumeroPartidas() + "). " +
-                                    "Não é possível cadastrar uma partida para uma data anterior (" +
-                                    dataNovaPartida.format(FMT) + ")."
-                    );
-                }
-
-                if (envolveTimeVisitante) {
-                    throw new Exception(
-                            timeVisitante.getPais() + " já tem uma partida agendada para " +
-                                    p.getData() + " (Partida Nº " + p.getNumeroPartidas() + "). " +
-                                    "Não é possível cadastrar uma partida para uma data anterior (" +
-                                    dataNovaPartida.format(FMT) + ")."
-                    );
-                }
+            // Se o grupo nem existe ainda, essa seleção não jogou nenhuma partida
+            if (grupo == null) {
+                throw new Exception(
+                        "A fase de grupos ainda não terminou! " +
+                                selecao.getPais() + " (Grupo " + selecao.getGrupo() +
+                                ") ainda não disputou nenhuma partida."
+                );
             }
+
+            PontuacaoSelecao pontuacao = grupo.getPontuacao(selecao);
+
+            // Se a seleção não está na tabela ou jogou menos de 3 partidas
+            if (pontuacao == null || pontuacao.getPartidasJogadas() < 3) {
+                int jogadas = pontuacao == null ? 0 : pontuacao.getPartidasJogadas();
+                throw new Exception(
+                        "A fase de grupos ainda não terminou! " +
+                                selecao.getPais() + " (Grupo " + selecao.getGrupo() +
+                                ") jogou apenas " + jogadas + " de 3 partidas."
+                );
+            }
+        }
+    }
+
+    // ================================================================
+    //  VALIDAÇÃO 2 — Elegibilidade da seleção para a fase
+    // ================================================================
+
+    private void validarElegibilidade(Selecao selecao, FasePartida fase) throws Exception {
+
+        if (fase == FasePartida.DISPUTA_DE_TERCEIRO_LUGAR) {
+            // Só quem perdeu a semifinal pode jogar a disputa de 3º lugar
+            if (!selecao.isPerdeuSemifinal()) {
+                throw new Exception(
+                        selecao.getPais() + " não perdeu a semifinal e " +
+                                "não pode disputar o terceiro lugar!"
+                );
+            }
+            // Não precisa estar ativa pois perdeu a semi mas ainda joga
+            return;
+        }
+
+        // Para todas as outras fases do mata-mata, a seleção precisa estar ativa
+        if (!selecao.isAtiva()) {
+            throw new Exception(
+                    selecao.getPais() + " já foi eliminada da competição " +
+                            "e não pode ser cadastrada em novas partidas!"
+            );
+        }
+
+        // Na fase de grupos, verifica se a seleção está no grupo correto
+        if (fase == FasePartida.FASE_DE_GRUPOS) {
+            // Sem restrição adicional além de estar ativa
+            return;
         }
     }
 
     // ================================================================
     //  VALIDAÇÕES EXISTENTES
     // ================================================================
+
+    private void validarOrdemCronologica(Selecao timeCasa, Selecao timeVisitante,
+                                         LocalDate dataNovaPartida) throws Exception {
+        for (Partida p : partidaDAO.carregaLista()) {
+            boolean envolveTimeCasa = p.getTimeCasa().equals(timeCasa)
+                    || p.getTimeVisitante().equals(timeCasa);
+            boolean envolveTimeVisitante = p.getTimeCasa().equals(timeVisitante)
+                    || p.getTimeVisitante().equals(timeVisitante);
+
+            if (!envolveTimeCasa && !envolveTimeVisitante) continue;
+
+            LocalDate dataExistente = converterData(p.getData());
+
+            if (dataExistente.isAfter(dataNovaPartida)) {
+                if (envolveTimeCasa) {
+                    throw new Exception(
+                            timeCasa.getPais() + " já tem partida agendada para " +
+                                    p.getData() + " (Partida Nº " + p.getNumeroPartidas() + "). " +
+                                    "Não é possível cadastrar para data anterior (" +
+                                    dataNovaPartida.format(FMT) + ")."
+                    );
+                }
+                if (envolveTimeVisitante) {
+                    throw new Exception(
+                            timeVisitante.getPais() + " já tem partida agendada para " +
+                                    p.getData() + " (Partida Nº " + p.getNumeroPartidas() + "). " +
+                                    "Não é possível cadastrar para data anterior (" +
+                                    dataNovaPartida.format(FMT) + ")."
+                    );
+                }
+            }
+        }
+    }
 
     private void validarConflitoHorario(Selecao timeCasa, Selecao timeVisitante,
                                         String data, String horario) throws Exception {
@@ -159,15 +220,12 @@ public class PartidaService {
 
     private void validarConflitoEstadio(Estadio estadio, String data, String horario) throws Exception {
         for (Partida p : partidaDAO.carregaLista()) {
-            if (p.getEstadio().equals(estadio) && p.getData().equals(data) && p.getHorario().equals(horario)) {
+            if (p.getEstadio().equals(estadio) && p.getData().equals(data)
+                    && p.getHorario().equals(horario)) {
                 throw new Exception("Este estádio já tem partida nesse horário!");
             }
         }
     }
-
-    // ================================================================
-    //  UTILITÁRIO — converter String para LocalDate com mensagem clara
-    // ================================================================
 
     private LocalDate converterData(String data) throws Exception {
         try {
@@ -197,9 +255,7 @@ public class PartidaService {
 
     public void atualizarStatus(int numeroPartida, StatusPartida novoStatus) throws Exception {
         Partida partida = partidaDAO.buscarPorNumero(numeroPartida);
-        if (partida == null) {
-            throw new Exception("Partida não encontrada!");
-        }
+        if (partida == null) throw new Exception("Partida não encontrada!");
         partida.setStatus(novoStatus);
         partidaDAO.atualizar(partida);
     }
