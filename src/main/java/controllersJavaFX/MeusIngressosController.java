@@ -15,6 +15,7 @@ import modelo.classes.Ingresso;
 import modelo.classes.Partida;
 import modelo.classes.Usuario;
 import modelo.classes.Venda;
+import modelo.enumerations.TipoPerfil;
 import servicos.VendaServico;
 import servicos.usuario.SessaoUsuario;
 
@@ -31,6 +32,7 @@ public class MeusIngressosController {
     @FXML private Button btnEstadios;
     @FXML private Button btnArbitros;
     @FXML private Button btnIngressos;
+    @FXML private Button btnRelatorios;
 
     @FXML private FlowPane painelIngressos;
     @FXML private Label labelTotalIngressos;
@@ -39,6 +41,7 @@ public class MeusIngressosController {
 
     @FXML
     public void initialize() {
+        ajustarNavbarPorPerfil();
         carregarMeusIngressos();
     }
 
@@ -137,6 +140,17 @@ public class MeusIngressosController {
         return card;
     }
 
+    // ── Controle de visibilidade por perfil ─────────────────
+
+    private void ajustarNavbarPorPerfil() {
+        Usuario logado = SessaoUsuario.getInstancia().getUsuarioLogado();
+        if (logado == null || logado.getPerfil() != TipoPerfil.OPERADOR) return;
+        for (Button b : new Button[]{ btnJogadores, btnEquipes, btnPartidas, btnEstadios, btnArbitros }) {
+            b.setVisible(false);
+            b.setManaged(false);
+        }
+    }
+
     // ── Navegação pelo HUD ──────────────────────────────────
 
     @FXML private void irHome()      { navegarPara("/fxml/menu.fxml",      "Home");      }
@@ -145,6 +159,8 @@ public class MeusIngressosController {
     @FXML private void irPartidas()  { navegarPara("/fxml/partidas.fxml",  "Partidas");  }
     @FXML private void irEstadios()  { navegarPara("/fxml/estadios.fxml",  "Estádios");  }
     @FXML private void irArbitros()  { navegarPara("/fxml/arbitros.fxml",  "Árbitros");  }
+    @FXML private void irRelatorios(){ navegarPara("/fxml/relatorios.fxml", "Relatórios"); }
+
     @FXML private void irIngressos() { navegarPara("/fxml/ingressos.fxml", "Ingressos"); }
 
     // ── Utilitário ──────────────────────────────────────────
