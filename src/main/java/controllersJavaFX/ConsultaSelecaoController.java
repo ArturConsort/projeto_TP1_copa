@@ -4,16 +4,17 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import modelo.classes.Selecao;
 import persistencia.SelecaoDAO;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 public class ConsultaSelecaoController {
 
@@ -25,199 +26,266 @@ public class ConsultaSelecaoController {
     @FXML private Button btnArbitros;
     @FXML private Button btnIngressos;
 
-    @FXML
-    private ComboBox<String> comboGrupo;
+    @FXML private ComboBox<String> comboGrupo;
+    @FXML private TextField campoTecnico;
+    @FXML private TextField campoPais;
+    @FXML private Label labelTotal;
 
-    @FXML
-    private TextField campoTecnico;
-
-    @FXML
-    private TextField campoPais;
-
-    @FXML
-    private Label labelTotal;
-
-    @FXML
-    private TableView<Selecao> tabelaSelecoes;
-
-    @FXML
-    private TableColumn<Selecao, String> colPais;
-
-    @FXML
-    private TableColumn<Selecao, String> colGrupo;
-
-    @FXML
-    private TableColumn<Selecao, String> colTecnico;
-
-    @FXML
-    private TableColumn<Selecao, Integer> colRanking;
-
-    @FXML
-    private TableColumn<Selecao, Integer> colTitulos;
+    @FXML private TableView<Selecao> tabelaSelecoes;
+    @FXML private TableColumn<Selecao, String>  colPais;
+    @FXML private TableColumn<Selecao, String>  colGrupo;
+    @FXML private TableColumn<Selecao, String>  colTecnico;
+    @FXML private TableColumn<Selecao, Integer> colRanking;
+    @FXML private TableColumn<Selecao, Integer> colTitulos;
 
     private final SelecaoDAO selecaoDAO = new SelecaoDAO();
-
     private ObservableList<Selecao> selecoes;
+
+    // ------------------------------------------------------------------ //
+    //  inicialização
+    // ------------------------------------------------------------------ //
 
     @FXML
     public void initialize() {
 
-        comboGrupo.setItems(
-                FXCollections.observableArrayList(
-                        "A","B","C","D",
-                        "E","F","G","H"
-                )
-        );
+        comboGrupo.setItems(FXCollections.observableArrayList(
+                "A","B","C","D","E","F","G","H"));
 
-        colPais.setCellValueFactory(
-                new PropertyValueFactory<>("pais"));
-
-        colGrupo.setCellValueFactory(
-                new PropertyValueFactory<>("grupo"));
-
-        colTecnico.setCellValueFactory(
-                new PropertyValueFactory<>("tecnico"));
-
-        colRanking.setCellValueFactory(
-                new PropertyValueFactory<>("rankingFIFA"));
-
-        colTitulos.setCellValueFactory(
-                new PropertyValueFactory<>("titulos"));
+        colPais   .setCellValueFactory(new PropertyValueFactory<>("pais"));
+        colGrupo  .setCellValueFactory(new PropertyValueFactory<>("grupo"));
+        colTecnico.setCellValueFactory(new PropertyValueFactory<>("tecnico"));
+        colRanking.setCellValueFactory(new PropertyValueFactory<>("rankingFIFA"));
+        colTitulos.setCellValueFactory(new PropertyValueFactory<>("titulos"));
 
         carregarDados();
     }
 
+    // ------------------------------------------------------------------ //
+    //  carregamento / atualização
+    // ------------------------------------------------------------------ //
+
     private void carregarDados() {
-
         List<Selecao> lista = selecaoDAO.carregaLista();
-
         selecoes = FXCollections.observableArrayList(lista);
-
         tabelaSelecoes.setItems(selecoes);
-
         atualizarTotal();
     }
+
+    private void atualizarTotal() {
+        labelTotal.setText("Total: " + tabelaSelecoes.getItems().size() + " seleções");
+    }
+
+    // ------------------------------------------------------------------ //
+    //  pesquisa / limpar / atualizar
+    // ------------------------------------------------------------------ //
 
     @FXML
     private void handlePesquisar() {
 
         List<Selecao> resultado = selecaoDAO.carregaLista();
 
-        String pais = campoPais.getText().trim().toLowerCase();
-        String grupo = comboGrupo.getValue();
+        String pais    = campoPais   .getText().trim().toLowerCase();
+        String grupo   = comboGrupo  .getValue();
         String tecnico = campoTecnico.getText().trim().toLowerCase();
 
-        if (!pais.isBlank()) {
-
+        if (!pais.isBlank())
             resultado = resultado.stream()
-                    .filter(s -> s.getPais()
-                            .toLowerCase()
-                            .contains(pais))
+                    .filter(s -> s.getPais().toLowerCase().contains(pais))
                     .toList();
-        }
 
-        if (grupo != null && !grupo.isBlank()) {
-
+        if (grupo != null && !grupo.isBlank())
             resultado = resultado.stream()
-                    .filter(s -> s.getGrupo()
-                            .equalsIgnoreCase(grupo))
+                    .filter(s -> s.getGrupo().equalsIgnoreCase(grupo))
                     .toList();
-        }
 
-        if (!tecnico.isBlank()) {
-
+        if (!tecnico.isBlank())
             resultado = resultado.stream()
-                    .filter(s -> s.getTecnico()
-                            .toLowerCase()
-                            .contains(tecnico))
+                    .filter(s -> s.getTecnico().toLowerCase().contains(tecnico))
                     .toList();
-        }
 
-        tabelaSelecoes.setItems(
-                FXCollections.observableArrayList(resultado));
-
-        labelTotal.setText(
-                "Total: " + resultado.size() + " seleções");
+        tabelaSelecoes.setItems(FXCollections.observableArrayList(resultado));
+        labelTotal.setText("Total: " + resultado.size() + " seleções");
     }
+
     @FXML
     private void handleLimpar() {
-
         comboGrupo.setValue(null);
         campoPais.clear();
         campoTecnico.clear();
-
         tabelaSelecoes.setItems(selecoes);
-
         atualizarTotal();
     }
 
     @FXML
     private void handleAtualizar() {
-
-        carregarDados();
+        atualizarTotal();
     }
+
+    // ------------------------------------------------------------------ //
+    //  EDITAR – abre dialog com os campos da seleção selecionada
+    // ------------------------------------------------------------------ //
+
+    @FXML
+    private void handleEditar() {
+
+        Selecao selecionada = tabelaSelecoes.getSelectionModel().getSelectedItem();
+
+        if (selecionada == null) {
+            new Alert(Alert.AlertType.WARNING,
+                    "Selecione uma seleção para editar.", ButtonType.OK)
+                    .showAndWait();
+            return;
+        }
+
+        // ---------- monta o Dialog ---------- //
+        Dialog<Selecao> dialog = new Dialog<>();
+        dialog.setTitle("Editar Seleção");
+        dialog.setHeaderText("Editando: " + selecionada.getPais());
+
+        ButtonType btnSalvar = new ButtonType("Salvar", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(btnSalvar, ButtonType.CANCEL);
+
+        // ---------- campos do formulário ---------- //
+        TextField tfGrupo    = new TextField(selecionada.getGrupo());
+        TextField tfTecnico  = new TextField(selecionada.getTecnico());
+        TextField tfRanking  = new TextField(String.valueOf(selecionada.getRankingFIFA()));
+        TextField tfTitulos  = new TextField(String.valueOf(selecionada.getTitulos()));
+
+        // país é exibido mas não editável (é a chave de busca no DAO)
+        TextField tfPais = new TextField(selecionada.getPais());
+        tfPais.setDisable(true);
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        grid.add(new Label("País:"),         0, 0); grid.add(tfPais,    1, 0);
+        grid.add(new Label("Grupo:"),        0, 1); grid.add(tfGrupo,   1, 1);
+        grid.add(new Label("Técnico:"),      0, 2); grid.add(tfTecnico, 1, 2);
+        grid.add(new Label("Ranking FIFA:"), 0, 3); grid.add(tfRanking, 1, 3);
+        grid.add(new Label("Títulos:"),      0, 4); grid.add(tfTitulos, 1, 4);
+
+        dialog.getDialogPane().setContent(grid);
+
+        // ---------- validação ao clicar em Salvar ---------- //
+        dialog.getDialogPane()
+                .lookupButton(btnSalvar)
+                .addEventFilter(javafx.event.ActionEvent.ACTION, event -> {
+
+                    String grupo   = tfGrupo  .getText().trim();
+                    String tecnico = tfTecnico.getText().trim();
+                    String rankStr = tfRanking.getText().trim();
+                    String titStr  = tfTitulos.getText().trim();
+
+                    if (grupo.isBlank() || tecnico.isBlank()
+                            || rankStr.isBlank() || titStr.isBlank()) {
+                        mostrarErro("Todos os campos são obrigatórios.");
+                        event.consume();
+                        return;
+                    }
+
+                    try {
+                        int ranking = Integer.parseInt(rankStr);
+                        int titulos = Integer.parseInt(titStr);
+
+                        if (ranking < 1 || ranking > 211) {
+                            mostrarErro("Ranking FIFA deve estar entre 1 e 211.");
+                            event.consume();
+                            return;
+                        }
+                        if (titulos < 0) {
+                            mostrarErro("O número de títulos não pode ser negativo.");
+                            event.consume();
+                        }
+
+                    } catch (NumberFormatException e) {
+                        mostrarErro("Ranking e Títulos devem ser números inteiros.");
+                        event.consume();
+                    }
+                });
+
+        // ---------- converte resultado do Dialog em Selecao ---------- //
+        dialog.setResultConverter(botao -> {
+            if (botao == btnSalvar) {
+                selecionada.setGrupo   (tfGrupo  .getText().trim());
+                selecionada.setTecnico (tfTecnico.getText().trim());
+                selecionada.setRankingFIFA(Integer.parseInt(tfRanking.getText().trim()));
+                selecionada.setTitulos (Integer.parseInt(tfTitulos.getText().trim()));
+                return selecionada;
+            }
+            return null;
+        });
+
+        // ---------- persiste e recarrega se o usuário confirmou ---------- //
+        Optional<Selecao> resultado = dialog.showAndWait();
+
+        resultado.ifPresent(selecaoEditada -> {
+            selecaoDAO.atualizaSelecao(selecaoEditada);
+            carregarDados();
+
+            Alert sucesso = new Alert(Alert.AlertType.INFORMATION);
+            sucesso.setTitle("Sucesso");
+            sucesso.setHeaderText(null);
+            sucesso.setContentText("Seleção atualizada com sucesso.");
+            sucesso.showAndWait();
+        });
+    }
+
+    // ------------------------------------------------------------------ //
+    //  EXCLUIR
+    // ------------------------------------------------------------------ //
 
     @FXML
     private void handleExcluir() {
 
-        Selecao selecionada =
-                tabelaSelecoes.getSelectionModel()
-                        .getSelectedItem();
+        Selecao selecionada = tabelaSelecoes.getSelectionModel().getSelectedItem();
 
         if (selecionada == null) {
-
-            Alert alerta = new Alert(
-                    Alert.AlertType.WARNING);
-
+            Alert alerta = new Alert(Alert.AlertType.WARNING);
             alerta.setTitle("Aviso");
             alerta.setHeaderText(null);
-            alerta.setContentText(
-                    "Selecione uma seleção para excluir.");
-
+            alerta.setContentText("Selecione uma seleção para excluir.");
             alerta.showAndWait();
             return;
         }
 
-        Alert confirmacao =
-                new Alert(Alert.AlertType.CONFIRMATION);
-
+        Alert confirmacao = new Alert(Alert.AlertType.CONFIRMATION);
         confirmacao.setTitle("Confirmação");
         confirmacao.setHeaderText("Excluir seleção");
-        confirmacao.setContentText(
-                "Deseja realmente excluir "
-                        + selecionada.getPais() + "?");
+        confirmacao.setContentText("Deseja realmente excluir " + selecionada.getPais() + "?");
 
-        if (confirmacao.showAndWait().get()
-                == ButtonType.OK) {
-
-            selecaoDAO.remover(
-                    selecionada.getPais());
-
+        if (confirmacao.showAndWait().get() == ButtonType.OK) {
+            selecaoDAO.remover(selecionada.getPais());
             carregarDados();
 
-            Alert sucesso =
-                    new Alert(Alert.AlertType.INFORMATION);
-
+            Alert sucesso = new Alert(Alert.AlertType.INFORMATION);
             sucesso.setTitle("Sucesso");
             sucesso.setHeaderText(null);
-            sucesso.setContentText(
-                    "Seleção removida com sucesso.");
-
+            sucesso.setContentText("Seleção removida com sucesso.");
             sucesso.showAndWait();
         }
     }
 
-    private void atualizarTotal() {
+    // ------------------------------------------------------------------ //
+    //  utilitário
+    // ------------------------------------------------------------------ //
 
-        labelTotal.setText(
-                "Total: " +
-                        tabelaSelecoes.getItems().size() +
-                        " seleções");
+    private void mostrarErro(String mensagem) {
+        Alert alerta = new Alert(Alert.AlertType.ERROR);
+        alerta.setTitle("Erro de validação");
+        alerta.setHeaderText(null);
+        alerta.setContentText(mensagem);
+        alerta.showAndWait();
     }
+
+    // ------------------------------------------------------------------ //
+    //  navegação
+    // ------------------------------------------------------------------ //
 
     @FXML private void irHome()      { navegarPara("/fxml/menu.fxml",      "Home");      }
     @FXML private void irJogadores() { navegarPara("/fxml/jogadores.fxml", "Jogadores"); }
-    @FXML private void irEquipes()   { navegarPara("/fxml/equipes.fxml", "Jogadores"); }
+    @FXML private void irEquipes()   { navegarPara("/fxml/equipes.fxml",   "Equipes");   }
     @FXML private void irPartidas()  { navegarPara("/fxml/partidas.fxml",  "Partidas");  }
     @FXML private void irEstadios()  { navegarPara("/fxml/estadios.fxml",  "Estádios");  }
     @FXML private void irArbitros()  { navegarPara("/fxml/arbitros.fxml",  "Árbitros");  }

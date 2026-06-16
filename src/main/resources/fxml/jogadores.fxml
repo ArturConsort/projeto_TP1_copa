@@ -47,7 +47,7 @@
 
         <VBox alignment="CENTER" spacing="22">
             <padding><Insets bottom="36"/></padding>
-            <Label text="Seleção de atividade Jogadores" styleClass="sel-titulo-v3"/>
+            <Label text="Seleção de atividade Jogadores " styleClass="sel-titulo-v3"/>
             <Button text="Cadastro" onAction="#handleCadastro"
                     styleClass="sel-btn-cadastro-v3" prefWidth="190" prefHeight="48"/>
             <Button text="Consulta" onAction="#handleConsulta"

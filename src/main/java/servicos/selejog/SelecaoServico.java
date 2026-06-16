@@ -1,9 +1,6 @@
 package servicos.selejog;
 
-import modelo.classes.Jogador;
-import modelo.enumerations.TipoPerfil;
 import modelo.classes.Selecao;
-import modelo.excecoes.AcessoNegadoException;
 import modelo.excecoes.SelecaoJaExisteException;
 import modelo.excecoes.SelecaoNaoEncontradaException;
 import persistencia.SelecaoDAO;
@@ -18,13 +15,11 @@ public class SelecaoServico {
         this.dao = new SelecaoDAO();
     }
 
+    // ------- manipulação de seleções pelo admin ------- //
 
-    // ------- manipulacao de selecoes pelo admin ------- //
+    public void cadastrar(String pais, String grupo, String confederacao,
+                          String tecnico, int rankingFIFA, int titulos) {
 
-    public void cadastrar(String pais, String grupo, String confederacao, String tecnico, int rankingFIFA, int titulos) {
-
-
-        // --- validacoes de campos obrigatorios --- //
         if (pais == null || pais.isBlank())
             throw new IllegalArgumentException("O nome do país não pode ser vazio");
 
@@ -34,27 +29,51 @@ public class SelecaoServico {
         if (tecnico == null || tecnico.isBlank())
             throw new IllegalArgumentException("O nome do técnico não pode ser vazio");
 
-        // --- validacoes de valores numericos --- //
-        if (rankingFIFA < 1 || rankingFIFA > 211)   // a FIFA tem 211 paises filiados
+        if (rankingFIFA < 1 || rankingFIFA > 211)
             throw new IllegalArgumentException("Ranking FIFA inválido: deve estar entre 1 e 211");
 
         if (titulos < 0)
             throw new IllegalArgumentException("O número de títulos não pode ser negativo");
 
-        // --- validacao de duplicata --- //
         if (dao.buscarPorPais(pais) != null)
             throw new SelecaoJaExisteException("Já existe uma seleção cadastrada para o país: " + pais);
-
 
         Selecao nova = new Selecao(pais, grupo, confederacao, tecnico, rankingFIFA, titulos);
         dao.salvar(nova);
     }
 
-    public void remover(String nome) throws SelecaoNaoEncontradaException {
-        if (dao.buscarPorPais(nome) == null) {
-            throw new SelecaoNaoEncontradaException("Seleção não encontrada: " + nome);
-        }
+    /**
+     * Edita todos os campos editáveis de uma seleção já existente.
+     * O país não é alterado pois é a chave de identificação.
+     */
+    public void editar(String pais, String novoGrupo, String novoTecnico,
+                       int novoRankingFIFA, int novosTitulos) {
 
+        // --- validações --- //
+        if (novoTecnico == null || novoTecnico.isBlank())
+            throw new IllegalArgumentException("O nome do técnico não pode ser vazio");
+
+        if (novoRankingFIFA < 1 || novoRankingFIFA > 211)
+            throw new IllegalArgumentException("Ranking FIFA inválido: deve estar entre 1 e 211");
+
+        if (novosTitulos < 0)
+            throw new IllegalArgumentException("O número de títulos não pode ser negativo");
+
+        Selecao s = dao.buscarPorPais(pais);
+        if (s == null)
+            throw new SelecaoNaoEncontradaException("Seleção não encontrada: " + pais);
+
+        s.setGrupo(novoGrupo);
+        s.setTecnico(novoTecnico);
+        s.setRankingFIFA(novoRankingFIFA);
+        s.setTitulos(novosTitulos);
+
+        dao.atualizaSelecao(s);
+    }
+
+    public void remover(String nome) throws SelecaoNaoEncontradaException {
+        if (dao.buscarPorPais(nome) == null)
+            throw new SelecaoNaoEncontradaException("Seleção não encontrada: " + nome);
         dao.remover(nome);
     }
 
@@ -64,31 +83,29 @@ public class SelecaoServico {
         return s;
     }
 
-    public List<Selecao> buscarPorGrupo(String grupo) throws SelecaoNaoEncontradaException {
-        List<Selecao> s = dao.buscarPorGrupo(grupo);
-        return s;
+    public List<Selecao> buscarPorGrupo(String grupo) {
+        return dao.buscarPorGrupo(grupo);
     }
 
     public void listarTodas() {
         List<Selecao> list = dao.carregaLista();
         System.out.printf("Lista seleções:\n\n");
-        for(Selecao a : list){
+        for (Selecao a : list) {
             System.out.printf("%s\n\n", a.getPais());
         }
     }
 
-    public void editarTecnicoSelecao(Selecao selecao, String novo_tecnico){
+    public void editarTecnicoSelecao(Selecao selecao, String novo_tecnico) {
         Selecao s = dao.buscarPorPais(selecao.getPais());
         if (s == null) throw new SelecaoNaoEncontradaException("Seleção não encontrada: " + selecao);
         s.setTecnico(novo_tecnico);
         dao.atualizaSelecao(s);
     }
 
-    public void editarGrupoSelecao(Selecao selecao, String novo_grupo){
+    public void editarGrupoSelecao(Selecao selecao, String novo_grupo) {
         Selecao s = dao.buscarPorPais(selecao.getPais());
         if (s == null) throw new SelecaoNaoEncontradaException("Seleção não encontrada: " + selecao);
         s.setGrupo(novo_grupo);
         dao.atualizaSelecao(s);
     }
-
 }
