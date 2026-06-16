@@ -6,16 +6,20 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import modelo.classes.Jogador;
 import modelo.classes.Selecao;
 import modelo.classes.StatusJogador;
 import persistencia.SelecaoDAO;
+import servicos.usuario.SessaoUsuario;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ConsultaJogadorController {
 
@@ -45,6 +49,10 @@ public class ConsultaJogadorController {
     private final SelecaoDAO selecaoDAO = new SelecaoDAO();
     private ObservableList<Jogador> todosJogadores;
 
+    // ------------------------------------------------------------------ //
+    //  inicialização
+    // ------------------------------------------------------------------ //
+
     @FXML
     public void initialize() {
 
@@ -56,8 +64,6 @@ public class ConsultaJogadorController {
                 "ATIVO", "LESIONADO", "SUSPENSO"
         ));
 
-        // --- mapeamento das colunas --- //
-        // como Jogador nao tem getSelecaoNome(), usamos cellValueFactory manual
         colNome.setCellValueFactory(
                 data -> new SimpleStringProperty(data.getValue().getNome()));
 
@@ -79,7 +85,10 @@ public class ConsultaJogadorController {
         carregarDados();
     }
 
-    // percorre todas as selecoes e coleta os jogadores delas
+    // ------------------------------------------------------------------ //
+    //  carregamento
+    // ------------------------------------------------------------------ //
+
     private List<Jogador> coletarTodosJogadores() {
         List<Jogador> todos = new ArrayList<>();
         for (Selecao s : selecaoDAO.carregaLista()) {
@@ -93,6 +102,14 @@ public class ConsultaJogadorController {
         tabelaJogadores.setItems(todosJogadores);
         atualizarTotal();
     }
+
+    private void atualizarTotal() {
+        labelTotal.setText("Total: " + tabelaJogadores.getItems().size() + " jogadores");
+    }
+
+    // ------------------------------------------------------------------ //
+    //  pesquisa / limpar / atualizar
+    // ------------------------------------------------------------------ //
 
     @FXML
     private void handlePesquisar() {
@@ -143,6 +160,162 @@ public class ConsultaJogadorController {
         carregarDados();
     }
 
+    // ------------------------------------------------------------------ //
+    //  EDITAR
+    // ------------------------------------------------------------------ //
+
+    @FXML
+    private void handleEditar() {
+
+        Jogador selecionado = tabelaJogadores.getSelectionModel().getSelectedItem();
+
+        if (selecionado == null) {
+            new Alert(Alert.AlertType.WARNING,
+                    "Selecione um jogador para editar.", ButtonType.OK)
+                    .showAndWait();
+            return;
+        }
+
+        // ---------- monta o Dialog ---------- //
+        Dialog<Jogador> dialog = new Dialog<>();
+        dialog.setTitle("Editar Jogador");
+        dialog.setHeaderText("Editando: " + selecionado.getNome());
+
+        ButtonType btnSalvar = new ButtonType("Salvar", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(btnSalvar, ButtonType.CANCEL);
+
+        // ---------- campos do formulário ---------- //
+        // nome é exibido mas não editável (é a chave de busca)
+        TextField tfNome      = new TextField(selecionado.getNome());
+        tfNome.setDisable(true);
+
+        // seleção também não é editável aqui (mudança de seleção é operação separada)
+        TextField tfSelecao   = new TextField(selecionado.getSelecao().getPais());
+        tfSelecao.setDisable(true);
+
+        TextField tfIdade     = new TextField(String.valueOf(selecionado.getIdade()));
+        TextField tfNumeracao = new TextField(selecionado.getNumeracao());
+
+        ComboBox<String> cbPosicao = new ComboBox<>();
+        cbPosicao.setItems(FXCollections.observableArrayList(
+                "Goleiro", "Defensor", "Meio-Campo", "Atacante"));
+        cbPosicao.setValue(selecionado.getPosicao());
+
+        ComboBox<String> cbStatus = new ComboBox<>();
+        cbStatus.setItems(FXCollections.observableArrayList(
+                "ATIVO", "LESIONADO", "SUSPENSO"));
+        cbStatus.setValue(selecionado.getStatus().toString());
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        grid.add(new Label("Nome:"),      0, 0); grid.add(tfNome,      1, 0);
+        grid.add(new Label("Seleção:"),   0, 1); grid.add(tfSelecao,   1, 1);
+        grid.add(new Label("Idade:"),     0, 2); grid.add(tfIdade,     1, 2);
+        grid.add(new Label("Nº Camisa:"), 0, 3); grid.add(tfNumeracao, 1, 3);
+        grid.add(new Label("Posição:"),   0, 4); grid.add(cbPosicao,   1, 4);
+        grid.add(new Label("Status:"),    0, 5); grid.add(cbStatus,    1, 5);
+
+        dialog.getDialogPane().setContent(grid);
+
+        // ---------- validação ao clicar em Salvar ---------- //
+        dialog.getDialogPane()
+                .lookupButton(btnSalvar)
+                .addEventFilter(javafx.event.ActionEvent.ACTION, event -> {
+
+                    String idadeStr    = tfIdade.getText().trim();
+                    String numeracao   = tfNumeracao.getText().trim();
+                    String posicao     = cbPosicao.getValue();
+                    String status      = cbStatus.getValue();
+
+                    if (idadeStr.isBlank() || numeracao.isBlank()
+                            || posicao == null || status == null) {
+                        mostrarErro("Todos os campos são obrigatórios.");
+                        event.consume();
+                        return;
+                    }
+
+                    try {
+                        int idade = Integer.parseInt(idadeStr);
+                        if (idade < 0) {
+                            mostrarErro("A idade não pode ser negativa.");
+                            event.consume();
+                            return;
+                        }
+                    } catch (NumberFormatException e) {
+                        mostrarErro("Idade deve ser um número inteiro.");
+                        event.consume();
+                        return;
+                    }
+
+                    // verifica se a numeração nova já existe em outro jogador da mesma seleção
+                    // (só valida se a numeração foi alterada)
+                    if (!numeracao.equals(selecionado.getNumeracao())) {
+                        Selecao selecao = selecaoDAO.buscarPorPais(selecionado.getSelecao().getPais());
+                        if (selecao != null) {
+                            boolean numeracaoEmUso = selecao.getJogadores().stream()
+                                    .anyMatch(j -> j.getNumeracao().equals(numeracao)
+                                            && !j.getNome().equals(selecionado.getNome()));
+                            if (numeracaoEmUso) {
+                                mostrarErro("Já existe um jogador com o número " + numeracao + " nessa seleção.");
+                                event.consume();
+                            }
+                        }
+                    }
+                });
+
+        // ---------- converte resultado do Dialog em Jogador ---------- //
+        dialog.setResultConverter(botao -> {
+            if (botao == btnSalvar) {
+                // cria novo objeto para forçar re-renderização do JavaFX
+                Jogador atualizado = new Jogador(
+                        selecionado.getNome(),
+                        Integer.parseInt(tfIdade.getText().trim()),
+                        tfNumeracao.getText().trim(),
+                        cbPosicao.getValue(),
+                        selecionado.getSelecao(),
+                        StatusJogador.valueOf(cbStatus.getValue())
+                );
+                return atualizado;
+            }
+            return null;
+        });
+
+        // ---------- persiste e recarrega ---------- //
+        Optional<Jogador> resultado = dialog.showAndWait();
+
+        resultado.ifPresent(jogadorEditado -> {
+
+            // busca a seleção no DAO, substitui o jogador antigo pelo novo e salva
+            Selecao selecao = selecaoDAO.buscarPorPais(selecionado.getSelecao().getPais());
+            if (selecao != null) {
+                List<Jogador> jogadores = selecao.getJogadores();
+                for (int i = 0; i < jogadores.size(); i++) {
+                    if (jogadores.get(i).getNome().equals(selecionado.getNome())) {
+                        jogadores.set(i, jogadorEditado);
+                        break;
+                    }
+                }
+                selecaoDAO.atualizaSelecao(selecao);
+            }
+
+            carregarDados();
+            tabelaJogadores.refresh(); // força re-renderização das células
+
+            Alert sucesso = new Alert(Alert.AlertType.INFORMATION);
+            sucesso.setTitle("Sucesso");
+            sucesso.setHeaderText(null);
+            sucesso.setContentText("Jogador atualizado com sucesso.");
+            sucesso.showAndWait();
+        });
+    }
+
+    // ------------------------------------------------------------------ //
+    //  EXCLUIR
+    // ------------------------------------------------------------------ //
+
     @FXML
     private void handleExcluir() {
 
@@ -164,7 +337,6 @@ public class ConsultaJogadorController {
 
         if (confirmacao.showAndWait().get() == ButtonType.OK) {
 
-            // remove o jogador da lista da selecao e salva
             Selecao selecao = selecaoDAO.buscarPorPais(selecionado.getSelecao().getPais());
             if (selecao != null) {
                 selecao.getJogadores().removeIf(j -> j.getNome().equals(selecionado.getNome()));
@@ -181,9 +353,21 @@ public class ConsultaJogadorController {
         }
     }
 
-    private void atualizarTotal() {
-        labelTotal.setText("Total: " + tabelaJogadores.getItems().size() + " jogadores");
+    // ------------------------------------------------------------------ //
+    //  utilitário
+    // ------------------------------------------------------------------ //
+
+    private void mostrarErro(String mensagem) {
+        Alert alerta = new Alert(Alert.AlertType.ERROR);
+        alerta.setTitle("Erro de validação");
+        alerta.setHeaderText(null);
+        alerta.setContentText(mensagem);
+        alerta.showAndWait();
     }
+
+    // ------------------------------------------------------------------ //
+    //  navegação
+    // ------------------------------------------------------------------ //
 
     @FXML private void irHome()      { navegarPara("/fxml/menu.fxml",      "Home");      }
     @FXML private void irJogadores() { navegarPara("/fxml/jogadores.fxml", "Jogadores"); }
@@ -204,4 +388,5 @@ public class ConsultaJogadorController {
             e.printStackTrace();
         }
     }
+
 }

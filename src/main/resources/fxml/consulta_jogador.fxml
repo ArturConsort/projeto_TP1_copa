@@ -82,6 +82,10 @@
                     onAction="#handleLimpar"
                     styleClass="sel-btn-consulta-v3"/>
 
+            <Button text="Editar"
+                    onAction="#handleEditar"
+                    styleClass="sel-btn-cadastro-v3"/>
+
             <Button text="Excluir"
                     onAction="#handleExcluir"
                     styleClass="btn-excluir"/>

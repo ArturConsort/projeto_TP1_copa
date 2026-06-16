@@ -118,11 +118,11 @@ public class ConsultaSelecaoController {
 
     @FXML
     private void handleAtualizar() {
-        atualizarTotal();
+        carregarDados();
     }
 
     // ------------------------------------------------------------------ //
-    //  EDITAR – abre dialog com os campos da seleção selecionada
+    //  EDITAR
     // ------------------------------------------------------------------ //
 
     @FXML
@@ -146,13 +146,13 @@ public class ConsultaSelecaoController {
         dialog.getDialogPane().getButtonTypes().addAll(btnSalvar, ButtonType.CANCEL);
 
         // ---------- campos do formulário ---------- //
+        TextField tfPais     = new TextField(selecionada.getPais());
         TextField tfGrupo    = new TextField(selecionada.getGrupo());
         TextField tfTecnico  = new TextField(selecionada.getTecnico());
         TextField tfRanking  = new TextField(String.valueOf(selecionada.getRankingFIFA()));
         TextField tfTitulos  = new TextField(String.valueOf(selecionada.getTitulos()));
 
         // país é exibido mas não editável (é a chave de busca no DAO)
-        TextField tfPais = new TextField(selecionada.getPais());
         tfPais.setDisable(true);
 
         GridPane grid = new GridPane();
@@ -208,11 +208,17 @@ public class ConsultaSelecaoController {
         // ---------- converte resultado do Dialog em Selecao ---------- //
         dialog.setResultConverter(botao -> {
             if (botao == btnSalvar) {
-                selecionada.setGrupo   (tfGrupo  .getText().trim());
-                selecionada.setTecnico (tfTecnico.getText().trim());
-                selecionada.setRankingFIFA(Integer.parseInt(tfRanking.getText().trim()));
-                selecionada.setTitulos (Integer.parseInt(tfTitulos.getText().trim()));
-                return selecionada;
+                // cria um novo objeto em vez de reutilizar o mesmo da tabela
+                // assim o JavaFX detecta a mudança e re-renderiza corretamente
+                Selecao atualizada = new Selecao(
+                        selecionada.getPais(),
+                        tfGrupo  .getText().trim(),
+                        selecionada.getConfederacao(),
+                        tfTecnico.getText().trim(),
+                        Integer.parseInt(tfRanking.getText().trim()),
+                        Integer.parseInt(tfTitulos.getText().trim())
+                );
+                return atualizada;
             }
             return null;
         });
@@ -223,6 +229,7 @@ public class ConsultaSelecaoController {
         resultado.ifPresent(selecaoEditada -> {
             selecaoDAO.atualizaSelecao(selecaoEditada);
             carregarDados();
+            tabelaSelecoes.refresh(); // força o JavaFX a re-renderizar as células
 
             Alert sucesso = new Alert(Alert.AlertType.INFORMATION);
             sucesso.setTitle("Sucesso");
