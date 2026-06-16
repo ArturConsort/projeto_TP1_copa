@@ -92,18 +92,17 @@ public class SelecaoDAO {
             }
         }
     }
-
     public void atualizaSelecao(Selecao selecao_atualizada) {
         List<Selecao> lista = carregaLista();
 
         for (int i = 0; i < lista.size(); i++) {
             if (lista.get(i).getPais().equals(selecao_atualizada.getPais())) {
-                lista.set(i, selecao_atualizada); // substitui a selecao antiga pela atualizada
+                lista.set(i, selecao_atualizada);
                 break;
             }
         }
 
-        salvarLista(lista);
+        salvarLista(lista); // ← faltava essa linha
     }
 
 }

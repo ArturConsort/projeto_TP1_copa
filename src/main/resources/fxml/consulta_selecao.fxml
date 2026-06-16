@@ -108,6 +108,10 @@
                     onAction="#handleLimpar"
                     styleClass="sel-btn-consulta-v3"/>
 
+            <Button text="Editar"
+                    onAction="#handleEditar"
+                    styleClass="sel-btn-cadastro-v3"/>
+
             <Button text="Excluir"
                     onAction="#handleExcluir"
                     styleClass="btn-excluir"/>
@@ -153,9 +157,6 @@
 
             <Label fx:id="labelTotal"/>
 
-            <Button text="Atualizar"
-                    onAction="#handleAtualizar"
-                    styleClass="sel-btn-cadastro-v3"/>
 
         </HBox>
 
