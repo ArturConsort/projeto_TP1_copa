@@ -26,6 +26,11 @@ public class VendaDAO {
         }
     }
 
+    // exposto para que IngressoDAO possa propagar alteracoes de ingresso para dentro das vendas
+    public void salvarListaCompleta(List<Venda> listaVendas) {
+        salvarLista(listaVendas);
+    }
+
     // metodo que carrega toda a lista de vendas
     // usada pra passar a lista para outros metodos
     public List<Venda> carregaLista() {

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.String?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllersJavaFX.ValidarIngressoController"
+      prefWidth="1200"
+      prefHeight="700"
+      styleClass="sel-root-v3">
+
+    <style>
+        -fx-background-color: radial-gradient(center 50% 60%, radius 70%,
+        #3d2e0a 0%, #1a1508 45%, #0a0a0a 100%);
+    </style>
+
+    <!-- HUD -->
+
+    <HBox styleClass="hud-bar" alignment="CENTER_LEFT">
+
+        <ImageView fitHeight="48"
+                   fitWidth="48"
+                   preserveRatio="true">
+            <image>
+                <Image url="@/images/worldcup_logo.png"/>
+            </image>
+            <HBox.margin>
+                <Insets right="24"/>
+            </HBox.margin>
+        </ImageView>
+
+        <Button fx:id="btnHome"      text="Home"      onAction="#irHome"      styleClass="nav-btn"/>
+        <Button fx:id="btnJogadores" text="Jogadores" onAction="#irJogadores" styleClass="nav-btn"/>
+        <Button fx:id="btnEquipes"   text="Equipes"   onAction="#irEquipes"   styleClass="nav-btn"/>
+        <Button fx:id="btnPartidas"  text="Partidas"  onAction="#irPartidas"  styleClass="nav-btn"/>
+        <Button fx:id="btnEstadios"  text="Estádios"  onAction="#irEstadios"  styleClass="nav-btn"/>
+        <Button fx:id="btnArbitros"  text="Árbitros"  onAction="#irArbitros"  styleClass="nav-btn"/>
+        <Button fx:id="btnIngressos"  text="Ingressos"  onAction="#irIngressos"  styleClass="nav-btn"/>
+        <Button fx:id="btnRelatorios" text="Relatórios" onAction="#irRelatorios" styleClass="nav-btn"/>
+
+        <Region HBox.hgrow="ALWAYS"/>
+
+    </HBox>
+
+    <!-- CORPO -->
+
+    <VBox VBox.vgrow="ALWAYS"
+          alignment="TOP_CENTER"
+          spacing="32">
+
+        <padding>
+            <Insets top="50" right="40" bottom="40" left="40"/>
+        </padding>
+
+        <Label text="Validar Ingresso"
+               styleClass="sel-titulo-v3"/>
+
+        <Label text="Insira o número do ingresso para registrar a entrada no estádio."
+               styleClass="setor-info"
+               wrapText="true"/>
+
+        <!-- PAINEL DE BUSCA -->
+
+        <VBox alignment="CENTER"
+              spacing="16"
+              maxWidth="500">
+
+            <Label text="Número do Ingresso"
+                   styleClass="setor-info"/>
+
+            <HBox spacing="12" alignment="CENTER">
+
+                <TextField fx:id="campoIdIngresso"
+                           promptText="Ex: 42"
+                           prefWidth="260"
+                           prefHeight="42"
+                           styleClass="campo-texto"/>
+
+                <Button text="Validar Entrada"
+                        onAction="#aoValidar"
+                        styleClass="sel-btn-cadastro-v3"
+                        prefHeight="42"
+                        prefWidth="160"/>
+
+                <Button text="Limpar"
+                        onAction="#aoLimpar"
+                        styleClass="sel-btn-consulta-v3"
+                        prefHeight="42"/>
+
+            </HBox>
+
+        </VBox>
+
+        <!-- PAINEL DE RESULTADO (visível após validação) -->
+
+        <VBox fx:id="painelResultado"
+              alignment="CENTER"
+              spacing="10"
+              maxWidth="500"
+              style="-fx-background-color: rgba(20, 16, 8, 0.90);
+                     -fx-background-radius: 14;
+                     -fx-border-color: #3a3020;
+                     -fx-border-radius: 14;
+                     -fx-border-width: 1;
+                     -fx-padding: 24;">
+
+            <Label fx:id="labelResultado"
+                   text=""
+                   wrapText="true"
+                   style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-font-family: 'Segoe UI';"/>
+
+            <Label fx:id="labelDetalhe"
+                   text=""
+                   wrapText="true"
+                   styleClass="setor-info"/>
+
+        </VBox>
+
+    </VBox>
+
+    <stylesheets>
+        <String fx:value="/css/selecao_inicio.css"/>
+        <String fx:value="/css/ingressos.css"/>
+        <String fx:value="/css/validar_ingresso.css"/>
+    </stylesheets>
+
+</VBox>

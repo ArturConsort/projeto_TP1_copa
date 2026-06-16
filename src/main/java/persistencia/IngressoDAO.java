@@ -79,6 +79,7 @@ public class IngressoDAO {
     }
 
     public void atualizar(Ingresso ingressoAtualizado) {
+        // atualiza em ingressos.dat
         List<Ingresso> listaIngressos = carregaLista();
         for (int i = 0; i < listaIngressos.size(); i++) {
             if (listaIngressos.get(i).getIdIngresso() == ingressoAtualizado.getIdIngresso()) {
@@ -87,6 +88,26 @@ public class IngressoDAO {
             }
         }
         salvarLista(listaIngressos);
+
+        // propaga a alteracao para a copia do ingresso dentro de vendas.dat,
+        // pois Venda serializa seus proprios objetos Ingresso independentemente
+        VendaDAO vendaDAO = new VendaDAO();
+        List<Venda> listaVendas = vendaDAO.carregaLista();
+        boolean vendaAlterada = false;
+        for (Venda venda : listaVendas) {
+            List<Ingresso> ingressosDaVenda = venda.getIngressos();
+            if (ingressosDaVenda == null) continue;
+            for (int i = 0; i < ingressosDaVenda.size(); i++) {
+                if (ingressosDaVenda.get(i).getIdIngresso() == ingressoAtualizado.getIdIngresso()) {
+                    ingressosDaVenda.set(i, ingressoAtualizado);
+                    vendaAlterada = true;
+                    break;
+                }
+            }
+        }
+        if (vendaAlterada) {
+            vendaDAO.salvarListaCompleta(listaVendas);
+        }
     }
 
     // retorna todos os ingressos que pertencem a vendas do usuario informado.

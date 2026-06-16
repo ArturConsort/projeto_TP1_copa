@@ -1,0 +1,11 @@
+/* ================================================================
+   VALIDAR INGRESSO — estilos para o painel de resultado
+   ================================================================ */
+
+.resultado-sucesso {
+    -fx-text-fill: #4caf50;
+}
+
+.resultado-erro {
+    -fx-text-fill: #e57373;
+}

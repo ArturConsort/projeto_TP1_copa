@@ -124,7 +124,7 @@ public class MeusIngressosController {
         precoLabel.getStyleClass().add("partida-card-info");
 
         // ── Status de validação ──────────────────────────────
-        Label statusLabel = new Label(ingresso.isFoiValidado() ? "✔ Utilizado" : "✔ Válido");
+        Label statusLabel = new Label(ingresso.isFoiValidado() ? "✘ Entrada utilizada" : "✔ Ingresso válido");
         statusLabel.getStyleClass().add(ingresso.isFoiValidado() ? "status-finalizada" : "status-agendada");
 
         if (!estadio.isBlank()) {

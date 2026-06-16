@@ -21,6 +21,7 @@ public class MenuController {
     @FXML private Button btnEstadios;
     @FXML private Button btnArbitros;
     @FXML private Button btnIngressos;
+    @FXML private Button btnValidarIngresso;
     @FXML private Button btnDesignacoes;
     @FXML private Button btnUsuarios;
     @FXML private Label labelUsuario;
@@ -60,6 +61,7 @@ public class MenuController {
                             btnEstadios,
                             btnArbitros,
                             btnIngressos,
+                            btnValidarIngresso,
                             btnDesignacoes,
                             btnUsuarios,
                             btnRelatorios
@@ -78,6 +80,7 @@ public class MenuController {
             case OPERADOR ->
                     mostrar(
                             btnIngressos,
+                            btnValidarIngresso,
                             btnRelatorios
                     );
 
@@ -385,6 +388,11 @@ public class MenuController {
     @FXML
     private void irIngressos() {
         navegarPara("/fxml/ingressos.fxml", "Ingressos");
+    }
+
+    @FXML
+    private void irValidarIngresso() {
+        navegarPara("/fxml/validar_ingresso.fxml", "Validar Ingresso");
     }
 
 
