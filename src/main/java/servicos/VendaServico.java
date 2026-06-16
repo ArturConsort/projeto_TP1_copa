@@ -10,11 +10,12 @@ import modelo.excecoes.AcessoNegadoException;
 import persistencia.PartidaDAO;
 import persistencia.VendaDAO;
 import servicos.usuario.SessaoUsuario;
+import servicos.Servico;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class VendaServico {
+public class VendaServico extends Servico{
 
     private VendaDAO dao;
     private PartidaDAO partidaDAO;
@@ -142,26 +143,5 @@ public class VendaServico {
         }
 
         return resultado;
-    }
-
-    // ------- metodos privados auxiliares ------- //
-
-    private void verificarPermissao(TipoPerfil perfilRequisitado) {
-        Usuario logado = SessaoUsuario.getInstancia().getUsuarioLogado();
-        if (logado == null || logado.getPerfil() != perfilRequisitado) {
-            throw new AcessoNegadoException("Acesso negado: esse usuario não tem permissao para fazer essa ação");
-        }
-    }
-
-    // verifica se o usuario logado possui qualquer um dos perfis informados
-    private void verificarPermissaoMultipla(TipoPerfil... perfisAceitos) {
-        Usuario logado = SessaoUsuario.getInstancia().getUsuarioLogado();
-        if (logado == null) {
-            throw new AcessoNegadoException("Nenhum usuario logado");
-        }
-        for (TipoPerfil perfil : perfisAceitos) {
-            if (logado.getPerfil() == perfil) return;
-        }
-        throw new AcessoNegadoException("Acesso negado: esse usuario não tem permissao para fazer essa ação");
     }
 }

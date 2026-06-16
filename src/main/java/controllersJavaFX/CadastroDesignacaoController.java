@@ -14,6 +14,7 @@ import modelo.classes.Partida;
 import modelo.excecoes.AcessoNegadoException;
 import modelo.excecoes.designacaoarbitro.DesignacaoJaCadastradaException;
 import modelo.excecoes.designacaoarbitro.NacionalidadeConflitanteException;
+import modelo.excecoes.designacaoarbitro.ArbitroIguaisException;
 import servicos.ArbitroServico;
 import servicos.DesignacaoArbitroServico;
 import servicos.Partida.PartidaService;
@@ -112,6 +113,8 @@ public class CadastroDesignacaoController {
 
             limpar();
 
+        } catch (ArbitroIguaisException e){
+            mostrarErro("Dois ou mais arbitros iguais: " + e.getMessage());
         } catch (DesignacaoJaCadastradaException e) {
             mostrarErro("Designação já cadastrada: " + e.getMessage());
 

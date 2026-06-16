@@ -6,11 +6,12 @@ import persistencia.CategoriaIngressoDAO;
 import servicos.usuario.SessaoUsuario;
 import modelo.classes.Usuario;
 import modelo.excecoes.AcessoNegadoException;
+import servicos.Servico;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoriaIngressoServico {
+public class CategoriaIngressoServico extends Servico{
 
     private CategoriaIngressoDAO dao;
 
@@ -84,17 +85,5 @@ public class CategoriaIngressoServico {
         }
 
         return resultado;
-    }
-
-
-
-
-    // ------- metodos privados auxiliares ------- //
-
-    private void verificarPermissao(TipoPerfil perfilRequisitado) {
-        Usuario logado = SessaoUsuario.getInstancia().getUsuarioLogado();
-        if (logado == null || logado.getPerfil() != perfilRequisitado) {
-            throw new AcessoNegadoException("Acesso negado: esse usuario não tem permissao para fazer essa ação");
-        }
     }
 }

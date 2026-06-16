@@ -12,12 +12,13 @@ import modelo.classes.Usuario;
 import persistencia.EstadioDAO;
 import persistencia.PartidaDAO;
 import servicos.usuario.SessaoUsuario;
+import servicos.Servico;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class EstadioServico {
+public class EstadioServico extends Servico{
 
     private final EstadioDAO estadioDAO;
     private final PartidaDAO partidaDAO;
@@ -109,20 +110,4 @@ public class EstadioServico {
                 .collect(Collectors.toList());
     }
 
-    private void verificarPermissao(TipoPerfil... perfisAceitos) {
-
-        Usuario logado = SessaoUsuario.getInstancia().getUsuarioLogado();
-
-        if (logado == null) {
-            throw new AcessoNegadoException("Nenhum usuário logado.");
-        }
-
-        for (TipoPerfil perfil : perfisAceitos) {
-            if (logado.getPerfil() == perfil) {
-                return;
-            }
-        }
-
-        throw new AcessoNegadoException("Acesso negado: o usuário não tem permissão para esta ação.");
-    }
 }

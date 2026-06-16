@@ -9,12 +9,13 @@ import modelo.excecoes.arbitro.ArbitroJaCadastradoException;
 import modelo.excecoes.arbitro.ArbitroNaoEncontradoException;
 import persistencia.ArbitroDAO;
 import servicos.usuario.SessaoUsuario;
+import servicos.Servico;
 
 import java.io.IOException;
 import java.util.List;
 
 
-public class ArbitroServico {
+public class ArbitroServico extends Servico{
 
     private final ArbitroDAO arbitroDAO;
 
@@ -62,7 +63,7 @@ public class ArbitroServico {
 
     public List<Arbitro> listarArbitros() throws IOException {
         return arbitroDAO.carregaLista();
-    }    private void verificarPermissao(TipoPerfil... perfisAceitos) {
+    }    protected void verificarPermissao(TipoPerfil... perfisAceitos) {
         Usuario logado = SessaoUsuario.getInstancia().getUsuarioLogado();
 
         if (logado == null) {

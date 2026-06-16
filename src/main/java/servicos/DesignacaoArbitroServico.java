@@ -9,15 +9,17 @@ import modelo.excecoes.AcessoNegadoException;
 import modelo.excecoes.designacaoarbitro.DesignacaoJaCadastradaException;
 import modelo.excecoes.designacaoarbitro.DesignacaoNaoEncontradaException;
 import modelo.excecoes.designacaoarbitro.NacionalidadeConflitanteException;
+import modelo.excecoes.designacaoarbitro.ArbitroIguaisException;
 import persistencia.DesignacaoArbitroDAO;
 import servicos.usuario.SessaoUsuario;
 import modelo.classes.Partida;
+import servicos.Servico;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-public class DesignacaoArbitroServico {
+public class DesignacaoArbitroServico extends Servico{
 
     private final DesignacaoArbitroDAO designacaoDAO;
 
@@ -25,7 +27,7 @@ public class DesignacaoArbitroServico {
         this.designacaoDAO = designacaoDAO;
     }
 
-    public void criarDesignacao(Partida partida, Arbitro principal, List<Arbitro> assistentes) throws NacionalidadeConflitanteException, DesignacaoJaCadastradaException, IOException {
+    public void criarDesignacao(Partida partida, Arbitro principal, List<Arbitro> assistentes) throws NacionalidadeConflitanteException, DesignacaoJaCadastradaException, ArbitroIguaisException, IOException {
 
         verificarPermissao(TipoPerfil.ADMINISTRADOR, TipoPerfil.ORGANIZADOR);
 
@@ -39,7 +41,12 @@ public class DesignacaoArbitroServico {
 
         // Entidade verifica conflito de nacionalidade com os dados que ela já possui
         designacao.verificarConflitosNacionalidade();
-
+        // verificar se os arbitros colocados são iguais
+        if (principal.equals(assistentes.get(0)) ||
+                principal.equals(assistentes.get(1)) ||
+                (assistentes.get(0)).equals(assistentes.get(1))) {
+            throw new ArbitroIguaisException();
+        }
         designacaoDAO.salvar(designacao);
     }
 
@@ -67,17 +74,4 @@ public class DesignacaoArbitroServico {
         designacaoDAO.remover(numeroPartida);
     }
 
-    private void verificarPermissao(TipoPerfil... perfisAceitos) {
-        Usuario logado = SessaoUsuario.getInstancia().getUsuarioLogado();
-
-        if (logado == null) {
-            throw new AcessoNegadoException("Nenhum usuário logado.");
-        }
-
-        for (TipoPerfil perfil : perfisAceitos) {
-            if (logado.getPerfil() == perfil) return;
-        }
-
-        throw new AcessoNegadoException("Acesso negado: permissão insuficiente.");
-    }
 }
