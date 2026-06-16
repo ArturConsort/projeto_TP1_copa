@@ -29,6 +29,7 @@ public class CompraIngressoController {
     @FXML private Button btnEstadios;
     @FXML private Button btnArbitros;
     @FXML private Button btnIngressos;
+    @FXML private Button btnRelatorios;
 
     // ── Resumo do pedido ────────────────────────────────────
     @FXML private Label labelConfrontoResumo;
@@ -65,6 +66,8 @@ public class CompraIngressoController {
         // Garante que novos Ingresso() criados nesta sessão nunca repitam IDs
         // de ingressos já gravados em execuções anteriores.
         new IngressoDAO().carregaLista();
+
+        ajustarNavbarPorPerfil();
 
         Partida partida = SessaoCompra.getInstancia().getPartidaSelecionada();
         CategoriaIngresso categoria = SessaoCompra.getInstancia().getCategoriaSelecionada();
@@ -390,6 +393,17 @@ public class CompraIngressoController {
         alerta.showAndWait();
     }
 
+    // ── Controle de visibilidade por perfil ─────────────────
+
+    private void ajustarNavbarPorPerfil() {
+        modelo.classes.Usuario logado = SessaoUsuario.getInstancia().getUsuarioLogado();
+        if (logado == null || logado.getPerfil() != TipoPerfil.OPERADOR) return;
+        for (Button b : new Button[]{ btnJogadores, btnEquipes, btnPartidas, btnEstadios, btnArbitros }) {
+            b.setVisible(false);
+            b.setManaged(false);
+        }
+    }
+
     // ── Navegação pelo HUD ──────────────────────────────────
 
     @FXML private void irHome()      { navegarPara("/fxml/menu.fxml",      "Home");      }
@@ -398,6 +412,8 @@ public class CompraIngressoController {
     @FXML private void irPartidas()  { navegarPara("/fxml/partidas.fxml",  "Partidas");  }
     @FXML private void irEstadios()  { navegarPara("/fxml/estadios.fxml",  "Estádios");  }
     @FXML private void irArbitros()  { navegarPara("/fxml/arbitros.fxml",  "Árbitros");  }
+    @FXML private void irRelatorios(){ navegarPara("/fxml/relatorios.fxml", "Relatórios"); }
+
     @FXML private void irIngressos() { navegarPara("/fxml/ingressos.fxml", "Ingressos"); }
 
     // ── Utilitário ──────────────────────────────────────────

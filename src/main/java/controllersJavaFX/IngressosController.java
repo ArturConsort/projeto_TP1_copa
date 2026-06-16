@@ -15,6 +15,8 @@ import javafx.stage.Stage;
 import modelo.classes.Partida;
 import servicos.Partida.PartidaService;
 import servicos.usuario.SessaoCompra;
+import modelo.enumerations.TipoPerfil;
+import servicos.usuario.SessaoUsuario;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,6 +31,7 @@ public class IngressosController {
     @FXML private Button btnEstadios;
     @FXML private Button btnArbitros;
     @FXML private Button btnIngressos;
+    @FXML private Button btnRelatorios;
 
     @FXML private FlowPane painelPartidas;
     @FXML private TextField campoBusca;
@@ -40,6 +43,7 @@ public class IngressosController {
 
     @FXML
     public void initialize() {
+        ajustarNavbarPorPerfil();
         todasAsPartidas = partidaService.listarPartidas();
         renderizarPartidas(todasAsPartidas);
 
@@ -166,6 +170,17 @@ public class IngressosController {
         };
     }
 
+    // ── Controle de visibilidade por perfil ─────────────────
+
+    private void ajustarNavbarPorPerfil() {
+        modelo.classes.Usuario logado = SessaoUsuario.getInstancia().getUsuarioLogado();
+        if (logado == null || logado.getPerfil() != TipoPerfil.OPERADOR) return;
+        for (Button b : new Button[]{ btnJogadores, btnEquipes, btnPartidas, btnEstadios, btnArbitros }) {
+            b.setVisible(false);
+            b.setManaged(false);
+        }
+    }
+
     // ── Navegação pelo HUD ──────────────────────────────────
 
     @FXML private void irHome()      { navegarPara("/fxml/menu.fxml",      "Home");      }
@@ -174,6 +189,8 @@ public class IngressosController {
     @FXML private void irPartidas()  { navegarPara("/fxml/partidas.fxml",  "Partidas");  }
     @FXML private void irEstadios()  { navegarPara("/fxml/estadios.fxml",  "Estádios");  }
     @FXML private void irArbitros()  { navegarPara("/fxml/arbitros.fxml",  "Árbitros");  }
+    @FXML private void irRelatorios(){ navegarPara("/fxml/relatorios.fxml", "Relatórios"); }
+
     @FXML private void irIngressos() { /* já estamos aqui */ }
 
     @FXML private void irMeusIngressos() {

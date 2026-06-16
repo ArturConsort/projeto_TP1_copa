@@ -39,7 +39,8 @@
         <Button fx:id="btnPartidas"  text="Partidas"  onAction="#irPartidas"  styleClass="nav-btn"/>
         <Button fx:id="btnEstadios"  text="Estádios"  onAction="#irEstadios"  styleClass="nav-btn"/>
         <Button fx:id="btnArbitros"  text="Árbitros"  onAction="#irArbitros"  styleClass="nav-btn"/>
-        <Button fx:id="btnIngressos" text="Ingressos" onAction="#irIngressos" styleClass="nav-btn nav-btn-active"/>
+        <Button fx:id="btnIngressos"  text="Ingressos"  onAction="#irIngressos"  styleClass="nav-btn nav-btn-active"/>
+        <Button fx:id="btnRelatorios" text="Relatórios" onAction="#irRelatorios" styleClass="nav-btn"/>
 
         <Region HBox.hgrow="ALWAYS"/>
 
