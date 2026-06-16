@@ -24,7 +24,7 @@ public class IngressoServico extends Servico{
 
     public void cadastrar(Ingresso novoIngresso) throws AcessoNegadoException {
 
-        verificarPermissao(TipoPerfil.ADMINISTRADOR);
+        verificarPermissao(TipoPerfil.OPERADOR, TipoPerfil.ADMINISTRADOR);
 
         if (novoIngresso.getCategoria() == null) {
             throw new IllegalArgumentException("O ingresso deve ter uma categoria associada");

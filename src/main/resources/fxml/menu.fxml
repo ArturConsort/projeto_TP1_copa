@@ -37,9 +37,7 @@
                     styleClass="nav-btn"/>
             <Button fx:id="btnIngressos"   text="Ingressos"  onAction="#irIngressos"
                     styleClass="nav-btn"/>
-            <Button fx:id="btnVendas"      text="Vendas"     onAction="#irVendas"
-                    styleClass="nav-btn"/>
-            <Button fx:id="btnDesignacoes" text="Designações" onAction="#irDesignacoes"
+<Button fx:id="btnDesignacoes" text="Designações" onAction="#irDesignacoes"
                     styleClass="nav-btn"/>
             <Button fx:id="btnUsuarios"    text="Usuários"   onAction="#irUsuarios"
                     styleClass="nav-btn"/>

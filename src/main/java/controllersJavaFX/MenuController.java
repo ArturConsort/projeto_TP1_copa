@@ -21,7 +21,6 @@ public class MenuController {
     @FXML private Button btnEstadios;
     @FXML private Button btnArbitros;
     @FXML private Button btnIngressos;
-    @FXML private Button btnVendas;
     @FXML private Button btnDesignacoes;
     @FXML private Button btnUsuarios;
     @FXML private Label labelUsuario;
@@ -61,9 +60,9 @@ public class MenuController {
                             btnEstadios,
                             btnArbitros,
                             btnIngressos,
-                            btnVendas,
                             btnDesignacoes,
-                            btnUsuarios
+                            btnUsuarios,
+                            btnRelatorios
                     );
 
             case ORGANIZADOR ->
@@ -79,7 +78,7 @@ public class MenuController {
             case OPERADOR ->
                     mostrar(
                             btnIngressos,
-                            btnVendas
+                            btnRelatorios
                     );
 
             case ARBITRO ->
@@ -388,10 +387,6 @@ public class MenuController {
         navegarPara("/fxml/ingressos.fxml", "Ingressos");
     }
 
-    @FXML
-    private void irVendas() {
-        navegarPara("/fxml/vendas.fxml", "Vendas");
-    }
 
     @FXML
     private void irDesignacoes() {
@@ -531,9 +526,9 @@ public class MenuController {
                 btnEstadios,
                 btnArbitros,
                 btnIngressos,
-                btnVendas,
                 btnDesignacoes,
-                btnUsuarios
+                btnUsuarios,
+                btnRelatorios
         }) {
             b.setVisible(false);
             b.setManaged(false);
