@@ -71,6 +71,10 @@ public class Selecao implements Serializable {
     // Conveniência: elimina a seleção da competição
     public void eliminar() { this.ativa = false; }
 
+    public int qntJogadores(){
+        return jogadores.size();
+    }
+
     @Override
     public String toString() { return pais; }
 

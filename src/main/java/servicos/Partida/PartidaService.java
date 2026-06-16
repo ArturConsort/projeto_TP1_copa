@@ -54,6 +54,9 @@ public class PartidaService {
         if (timeCasa.equals(timeVisitante)) {
             throw new Exception("Os dois times não podem ser iguais!");
         }
+        if(timeCasa.qntJogadores() > 26 || timeCasa.qntJogadores() < 18 || timeVisitante.qntJogadores() > 26 || timeVisitante.qntJogadores() < 18){
+            throw new Exception("As seleções precisam ter entre 18 e 26 jogadores");
+        }
         if (estadio == null) {
             throw new Exception("O estádio é obrigatório!");
         }

@@ -32,7 +32,55 @@
     -fx-border-color: #444;
 }
 
-/* DatePicker — editor interno */
+/* ===== COMBO BOX — texto branco ao selecionar ===== */
+
+/* Texto do item selecionado no campo */
+.combo-box .list-cell {
+    -fx-text-fill: white;
+    -fx-background-color: transparent;
+}
+
+/* Texto dentro do campo quando algo está selecionado */
+.combo-box-base .label {
+    -fx-text-fill: white;
+}
+
+/* Seta do ComboBox */
+.combo-box .arrow-button {
+    -fx-background-color: #444;
+    -fx-background-radius: 0 20 20 0;
+}
+
+.combo-box .arrow-button .arrow {
+    -fx-background-color: #d4a32a;
+}
+
+/* Lista suspensa do ComboBox */
+.combo-box-popup .list-view {
+    -fx-background-color: #222;
+    -fx-border-color: #7f5a12;
+}
+
+/* Itens da lista suspensa */
+.combo-box-popup .list-view .list-cell {
+    -fx-background-color: #222;
+    -fx-text-fill: white;
+}
+
+/* Item da lista ao passar o mouse */
+.combo-box-popup .list-view .list-cell:hover {
+    -fx-background-color: rgba(212,163,42,0.3);
+    -fx-text-fill: white;
+}
+
+/* Item da lista selecionado */
+.combo-box-popup .list-view .list-cell:selected {
+    -fx-background-color: #7f5a12;
+    -fx-text-fill: white;
+}
+
+/* ===== DATE PICKER ===== */
+
 .date-picker .text-field {
     -fx-background-color: #222;
     -fx-text-fill: white;
@@ -40,7 +88,6 @@
     -fx-background-radius: 20;
 }
 
-/* DatePicker — botão do calendário */
 .date-picker .arrow-button {
     -fx-background-color: #444;
     -fx-background-radius: 0 20 20 0;
@@ -83,7 +130,11 @@
 
 .date-picker-popup .day-cell {
     -fx-background-color: transparent;
-    -fx-text-fill: white;
+    -fx-text-fill: black;
+}
+
+.date-picker-popup .day-cell .label {
+    -fx-text-fill: black;
 }
 
 .date-picker-popup .day-cell:hover {
@@ -91,10 +142,18 @@
     -fx-background-radius: 50%;
 }
 
+.date-picker-popup .day-cell:hover .label {
+    -fx-text-fill: black;
+}
+
 .date-picker-popup .day-cell:selected,
 .date-picker-popup .selected {
     -fx-background-color: #d4a32a;
     -fx-background-radius: 50%;
+}
+
+.date-picker-popup .day-cell:selected .label,
+.date-picker-popup .selected .label {
     -fx-text-fill: black;
     -fx-font-weight: bold;
 }
@@ -102,12 +161,17 @@
 .date-picker-popup .today {
     -fx-border-color: #d4a32a;
     -fx-border-radius: 50%;
+}
+
+.date-picker-popup .today .label {
     -fx-text-fill: #d4a32a;
 }
 
-.date-picker-popup .day-cell.other-month {
-    -fx-text-fill: #555;
+.date-picker-popup .day-cell.other-month .label {
+    -fx-text-fill: #666;
 }
+
+/* ===== BOTÕES ===== */
 
 .btn-cadastrar {
     -fx-background-color: #d4a32a;
@@ -137,6 +201,8 @@
     -fx-text-fill: #d4a32a;
 }
 
+/* ===== FEEDBACK ===== */
+
 .label-feedback-erro {
     -fx-text-fill: #ff6b6b;
     -fx-font-size: 13;
@@ -145,26 +211,4 @@
 .label-feedback-ok {
     -fx-text-fill: #69db7c;
     -fx-font-size: 13;
-}
-
-/* Números dos dias do calendário em preto */
-.date-picker-popup .day-cell .label {
-    -fx-text-fill: black;
-}
-
-.date-picker-popup .day-cell:hover .label {
-    -fx-text-fill: black;
-}
-
-.date-picker-popup .day-cell:selected .label,
-.date-picker-popup .selected .label {
-    -fx-text-fill: black;
-}
-
-.date-picker-popup .today .label {
-    -fx-text-fill: #d4a32a;
-}
-
-.date-picker-popup .day-cell.other-month .label {
-    -fx-text-fill: #666;
 }
