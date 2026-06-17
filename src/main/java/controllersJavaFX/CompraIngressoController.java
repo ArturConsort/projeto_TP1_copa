@@ -21,15 +21,8 @@ import java.time.format.DateTimeFormatter;
 
 public class CompraIngressoController {
 
-    // ── Botões do HUD ───────────────────────────────────────
-    @FXML private Button btnHome;
-    @FXML private Button btnJogadores;
-    @FXML private Button btnEquipes;
-    @FXML private Button btnPartidas;
-    @FXML private Button btnEstadios;
-    @FXML private Button btnArbitros;
-    @FXML private Button btnIngressos;
-    @FXML private Button btnRelatorios;
+    // ── Navbar ──────────────────────────────────────────────
+    @FXML private Label labelUsuarioLogado;
 
     // ── Resumo do pedido ────────────────────────────────────
     @FXML private Label labelConfrontoResumo;
@@ -67,7 +60,10 @@ public class CompraIngressoController {
         // de ingressos já gravados em execuções anteriores.
         new IngressoDAO().carregaLista();
 
-        ajustarNavbarPorPerfil();
+        Usuario usuarioLogadoNavbar = SessaoUsuario.getInstancia().getUsuarioLogado();
+        if (usuarioLogadoNavbar != null) {
+            labelUsuarioLogado.setText(usuarioLogadoNavbar.getNome() + " · " + usuarioLogadoNavbar.getPerfil());
+        }
 
         Partida partida = SessaoCompra.getInstancia().getPartidaSelecionada();
         CategoriaIngresso categoria = SessaoCompra.getInstancia().getCategoriaSelecionada();
@@ -188,20 +184,7 @@ public class CompraIngressoController {
 
     private boolean cpfValido(String cpf) {
         String digitos = cpf.replaceAll("[^0-9]", "");
-        if (digitos.length() != 11) return false;
-        if (digitos.matches("(\\d)\\1{10}")) return false;
-
-        int soma = 0;
-        for (int i = 0; i < 9; i++) soma += Character.getNumericValue(digitos.charAt(i)) * (10 - i);
-        int r1 = (soma * 10) % 11;
-        if (r1 == 10 || r1 == 11) r1 = 0;
-        if (r1 != Character.getNumericValue(digitos.charAt(9))) return false;
-
-        soma = 0;
-        for (int i = 0; i < 10; i++) soma += Character.getNumericValue(digitos.charAt(i)) * (11 - i);
-        int r2 = (soma * 10) % 11;
-        if (r2 == 10 || r2 == 11) r2 = 0;
-        return r2 == Character.getNumericValue(digitos.charAt(10));
+        return digitos.length() == 11;
     }
 
     private boolean emailValido(String email) {
@@ -393,35 +376,20 @@ public class CompraIngressoController {
         alerta.showAndWait();
     }
 
-    // ── Controle de visibilidade por perfil ─────────────────
+    // ── Navegação ───────────────────────────────────────────
 
-    private void ajustarNavbarPorPerfil() {
-        modelo.classes.Usuario logado = SessaoUsuario.getInstancia().getUsuarioLogado();
-        if (logado == null || logado.getPerfil() != TipoPerfil.OPERADOR) return;
-        for (Button b : new Button[]{ btnJogadores, btnEquipes, btnPartidas, btnEstadios, btnArbitros }) {
-            b.setVisible(false);
-            b.setManaged(false);
-        }
+    @FXML
+    private void handleLogout() {
+        SessaoUsuario.getInstancia().encerrarSessao();
+        navegarPara("/fxml/login.fxml", "Login — Copa do Mundo 2026");
     }
-
-    // ── Navegação pelo HUD ──────────────────────────────────
-
-    @FXML private void irHome()      { navegarPara("/fxml/menu.fxml",      "Home");      }
-    @FXML private void irJogadores() { navegarPara("/fxml/jogadores.fxml", "Jogadores"); }
-    @FXML private void irEquipes()   { navegarPara("/fxml/equipes.fxml",   "Equipes");   }
-    @FXML private void irPartidas()  { navegarPara("/fxml/partidas.fxml",  "Partidas");  }
-    @FXML private void irEstadios()  { navegarPara("/fxml/estadios.fxml",  "Estádios");  }
-    @FXML private void irArbitros()  { navegarPara("/fxml/arbitros.fxml",  "Árbitros");  }
-    @FXML private void irRelatorios(){ navegarPara("/fxml/relatorios.fxml", "Relatórios"); }
-
-    @FXML private void irIngressos() { navegarPara("/fxml/ingressos.fxml", "Ingressos"); }
 
     // ── Utilitário ──────────────────────────────────────────
 
     private void navegarPara(String fxmlPath, String titulo) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            Stage stage = (Stage) btnHome.getScene().getWindow();
+            Stage stage = (Stage) labelUsuarioLogado.getScene().getWindow();
             double w = stage.getWidth();
             double h = stage.getHeight();
             stage.setScene(new Scene(loader.load()));
