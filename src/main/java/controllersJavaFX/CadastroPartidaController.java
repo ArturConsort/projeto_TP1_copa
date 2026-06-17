@@ -6,74 +6,74 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import modelo.classes.Estadio;
 import modelo.classes.Partida;
 import modelo.classes.Selecao;
-import servicos.Partida.ResultadoPartidaService;
+import modelo.enumerations.FasePartida;
+import servicos.Partida.PartidaService;
 
-public class CadastroResultadoController {
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
-    @FXML private ComboBox<Partida> comboPartida;
-    @FXML private ComboBox<Selecao> comboVencedor;
-    @FXML private ComboBox<Selecao> comboPerdedor;
-    @FXML private TextField         campoPlacar;
-    @FXML private TextField         campoPlacarPenaltis;
-    @FXML private TextField         campoCartoesAmarelos;
-    @FXML private TextField         campoCartoesVermelhos;
-    @FXML private Label             labelFeedback;
+public class CadastroPartidaController {
 
-    private final ResultadoPartidaService service = new ResultadoPartidaService();
+    @FXML private ComboBox<Selecao>     comboTimeCasa;
+    @FXML private ComboBox<Selecao>     comboTimeVisitante;
+    @FXML private ComboBox<Estadio>     comboEstadio;
+    @FXML private ComboBox<FasePartida> comboFase;
+    @FXML private DatePicker            campoData;
+    @FXML private TextField             campoHorario;
+    @FXML private Label                 labelFeedback;
+
+    private final PartidaService service = new PartidaService();
+    private static final DateTimeFormatter FMT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     @FXML
     public void initialize() {
-        carregarPartidas();
-        comboPartida.setOnAction(e -> atualizarTimes());
-    }
+        comboTimeCasa.setItems(FXCollections.observableArrayList(service.listarSelecoes()));
+        comboTimeVisitante.setItems(FXCollections.observableArrayList(service.listarSelecoes()));
+        comboEstadio.setItems(FXCollections.observableArrayList(service.listarEstadios()));
+        comboFase.setItems(FXCollections.observableArrayList(FasePartida.values()));
 
-    private void carregarPartidas() {
-        comboPartida.setItems(
-                FXCollections.observableArrayList(service.listarPartidasPendentes())
-        );
-        if (!comboPartida.getItems().isEmpty()) {
-            comboPartida.getSelectionModel().selectFirst();
-            atualizarTimes();
-        }
-    }
-
-    private void atualizarTimes() {
-        Partida p = comboPartida.getValue();
-        if (p == null) return;
-        comboVencedor.setItems(FXCollections.observableArrayList(
-                p.getTimeCasa(), p.getTimeVisitante()));
-        comboPerdedor.setItems(FXCollections.observableArrayList(
-                p.getTimeCasa(), p.getTimeVisitante()));
+        // Calendário no formato brasileiro
+        campoData.setConverter(new javafx.util.StringConverter<LocalDate>() {
+            @Override public String toString(LocalDate d) {
+                return d != null ? d.format(FMT) : "";
+            }
+            @Override public LocalDate fromString(String s) {
+                return (s != null && !s.isEmpty()) ? LocalDate.parse(s, FMT) : null;
+            }
+        });
     }
 
     @FXML
     private void aoSalvar() {
         try {
-            service.cadastrarResultado(
-                    comboPartida.getValue(),
-                    comboVencedor.getValue(),
-                    comboPerdedor.getValue(),
-                    campoPlacar.getText(),
-                    campoPlacarPenaltis.getText(),
-                    campoCartoesAmarelos.getText(),
-                    campoCartoesVermelhos.getText()
-            );
-            feedback("Resultado registrado com sucesso!", true);
+            Selecao     timeCasa      = comboTimeCasa.getValue();
+            Selecao     timeVisitante = comboTimeVisitante.getValue();
+            Estadio     estadio       = comboEstadio.getValue();
+            FasePartida fase          = comboFase.getValue();
+            String      horario       = campoHorario.getText();
+            LocalDate   dataLocal     = campoData.getValue();
+            String      data          = dataLocal != null ? dataLocal.format(FMT) : "";
+
+            // cidade vazia pois foi removida da tela — passa string vazia
+            service.cadastrarPartida(timeCasa, timeVisitante, estadio,
+                    "", data, horario, null, fase);
+            feedback("Partida cadastrada com sucesso!", true);
             limpar();
-            carregarPartidas();
+
         } catch (Exception e) {
             feedback(e.getMessage(), false);
         }
     }
 
-    // Volta para a tela Home
+    // Volta para a tela Home (menu principal)
     @FXML
     private void aoVoltar() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/menu.fxml"));
-            Stage stage = (Stage) comboPartida.getScene().getWindow();
+            Stage stage = (Stage) comboTimeCasa.getScene().getWindow();
             double w = stage.getWidth();
             double h = stage.getHeight();
             stage.setScene(new Scene(loader.load()));
@@ -86,13 +86,12 @@ public class CadastroResultadoController {
     }
 
     private void limpar() {
-        comboPartida.setValue(null);
-        comboVencedor.setValue(null);
-        comboPerdedor.setValue(null);
-        campoPlacar.clear();
-        campoPlacarPenaltis.clear();
-        campoCartoesAmarelos.clear();
-        campoCartoesVermelhos.clear();
+        comboTimeCasa.setValue(null);
+        comboTimeVisitante.setValue(null);
+        comboEstadio.setValue(null);
+        comboFase.setValue(null);
+        campoData.setValue(null);
+        campoHorario.clear();
     }
 
     private void feedback(String msg, boolean sucesso) {

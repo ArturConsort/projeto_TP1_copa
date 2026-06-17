@@ -37,7 +37,7 @@ public class ListaPartidasController {
     @FXML private TableColumn<Partida, String> colStatus;
     @FXML private TableColumn<Partida, Void>   colStatus2; // botão mudar status
     @FXML private TableColumn<Partida, Void>   colAcoes;   // editar / excluir
-
+    @FXML private TableColumn<ResultadoPartida, Void> rColAcao;
     // --- Tabela de resultados ---
     @FXML private TableView<ResultadoPartida>           tabelaResultados;
     @FXML private TableColumn<ResultadoPartida, String> rColPartida;
@@ -175,32 +175,107 @@ public class ListaPartidasController {
                 new SimpleStringProperty(r.getValue().getPartida().getFase().name()));
 
         // Vencedor em verde
-        rColVencedor.setCellValueFactory(r ->
-                new SimpleStringProperty(r.getValue().getTimeVencedor().getPais()));
+        rColVencedor.setCellValueFactory(r -> {
+            ResultadoPartida resultado = r.getValue();
+
+            if (resultado.getTimeVencedor() == null) {
+                return new SimpleStringProperty(
+                        resultado.getPartida().getTimeCasa().getPais()
+                );
+            }
+
+            return new SimpleStringProperty(
+                    resultado.getTimeVencedor().getPais()
+            );
+        });
         rColVencedor.setCellFactory(col -> new TableCell<>() {
             @Override
             protected void updateItem(String s, boolean empty) {
                 super.updateItem(s, empty);
-                if (empty || s == null) { setText(null); setStyle(""); return; }
+
+                if (empty || s == null) {
+                    setText(null);
+                    setStyle("");
+                    return;
+                }
+
+                ResultadoPartida resultado =
+                        getTableView().getItems().get(getIndex());
+
                 setText(s);
-                setStyle("-fx-text-fill: #4caf50; -fx-font-weight: bold;");
+
+                if (resultado.getTimeVencedor() == null) {
+                    setStyle("-fx-text-fill: #ffd54f; -fx-font-weight: bold;");
+                } else {
+                    setStyle("-fx-text-fill: #4caf50; -fx-font-weight: bold;");
+                }
             }
         });
-
         // Perdedor em vermelho
-        rColPerdedor.setCellValueFactory(r ->
-                new SimpleStringProperty(r.getValue().getTimePerdedor().getPais()));
+        rColPerdedor.setCellValueFactory(r -> {
+            ResultadoPartida resultado = r.getValue();
+
+            if (resultado.getTimePerdedor() == null) {
+                return new SimpleStringProperty(
+                        resultado.getPartida().getTimeVisitante().getPais()
+                );
+            }
+
+            return new SimpleStringProperty(
+                    resultado.getTimePerdedor().getPais()
+            );
+        });
         rColPerdedor.setCellFactory(col -> new TableCell<>() {
             @Override
             protected void updateItem(String s, boolean empty) {
                 super.updateItem(s, empty);
-                if (empty || s == null) { setText(null); setStyle(""); return; }
+
+                if (empty || s == null) {
+                    setText(null);
+                    setStyle("");
+                    return;
+                }
+
+                ResultadoPartida resultado =
+                        getTableView().getItems().get(getIndex());
+
                 setText(s);
-                setStyle("-fx-text-fill: #ef5350; -fx-font-weight: bold;");
+
+                if (resultado.getTimePerdedor() == null) {
+                    setStyle("-fx-text-fill: #ffd54f; -fx-font-weight: bold;");
+                } else {
+                    setStyle("-fx-text-fill: #ef5350; -fx-font-weight: bold;");
+                }
             }
         });
-    }
+        rColAcao.setCellFactory(col -> new TableCell<>() {
+            private final Button btnReiniciar = new Button("🏆 Reiniciar Copa");
 
+            {
+                btnReiniciar.setStyle(
+                        "-fx-background-color: #d4a32a;" +
+                                "-fx-text-fill: black;" +
+                                "-fx-font-weight: bold;" +
+                                "-fx-background-radius: 8;" +
+                                "-fx-cursor: hand;" +
+                                "-fx-padding: 4 10;"
+                );
+                btnReiniciar.setOnAction(e -> confirmarReiniciar());
+            }
+
+            @Override
+            protected void updateItem(Void v, boolean empty) {
+                super.updateItem(v, empty);
+                if (empty) {
+                    setGraphic(null);
+                    return;
+                }
+                ResultadoPartida r = getTableView().getItems().get(getIndex());
+                boolean ehFinal = r.getPartida().getFase() == FasePartida.FINAL;
+                setGraphic(ehFinal ? btnReiniciar : null);
+            }
+        }); // ← este era o que estava faltando
+    }
     // ================================================================
     //  LÓGICA DE STATUS
     // ================================================================
@@ -296,9 +371,33 @@ public class ListaPartidasController {
         List<Partida> partidas = partidaService.listarPartidas();
         tabelaPartidas.setItems(FXCollections.observableArrayList(partidas));
 
-        // Tabela de resultados — só partidas com resultado registrado
-        List<ResultadoPartida> resultados = resultadoService.listarResultados();
-        tabelaResultados.setItems(FXCollections.observableArrayList(resultados));
+        List<ResultadoPartida> resultados = FXCollections.observableArrayList();
+
+        try {
+            resultados = resultadoService.listarResultados();
+
+            System.out.println("Resultados encontrados: " + resultados.size());
+
+            for (ResultadoPartida r : resultados) {
+                System.out.println(
+                        "Partida " +
+                                r.getPartida().getNumeroPartidas() +
+                                " - Placar: " +
+                                r.getPlacar()
+                );
+            }
+
+            tabelaResultados.setItems(
+                    FXCollections.observableArrayList(resultados)
+            );
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            new Alert(Alert.AlertType.ERROR,
+                    "Erro ao carregar resultados:\n" + e.getMessage(),
+                    ButtonType.OK).showAndWait();
+        }
 
         labelTotal.setText("Partidas: " + partidas.size() +
                 "   |   Resultados: " + resultados.size());
@@ -334,14 +433,38 @@ public class ListaPartidasController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/menu.fxml"));
             Stage stage = (Stage) tabelaPartidas.getScene().getWindow();
-            double w = stage.getWidth();
-            double h = stage.getHeight();
-            stage.setScene(new Scene(loader.load()));
-            stage.setWidth(w);
-            stage.setHeight(h);
+            stage.setScene(new Scene(loader.load(), 1200, 700));
             stage.setTitle("Copa do Mundo 2026");
         } catch (Exception e) {
             new Alert(Alert.AlertType.ERROR, "Erro ao voltar: " + e.getMessage(), ButtonType.OK).showAndWait();
         }
+    }
+
+    private void confirmarReiniciar() {
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
+                "Isso apagará todas as partidas e resultados.\n" +
+                        "Seleções, estádios e árbitros serão mantidos.\n\n" +
+                        "Tem certeza que deseja reiniciar a Copa?",
+                ButtonType.YES, ButtonType.NO);
+        confirm.setTitle("Reiniciar Copa");
+        confirm.setHeaderText("⚠ Esta ação não pode ser desfeita!");
+
+        confirm.showAndWait().ifPresent(btn -> {
+            if (btn == ButtonType.YES) {
+                try {
+                    ResultadoPartidaService service = new ResultadoPartidaService();
+                    service.reiniciarCopa();
+
+                    tabelaPartidas.getItems().clear();
+                    tabelaResultados.getItems().clear();
+                    labelTotal.setText("Copa reiniciada! Cadastre novas partidas.");
+
+                } catch (Exception e) {
+                    new Alert(Alert.AlertType.ERROR,
+                            "Erro ao reiniciar: " + e.getMessage(),
+                            ButtonType.OK).showAndWait();
+                }
+            }
+        });
     }
 }
