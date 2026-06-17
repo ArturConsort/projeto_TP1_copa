@@ -86,7 +86,7 @@ public class MenuController {
 
             case ARBITRO ->
                     mostrar(
-                            btnPartidas
+                            btnDesignacoes
                     );
         }
 
@@ -534,6 +534,7 @@ public class MenuController {
                 btnEstadios,
                 btnArbitros,
                 btnIngressos,
+                btnValidarIngresso,
                 btnDesignacoes,
                 btnUsuarios,
                 btnRelatorios
