@@ -20,6 +20,7 @@ public class CadastroResultadoController {
     @FXML private TextField         campoCartoesAmarelos;
     @FXML private TextField         campoCartoesVermelhos;
     @FXML private Label             labelFeedback;
+    @FXML private CheckBox checkEmpate;
 
     private final ResultadoPartidaService service = new ResultadoPartidaService();
 
@@ -27,6 +28,12 @@ public class CadastroResultadoController {
     public void initialize() {
         carregarPartidas();
         comboPartida.setOnAction(e -> atualizarTimes());
+
+        checkEmpate.selectedProperty().addListener((obs, antigo, novo) -> {
+            // Se empate marcado, desabilita vencedor/perdedor
+            comboVencedor.setDisable(novo);
+            comboPerdedor.setDisable(novo);
+        });
     }
 
     private void carregarPartidas() {
@@ -53,8 +60,9 @@ public class CadastroResultadoController {
         try {
             service.cadastrarResultado(
                     comboPartida.getValue(),
-                    comboVencedor.getValue(),
-                    comboPerdedor.getValue(),
+                    checkEmpate.isSelected() ? null : comboVencedor.getValue(),
+                    checkEmpate.isSelected() ? null : comboPerdedor.getValue(),
+                    checkEmpate.isSelected(),
                     campoPlacar.getText(),
                     campoPlacarPenaltis.getText(),
                     campoCartoesAmarelos.getText(),

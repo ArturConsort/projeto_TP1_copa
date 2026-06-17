@@ -66,6 +66,7 @@
                 <TableColumn fx:id="rColAmarelos"  text="Cartões Amarelos"  prefWidth="140"/>
                 <TableColumn fx:id="rColVermelhos" text="Cartões Vermelhos" prefWidth="150"/>
                 <TableColumn fx:id="rColFase"      text="Fase"              prefWidth="140"/>
+                <TableColumn fx:id="rColAcao" text="" prefWidth="130"/>
             </columns>
         </TableView>
 

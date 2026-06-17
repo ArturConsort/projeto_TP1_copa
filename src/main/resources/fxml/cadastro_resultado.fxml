@@ -19,76 +19,144 @@
           AnchorPane.leftAnchor="20"
           AnchorPane.rightAnchor="20">
 
-        <ImageView fitWidth="70" fitHeight="70" preserveRatio="true">
-            <image><Image url="@/images/worldcup_logo.png"/></image>
+        <ImageView fitWidth="70"
+                   fitHeight="70"
+                   preserveRatio="true">
+            <image>
+                <Image url="@/images/worldcup_logo.png"/>
+            </image>
         </ImageView>
 
         <VBox spacing="16" styleClass="card">
 
-            <Label text="Registro de Resultado" styleClass="titulo"/>
+            <Label text="Registro de Resultado"
+                   styleClass="titulo"/>
 
             <GridPane hgap="15" vgap="12">
+
                 <columnConstraints>
                     <ColumnConstraints percentWidth="50"/>
                     <ColumnConstraints percentWidth="50"/>
                 </columnConstraints>
 
                 <!-- Partida -->
-                <VBox spacing="5" GridPane.rowIndex="0" GridPane.columnIndex="0"
+                <VBox spacing="5"
+                      GridPane.rowIndex="0"
+                      GridPane.columnIndex="0"
                       GridPane.columnSpan="2">
-                    <Label text="Partida" styleClass="label"/>
+
+                    <Label text="Partida"
+                           styleClass="label"/>
+
                     <ComboBox fx:id="comboPartida"
                               promptText="Selecione a partida finalizada"
                               maxWidth="Infinity"/>
                 </VBox>
 
-                <!-- Time Vencedor -->
-                <VBox spacing="5" GridPane.rowIndex="1" GridPane.columnIndex="0">
-                    <Label text="Time vencedor" styleClass="label"/>
-                    <ComboBox fx:id="comboVencedor" promptText="Selecione o vencedor" maxWidth="Infinity"/>
+                <!-- Time vencedor -->
+                <VBox spacing="5"
+                      GridPane.rowIndex="1"
+                      GridPane.columnIndex="0">
+
+                    <Label text="Time vencedor"
+                           styleClass="label"/>
+
+                    <ComboBox fx:id="comboVencedor"
+                              promptText="Selecione o vencedor"
+                              maxWidth="Infinity"/>
                 </VBox>
 
-                <!-- Time Perdedor -->
-                <VBox spacing="5" GridPane.rowIndex="1" GridPane.columnIndex="1">
-                    <Label text="Time perdedor" styleClass="label"/>
-                    <ComboBox fx:id="comboPerdedor" promptText="Selecione o perdedor" maxWidth="Infinity"/>
+                <!-- Time perdedor -->
+                <VBox spacing="5"
+                      GridPane.rowIndex="1"
+                      GridPane.columnIndex="1">
+
+                    <Label text="Time perdedor"
+                           styleClass="label"/>
+
+                    <ComboBox fx:id="comboPerdedor"
+                              promptText="Selecione o perdedor"
+                              maxWidth="Infinity"/>
                 </VBox>
 
                 <!-- Placar -->
-                <VBox spacing="5" GridPane.rowIndex="2" GridPane.columnIndex="0">
-                    <Label text="Placar" styleClass="label"/>
-                    <TextField fx:id="campoPlacar" promptText="Ex: 2x1"/>
+                <VBox spacing="5"
+                      GridPane.rowIndex="2"
+                      GridPane.columnIndex="0">
+
+                    <Label text="Placar"
+                           styleClass="label"/>
+
+                    <TextField fx:id="campoPlacar"
+                               promptText="Ex: 2x1"/>
                 </VBox>
 
                 <!-- Placar Pênaltis -->
-                <VBox spacing="5" GridPane.rowIndex="2" GridPane.columnIndex="1">
-                    <Label text="Placar pênaltis (se houver)" styleClass="label"/>
-                    <TextField fx:id="campoPlacarPenaltis" promptText="Ex: 4x3"/>
+                <VBox spacing="5"
+                      GridPane.rowIndex="2"
+                      GridPane.columnIndex="1">
+
+                    <Label text="Placar pênaltis (se houver)"
+                           styleClass="label"/>
+
+                    <TextField fx:id="campoPlacarPenaltis"
+                               promptText="Ex: 4x3"/>
+                </VBox>
+
+                <!-- Empate -->
+                <VBox spacing="5"
+                      GridPane.rowIndex="3"
+                      GridPane.columnIndex="0"
+                      GridPane.columnSpan="2">
+
+                    <CheckBox fx:id="checkEmpate"
+                              text="Empate (fase de grupos)"
+                              styleClass="label"/>
                 </VBox>
 
                 <!-- Cartões Amarelos -->
-                <VBox spacing="5" GridPane.rowIndex="3" GridPane.columnIndex="0">
-                    <Label text="Cartões amarelos" styleClass="label"/>
-                    <TextField fx:id="campoCartoesAmarelos" promptText="Número de cartões amarelos"/>
+                <VBox spacing="5"
+                      GridPane.rowIndex="4"
+                      GridPane.columnIndex="0">
+
+                    <Label text="Cartões amarelos"
+                           styleClass="label"/>
+
+                    <TextField fx:id="campoCartoesAmarelos"
+                               promptText="Número de cartões amarelos"/>
                 </VBox>
 
                 <!-- Cartões Vermelhos -->
-                <VBox spacing="5" GridPane.rowIndex="3" GridPane.columnIndex="1">
-                    <Label text="Cartões vermelhos" styleClass="label"/>
-                    <TextField fx:id="campoCartoesVermelhos" promptText="Número de cartões vermelhos"/>
+                <VBox spacing="5"
+                      GridPane.rowIndex="4"
+                      GridPane.columnIndex="1">
+
+                    <Label text="Cartões vermelhos"
+                           styleClass="label"/>
+
+                    <TextField fx:id="campoCartoesVermelhos"
+                               promptText="Número de cartões vermelhos"/>
                 </VBox>
 
             </GridPane>
 
             <!-- Botões -->
             <HBox spacing="12">
-                <Button text="Salvar" onAction="#aoSalvar" styleClass="btn-cadastrar"/>
-                <Button text="Voltar" onAction="#aoVoltar" styleClass="btn-voltar"/>
+
+                <Button text="Salvar"
+                        onAction="#aoSalvar"
+                        styleClass="btn-cadastrar"/>
+
+                <Button text="Voltar"
+                        onAction="#aoVoltar"
+                        styleClass="btn-voltar"/>
+
             </HBox>
 
             <Label fx:id="labelFeedback"/>
 
         </VBox>
+
     </VBox>
 
     <stylesheets>
