@@ -6,6 +6,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
@@ -15,6 +17,8 @@ import modelo.enumerations.TipoPerfil;
 import servicos.usuario.SessaoUsuario;
 
 public class MenuController {
+
+    @FXML private ImageView imagemFundo;
 
     @FXML private Button btnHome;
     @FXML private Button btnJogadores;
@@ -37,6 +41,16 @@ public class MenuController {
 
     @FXML
     public void initialize() {
+
+        // Limita a imagem ao tamanho da janela, mantendo a proporção
+        imagemFundo.sceneProperty().addListener((obs, oldScene, newScene) -> {
+            if (newScene != null) {
+                StackPane pai = (StackPane) imagemFundo.getParent();
+                imagemFundo.fitWidthProperty().bind(pai.widthProperty());
+                imagemFundo.fitHeightProperty().bind(pai.heightProperty());
+                imagemFundo.setPreserveRatio(true);
+            }
+        });
 
         Usuario logado = SessaoUsuario.getInstancia().getUsuarioLogado();
 

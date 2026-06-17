@@ -67,10 +67,11 @@
 
     <!-- ===== FUNDO COM JOGADORES ===== -->
     <center>
-        <StackPane>
+        <StackPane style="-fx-background-color: radial-gradient(center 50% 40%, radius 60%, #3d2e0a 0%, #1a1508 40%, #0a0a0a 100%);">
+
             <ImageView fx:id="imagemFundo"
                        fitWidth="1200" fitHeight="700"
-                       preserveRatio="false"
+                       preserveRatio="true"
                        style="-fx-opacity: 0.85;">
                 <image><Image url="@../images/jogadores_fundo.png"/></image>
             </ImageView>
