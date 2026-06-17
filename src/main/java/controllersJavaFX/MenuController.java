@@ -1,5 +1,6 @@
 package controllersJavaFX;
 
+import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -8,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import modelo.classes.Usuario;
 import modelo.enumerations.TipoPerfil;
 import servicos.usuario.SessaoUsuario;
@@ -336,16 +338,19 @@ public class MenuController {
             popup.show(botaoPai, x, y);
         });
 
-        botaoPai.setOnMouseExited(e -> {
-            // Só esconde se o mouse não foi para dentro do popup
-            if (!conteudo.isHover()) {
+        PauseTransition delay = new PauseTransition(Duration.millis(120));
+        delay.setOnFinished(e -> {
+            if (!conteudo.isHover() && !botaoPai.isHover()) {
                 popup.hide();
             }
         });
 
+        botaoPai.setOnMouseExited(e -> delay.playFromStart());
+
         conteudo.setOnMouseExited(e -> {
-            // Esconde quando o mouse sai do conteúdo do popup
-            popup.hide();
+            if (!botaoPai.isHover()) {
+                popup.hide();
+            }
         });
 
         return popup;
