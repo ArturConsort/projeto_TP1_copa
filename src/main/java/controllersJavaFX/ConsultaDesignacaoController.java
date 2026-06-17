@@ -14,7 +14,9 @@ import modelo.classes.Arbitro;
 import modelo.classes.DesignacaoArbitro;
 import modelo.excecoes.AcessoNegadoException;
 import modelo.excecoes.designacaoarbitro.DesignacaoNaoEncontradaException;
+import modelo.enumerations.TipoPerfil;
 import servicos.DesignacaoArbitroServico;
+import servicos.usuario.SessaoUsuario;
 
 import java.io.IOException;
 import java.util.List;
@@ -49,6 +51,12 @@ public class ConsultaDesignacaoController {
     @FXML
     private Button btnVoltar;
 
+    @FXML
+    private Button btnLimpar;
+
+    /** true quando o usuário logado é árbitro — o filtro fica fixo no nome dele */
+    private boolean filtroArbitroFixo = false;
+
     private final ObservableList<DesignacaoArbitro> listaDesignacoes = FXCollections.observableArrayList();
 
     private DesignacaoArbitroServico designacaoServico;
@@ -58,6 +66,18 @@ public class ConsultaDesignacaoController {
     }
 
     public void carregarDadosIniciais() {
+
+        modelo.classes.Usuario logado = SessaoUsuario.getInstancia().getUsuarioLogado();
+
+        if (logado != null && logado.getPerfil() == TipoPerfil.ARBITRO) {
+            filtroArbitroFixo = true;
+            campoArbitro.setText(logado.getNome());
+            campoArbitro.setEditable(false);
+            campoArbitro.setStyle("-fx-opacity: 0.7;");
+            btnLimpar.setVisible(false);
+            btnLimpar.setManaged(false);
+        }
+
         recarregarTodos();
     }
 
@@ -123,7 +143,9 @@ public class ConsultaDesignacaoController {
     private void handleLimpar() {
 
         campoPartida.clear();
-        campoArbitro.clear();
+        if (!filtroArbitroFixo) {
+            campoArbitro.clear();
+        }
 
         recarregarTodos();
     }
@@ -181,8 +203,19 @@ public class ConsultaDesignacaoController {
         try {
             List<DesignacaoArbitro> todos = designacaoServico.listarDesignacoes();
 
-            listaDesignacoes.setAll(todos);
-            atualizarTotal(todos.size());
+            List<DesignacaoArbitro> resultado;
+
+            if (filtroArbitroFixo) {
+                String nomeArbitro = campoArbitro.getText().trim().toLowerCase();
+                resultado = todos.stream()
+                        .filter(d -> d.getPrincipalArbitro().getNome().toLowerCase().contains(nomeArbitro))
+                        .collect(Collectors.toList());
+            } else {
+                resultado = todos;
+            }
+
+            listaDesignacoes.setAll(resultado);
+            atualizarTotal(resultado.size());
 
         } catch (AcessoNegadoException e) {
             mostrarErro("Acesso negado: " + e.getMessage());
