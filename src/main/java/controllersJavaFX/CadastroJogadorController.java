@@ -6,15 +6,19 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+
 import modelo.classes.Jogador;
 import modelo.classes.Selecao;
 import modelo.classes.StatusJogador;
+import modelo.classes.Usuario;
 import persistencia.SelecaoDAO;
+import servicos.usuario.SessaoUsuario;
 
 import java.util.List;
 
 public class CadastroJogadorController {
 
+    @FXML private Label labelUsuarioLogado;
     @FXML private TextField campoNome;
     @FXML private TextField campoIdade;
     @FXML private TextField campoNumeracao;
@@ -29,6 +33,11 @@ public class CadastroJogadorController {
 
     @FXML
     public void initialize() {
+
+        Usuario logado = SessaoUsuario.getInstancia().getUsuarioLogado();
+        if (logado != null) {
+            labelUsuarioLogado.setText(logado.getNome() + " · " + logado.getPerfil());
+        }
 
         // carrega as selecoes cadastradas no combo
         List<Selecao> selecoes = selecaoDAO.carregaLista();
@@ -140,7 +149,13 @@ public class CadastroJogadorController {
 
     @FXML
     private void handleVoltar() {
-        navegarPara("/fxml/jogadores.fxml", "Menu — Copa do Mundo 2026");
+        navegarPara("/fxml/jogadores.fxml", "Jogadores");
+    }
+
+    @FXML
+    private void handleLogout() {
+        SessaoUsuario.getInstancia().encerrarSessao();
+        navegarPara("/fxml/login.fxml", "Login — Copa do Mundo 2026");
     }
 
     private void mostrarErro(String mensagem) {
@@ -161,7 +176,7 @@ public class CadastroJogadorController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Stage stage = (Stage) campoNome.getScene().getWindow();
-            stage.setScene(new Scene(loader.load(), 900, 600));
+            stage.setScene(new Scene(loader.load()));
             stage.setTitle(titulo);
         } catch (Exception e) {
             e.printStackTrace();
