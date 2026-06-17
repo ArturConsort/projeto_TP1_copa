@@ -105,7 +105,11 @@ public class CadastroSelecaoController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Stage stage = (Stage) campoPais.getScene().getWindow();
+            double w = stage.getWidth();
+            double h = stage.getHeight();
             stage.setScene(new Scene(loader.load()));
+            stage.setWidth(w);
+            stage.setHeight(h);
             stage.setTitle(titulo);
         } catch (Exception e) {
             e.printStackTrace();

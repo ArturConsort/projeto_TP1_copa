@@ -38,7 +38,11 @@ public class LoginController {
         FXMLLoader loader = new FXMLLoader(
                 getClass().getResource("/fxml/menu.fxml"));
         Stage stage = (Stage) campoLogin.getScene().getWindow();
-        stage.setScene(new Scene(loader.load()));
+        double w = stage.getWidth();
+            double h = stage.getHeight();
+            stage.setScene(new Scene(loader.load()));
+            stage.setWidth(w);
+            stage.setHeight(h);
         stage.setTitle("Menu Principal — Copa do Mundo 2026");
         stage.setMinWidth(900);
         stage.setMinHeight(600);
