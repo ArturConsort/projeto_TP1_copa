@@ -114,7 +114,11 @@ public class CadastroUsuarioController {
             boolean eraMaximized  = stage.isMaximized();
             boolean eraFullScreen = stage.isFullScreen();
 
+            double w = stage.getWidth();
+            double h = stage.getHeight();
             stage.setScene(new Scene(loader.load()));
+            stage.setWidth(w);
+            stage.setHeight(h);
             stage.setTitle(titulo);
 
             // Restaura o estado: fullscreen tem prioridade sobre maximized

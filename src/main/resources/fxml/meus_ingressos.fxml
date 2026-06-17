@@ -9,7 +9,7 @@
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="controllersJavaFX.MeusIngressosController"
-            style="-fx-background-color: #0a0a0a;">
+            style="-fx-background-color: radial-gradient(center 50% 60%, radius 70%, #3d2e0a 0%, #1a1508 45%, #0a0a0a 100%);">
 
     <!-- ===== NAVBAR ===== -->
     <top>
@@ -52,7 +52,7 @@
                     style="-fx-background-color: transparent; -fx-background: transparent;">
 
             <VBox spacing="20" alignment="TOP_CENTER"
-                  style="-fx-background-color: radial-gradient(center 50% 60%, radius 70%, #3d2e0a 0%, #1a1508 45%, #0a0a0a 100%);">
+                  style="-fx-background-color: transparent;">
 
                 <padding>
                     <Insets top="30" right="40" bottom="30" left="40"/>

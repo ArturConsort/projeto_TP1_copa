@@ -181,7 +181,11 @@ public class IngressosController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Stage stage = (Stage) painelPartidas.getScene().getWindow();
-            stage.setScene(new Scene(loader.load(), 1200, 700));
+            double w = stage.getWidth();
+            double h = stage.getHeight();
+            stage.setScene(new Scene(loader.load()));
+            stage.setWidth(w);
+            stage.setHeight(h);
             stage.setTitle(titulo);
         } catch (Exception e) {
             System.out.println("Tela ainda não implementada: " + fxmlPath);

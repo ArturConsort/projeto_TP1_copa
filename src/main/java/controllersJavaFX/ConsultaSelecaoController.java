@@ -11,20 +11,16 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import modelo.classes.Selecao;
+import modelo.classes.Usuario;
 import persistencia.SelecaoDAO;
+import servicos.usuario.SessaoUsuario;
 
 import java.util.List;
 import java.util.Optional;
 
 public class ConsultaSelecaoController {
 
-    @FXML private Button btnHome;
-    @FXML private Button btnJogadores;
-    @FXML private Button btnEquipes;
-    @FXML private Button btnPartidas;
-    @FXML private Button btnEstadios;
-    @FXML private Button btnArbitros;
-    @FXML private Button btnIngressos;
+    @FXML private Label labelUsuarioLogado;
 
     @FXML private ComboBox<String> comboGrupo;
     @FXML private TextField campoTecnico;
@@ -47,6 +43,11 @@ public class ConsultaSelecaoController {
 
     @FXML
     public void initialize() {
+
+        Usuario logado = SessaoUsuario.getInstancia().getUsuarioLogado();
+        if (logado != null) {
+            labelUsuarioLogado.setText(logado.getNome() + " · " + logado.getPerfil());
+        }
 
         comboGrupo.setItems(FXCollections.observableArrayList(
                 "A","B","C","D","E","F","G","H"));
@@ -286,23 +287,26 @@ public class ConsultaSelecaoController {
         alerta.showAndWait();
     }
 
-    // ------------------------------------------------------------------ //
-    //  navegação
-    // ------------------------------------------------------------------ //
+    @FXML
+    private void handleVoltar() {
+        navegarPara("/fxml/equipes.fxml", "Equipes");
+    }
 
-    @FXML private void irHome()      { navegarPara("/fxml/menu.fxml",      "Home");      }
-    @FXML private void irJogadores() { navegarPara("/fxml/jogadores.fxml", "Jogadores"); }
-    @FXML private void irEquipes()   { navegarPara("/fxml/equipes.fxml",   "Equipes");   }
-    @FXML private void irPartidas()  { navegarPara("/fxml/partidas.fxml",  "Partidas");  }
-    @FXML private void irEstadios()  { navegarPara("/fxml/estadios.fxml",  "Estádios");  }
-    @FXML private void irArbitros()  { navegarPara("/fxml/arbitros.fxml",  "Árbitros");  }
-    @FXML private void irIngressos() { navegarPara("/fxml/ingressos.fxml", "Ingressos"); }
+    @FXML
+    private void handleLogout() {
+        SessaoUsuario.getInstancia().encerrarSessao();
+        navegarPara("/fxml/login.fxml", "Login — Copa do Mundo 2026");
+    }
 
     private void navegarPara(String fxmlPath, String titulo) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            Stage stage = (Stage) btnHome.getScene().getWindow();
-            stage.setScene(new Scene(loader.load(), 900, 600));
+            Stage stage = (Stage) labelUsuarioLogado.getScene().getWindow();
+            double w = stage.getWidth();
+            double h = stage.getHeight();
+            stage.setScene(new Scene(loader.load()));
+            stage.setWidth(w);
+            stage.setHeight(h);
             stage.setTitle(titulo);
         } catch (Exception e) {
             System.out.println("Tela ainda não implementada: " + fxmlPath);

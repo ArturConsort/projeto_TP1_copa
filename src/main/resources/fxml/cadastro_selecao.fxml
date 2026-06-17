@@ -4,94 +4,116 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-
 <?import java.lang.String?>
-<AnchorPane xmlns="http://javafx.com/javafx"
+
+<BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="controllersJavaFX.CadastroSelecaoController"
-            prefWidth="900"
-            prefHeight="600"
-            styleClass="root">
+            prefWidth="900" prefHeight="600"
+            style="-fx-background-color: radial-gradient(center 50% 60%, radius 70%, #3d2e0a 0%, #1a1508 45%, #0a0a0a 100%);">
 
-    <VBox alignment="TOP_CENTER"
-          spacing="25"
-          AnchorPane.topAnchor="20"
-          AnchorPane.leftAnchor="20"
-          AnchorPane.rightAnchor="20">
+    <!-- ===== NAVBAR ===== -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="0"
+              style="-fx-background-color: #0d0d0d;
+                     -fx-padding: 0 24 0 16;
+                     -fx-min-height: 56;
+                     -fx-border-color: transparent transparent #1e1a0a transparent;
+                     -fx-border-width: 0 0 1 0;">
 
-        <ImageView fitWidth="80" fitHeight="80" preserveRatio="true">
-            <image>
-                <Image url="@/images/worldcup_logo.png"/>
-            </image>
-        </ImageView>
+            <ImageView fitWidth="40" fitHeight="40" preserveRatio="true">
+                <image><Image url="@../images/worldcup_logo.png"/></image>
+            </ImageView>
 
-        <VBox spacing="18" styleClass="card">
+            <Region HBox.hgrow="NEVER" minWidth="20"/>
+            <Button text="← Voltar" onAction="#handleVoltar" styleClass="nav-btn"/>
 
-            <Label text="Cadastro de Seleção"
-                   styleClass="titulo"/>
+            <Region HBox.hgrow="ALWAYS"/>
 
-            <GridPane hgap="15" vgap="15">
+            <Label fx:id="labelUsuarioLogado"
+                   style="-fx-text-fill: #b0a898;
+                          -fx-font-size: 12;
+                          -fx-font-family: 'Segoe UI';"/>
+            <Region minWidth="16"/>
+            <Button text="Sair" onAction="#handleLogout"
+                    style="-fx-background-color: #c9982a;
+                           -fx-text-fill: #0a0a0a;
+                           -fx-font-weight: bold;
+                           -fx-font-size: 12;
+                           -fx-font-family: 'Segoe UI';
+                           -fx-background-radius: 14;
+                           -fx-padding: 6 18 6 18;
+                           -fx-cursor: hand;"/>
+        </HBox>
+    </top>
 
-                <columnConstraints>
-                    <ColumnConstraints percentWidth="50"/>
-                    <ColumnConstraints percentWidth="50"/>
-                </columnConstraints>
+    <!-- ===== CORPO ===== -->
+    <center>
+        <ScrollPane fitToWidth="true" fitToHeight="true"
+                    style="-fx-background-color: transparent; -fx-background: transparent;">
 
-                <VBox spacing="5" GridPane.rowIndex="0" GridPane.columnIndex="0">
-                    <Label text="País"/>
-                    <TextField fx:id="campoPais"
-                               promptText="Nome do país"/>
+            <VBox alignment="TOP_CENTER" spacing="25"
+                  style="-fx-background-color: transparent;">
+
+                <padding>
+                    <Insets top="30" right="40" bottom="30" left="40"/>
+                </padding>
+
+                <VBox spacing="18" styleClass="card">
+
+                    <Label text="Cadastro de Seleção" styleClass="titulo"/>
+
+                    <GridPane hgap="15" vgap="15">
+
+                        <columnConstraints>
+                            <ColumnConstraints percentWidth="50"/>
+                            <ColumnConstraints percentWidth="50"/>
+                        </columnConstraints>
+
+                        <VBox spacing="5" GridPane.rowIndex="0" GridPane.columnIndex="0">
+                            <Label text="País"/>
+                            <TextField fx:id="campoPais" promptText="Nome do país"/>
+                        </VBox>
+
+                        <VBox spacing="5" GridPane.rowIndex="0" GridPane.columnIndex="1">
+                            <Label text="Grupo"/>
+                            <ComboBox fx:id="comboGrupo" promptText="Grupo"/>
+                        </VBox>
+
+                        <VBox spacing="5" GridPane.rowIndex="1" GridPane.columnIndex="0">
+                            <Label text="Técnico"/>
+                            <TextField fx:id="campoTecnico" promptText="Nome do técnico"/>
+                        </VBox>
+
+                        <VBox spacing="5" GridPane.rowIndex="1" GridPane.columnIndex="1">
+                            <Label text="Ranking FIFA"/>
+                            <TextField fx:id="campoRanking" promptText="Posição FIFA"/>
+                        </VBox>
+
+                        <VBox spacing="5"
+                              GridPane.rowIndex="2"
+                              GridPane.columnIndex="0"
+                              GridPane.columnSpan="2">
+                            <Label text="Títulos"/>
+                            <TextField fx:id="campoTitulos" promptText="Quantidade de títulos mundiais"/>
+                        </VBox>
+
+                    </GridPane>
+
+                    <HBox spacing="12">
+                        <Button text="Cadastrar" onAction="#handleCadastrar" styleClass="btn-cadastrar"/>
+                    </HBox>
+
+                    <Label fx:id="labelFeedback"/>
+
                 </VBox>
-
-                <VBox spacing="5" GridPane.rowIndex="0" GridPane.columnIndex="1">
-                    <Label text="Grupo"/>
-                    <ComboBox fx:id="comboGrupo"
-                              promptText="Grupo"/>
-                </VBox>
-
-                <VBox spacing="5" GridPane.rowIndex="1" GridPane.columnIndex="0">
-                    <Label text="Técnico"/>
-                    <TextField fx:id="campoTecnico"
-                               promptText="Nome do técnico"/>
-                </VBox>
-
-                <VBox spacing="5" GridPane.rowIndex="1" GridPane.columnIndex="1">
-                    <Label text="Ranking FIFA"/>
-                    <TextField fx:id="campoRanking"
-                               promptText="Posição FIFA"/>
-                </VBox>
-
-                <VBox spacing="5"
-                      GridPane.rowIndex="2"
-                      GridPane.columnIndex="0"
-                      GridPane.columnSpan="2">
-                    <Label text="Títulos"/>
-                    <TextField fx:id="campoTitulos"
-                               promptText="Quantidade de títulos mundiais"/>
-                </VBox>
-
-            </GridPane>
-
-            <HBox spacing="12">
-
-                <Button text="Cadastrar"
-                        onAction="#handleCadastrar"
-                        styleClass="btn-cadastrar"/>
-
-                <Button text="Voltar"
-                        onAction="#handleVoltar"
-                        styleClass="btn-voltar"/>
-
-            </HBox>
-
-            <Label fx:id="labelFeedback"/>
-
-        </VBox>
-
-    </VBox>
+            </VBox>
+        </ScrollPane>
+    </center>
 
     <stylesheets>
-        <String fx:value="/css/cadastro_selecao.css"/>  <!-- ← adicione esta linha -->
+        <String fx:value="/css/menu.css"/>
+        <String fx:value="/css/cadastro_selecao.css"/>
     </stylesheets>
 
-</AnchorPane>
+</BorderPane>
