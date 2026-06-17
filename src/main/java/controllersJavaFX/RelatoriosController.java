@@ -11,11 +11,13 @@ import javafx.stage.Stage;
 import modelo.classes.Partida;
 import modelo.classes.ResultadoPartida;
 import modelo.classes.Usuario;
+import modelo.classes.Venda;
 import modelo.enumerations.FasePartida;
 import modelo.enumerations.TipoPerfil;
 import persistencia.PartidaDAO;
 import persistencia.ResultadoPartidaDAO;
 import persistencia.UsuarioDAO;
+import persistencia.VendaDAO;
 import servicos.usuario.SessaoUsuario;
 
 import java.io.BufferedWriter;
@@ -33,10 +35,12 @@ public class RelatoriosController {
     @FXML private TextArea terminalOutput;
     @FXML private Button   btnUsuarios;
     @FXML private Button   btnPartidas;
+    @FXML private Button   btnVendas;
 
     private final UsuarioDAO         usuarioDAO  = new UsuarioDAO();
     private final PartidaDAO         partidaDAO  = new PartidaDAO();
     private final ResultadoPartidaDAO resultadoDAO = new ResultadoPartidaDAO();
+    private final VendaDAO           vendaDAO    = new VendaDAO();
 
     // ════════════════════════════════════════════════════════
     //   INICIALIZAÇÃO
@@ -58,7 +62,7 @@ public class RelatoriosController {
 
     @FXML
     private void handleRelatorioUsuarios() {
-        marcarAtivo(btnUsuarios, btnPartidas);
+        marcarAtivo(btnUsuarios, btnPartidas, btnVendas);
         labelTitulo.setText("relatório · usuários");
 
         List<Usuario> todos = usuarioDAO.carregaLista();
@@ -123,7 +127,7 @@ public class RelatoriosController {
 
     @FXML
     private void handleRelatorioPartidas() {
-        marcarAtivo(btnPartidas, btnUsuarios);
+        marcarAtivo(btnPartidas, btnUsuarios, btnVendas);
         labelTitulo.setText("relatório · partidas");
 
         List<Partida>          partidas   = partidaDAO.carregaLista();
@@ -229,6 +233,92 @@ public class RelatoriosController {
     }
 
     // ════════════════════════════════════════════════════════
+    //   RELATÓRIO DE VENDAS DE INGRESSOS
+    // ════════════════════════════════════════════════════════
+
+    @FXML
+    private void handleRelatorioVendas() {
+        marcarAtivo(btnVendas, btnUsuarios, btnPartidas);
+        labelTitulo.setText("relatório · vendas de ingressos");
+
+        List<Venda> vendas = vendaDAO.carregaLista();
+
+        StringBuilder sb = new StringBuilder();
+        String linha    = "=".repeat(60);
+        String sublinha = "-".repeat(60);
+
+        sb.append(linha).append("\n");
+        sb.append("RELATÓRIO DE VENDAS DE INGRESSOS\n");
+        sb.append("Gerado em: ").append(agora()).append("\n");
+        sb.append(linha).append("\n\n");
+
+        // ── Resumo geral ─────────────────────────────────────────
+        long finalizadas = vendas.stream().filter(v -> "FINALIZADA".equals(v.getStatus())).count();
+        long canceladas  = vendas.stream().filter(v -> "CANCELADA" .equals(v.getStatus())).count();
+        long abertas     = vendas.stream().filter(v -> !"FINALIZADA".equals(v.getStatus()) && !"CANCELADA".equals(v.getStatus())).count();
+        int  totalIngr   = vendas.stream().mapToInt(v -> v.getIngressos() != null ? v.getIngressos().size() : 0).sum();
+        double totalRec  = vendas.stream()
+                .filter(v -> "FINALIZADA".equals(v.getStatus()))
+                .mapToDouble(Venda::getValorTotal).sum();
+
+        sb.append("RESUMO GERAL\n");
+        sb.append(sublinha).append("\n");
+        sb.append(String.format("  %-28s %d\n",  "Total de vendas:",          vendas.size()));
+        sb.append(String.format("  %-28s %d\n",  "  Finalizadas:",            finalizadas));
+        sb.append(String.format("  %-28s %d\n",  "  Canceladas:",             canceladas));
+        sb.append(String.format("  %-28s %d\n",  "  Em aberto:",              abertas));
+        sb.append(String.format("  %-28s %d\n",  "Total de ingressos vendidos:", totalIngr));
+        sb.append(String.format("  %-28s R$ %.2f\n", "Receita total (finalizadas):", totalRec));
+        sb.append("\n");
+
+        // ── Histórico completo ────────────────────────────────────
+        if (vendas.isEmpty()) {
+            sb.append("HISTÓRICO\n");
+            sb.append(sublinha).append("\n");
+            sb.append("  Nenhuma venda registrada ainda.\n\n");
+        } else {
+            sb.append("HISTÓRICO COMPLETO\n");
+            sb.append(sublinha).append("\n");
+            sb.append(String.format("  %-14s  %-19s  %-20s  %5s  %-12s  %s\n",
+                    "ID Venda", "Data", "Cliente", "Ingr.", "Status", "Valor (R$)"));
+            sb.append(sublinha).append("\n");
+
+            for (Venda v : vendas) {
+                String cliente = v.getCliente() != null ? v.getCliente().getNome() : "-";
+                int qtdIngr    = v.getIngressos() != null ? v.getIngressos().size() : 0;
+                sb.append(String.format("  %-14s  %-19s  %-20s  %5d  %-12s  %.2f\n",
+                        v.getIdVenda(),
+                        v.getDataVenda(),
+                        cliente,
+                        qtdIngr,
+                        v.getStatus(),
+                        v.getValorTotal()));
+
+                // detalhe dos ingressos de cada venda
+                if (v.getIngressos() != null) {
+                    for (var ing : v.getIngressos()) {
+                        String partida  = ing.getPartida() != null
+                                ? (ing.getPartida().getTimeCasa() != null ? ing.getPartida().getTimeCasa().getPais() : "?")
+                                  + " x "
+                                  + (ing.getPartida().getTimeVisitante() != null ? ing.getPartida().getTimeVisitante().getPais() : "?")
+                                : "-";
+                        String categoria = ing.getCategoria() != null ? ing.getCategoria().getNome() : "-";
+                        String validado  = ing.isFoiValidado() ? "validado" : "não validado";
+                        sb.append(String.format("    · #%-5d  %-30s  %-14s  %s\n",
+                                ing.getIdIngresso(), partida, categoria, validado));
+                    }
+                }
+            }
+            sb.append("\n");
+        }
+
+        sb.append(sublinha).append("\n");
+
+        terminalOutput.setText(sb.toString());
+        terminalOutput.positionCaret(0);
+    }
+
+    // ════════════════════════════════════════════════════════
     //   LIMPAR
     // ════════════════════════════════════════════════════════
 
@@ -312,9 +402,9 @@ public class RelatoriosController {
     //   UTILITÁRIOS
     // ════════════════════════════════════════════════════════
 
-    private void marcarAtivo(Button ativo, Button inativo) {
+    private void marcarAtivo(Button ativo, Button... inativos) {
         ativo.getStyleClass().setAll("btn-relatorio-ativo");
-        inativo.getStyleClass().setAll("btn-relatorio");
+        for (Button b : inativos) b.getStyleClass().setAll("btn-relatorio");
     }
 
     private String agora() {
