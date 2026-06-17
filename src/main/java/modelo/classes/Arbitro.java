@@ -45,6 +45,9 @@ public class Arbitro implements Serializable {
         if (idade < 0) {
             throw new IllegalArgumentException("A idade não pode ser negativa.");
         }
+        else if (idade >= 120) {
+            throw new IllegalArgumentException("A idade não pode ultrapassar 120 anos.");
+        }
         this.idade = idade;
     }
 
@@ -66,6 +69,9 @@ public class Arbitro implements Serializable {
     public void setExperiencia(int experiencia) {
         if (experiencia < 0) {
             throw new IllegalArgumentException("A experiência não pode ser negativa.");
+        }
+        else if (experiencia >= 120) {
+            throw new IllegalArgumentException("A experiência não pode ser tão grande");
         }
         this.experiencia = experiencia;
     }
