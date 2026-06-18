@@ -1,0 +1,863 @@
+##PAIS=Equador
+1;GK;Hernán Galíndez;35
+2;DF;Félix Torres;25
+3;DF;Piero Hincapié;20
+4;DF;Robert Arboleda;31
+5;MF;José Cifuentes;23
+6;DF;Willian Pacho;21
+7;DF;Pervis Estupiñán;24
+8;DF;Carlos Gruezo;27
+9;MF;Ayrton Preciado;28
+10;MF;Romario Ibarra;28
+11;FW;Michael Estrada;26
+12;GK;Moisés Ramírez;22
+13;FW;Enner Valencia;33
+14;DF;Xavier Arreaga;28
+15;MF;Ángel Mena;34
+16;MF;Jeremy Sarmiento;20
+17;DF;Ángelo Preciado;24
+18;DF;Diego Palacios;23
+19;MF;Gonzalo Plata;22
+20;MF;Sebas Méndez;25
+21;MF;Alan Franco;24
+22;GK;Alexander Domínguez;35
+23;MF;Moisés Caicedo;21
+24;FW;Djorkaeff Reasco;23
+25;DF;Jackson Porozo;22
+26;FW;Kevin Rodríguez;22
+##PAIS=Holanda
+1;GK;Remko Pasveer;39
+2;DF;Jurriën Timber;21
+3;DF;Matthijs de Ligt;23
+4;DF;Virgil van Dijk;31
+5;DF;Nathan Aké;27
+6;DF;Stefan de Vrij;30
+7;FW;Steven Bergwijn;25
+8;FW;Cody Gakpo;23
+9;FW;Luuk de Jong;32
+10;FW;Memphis Depay;28
+11;MF;Steven Berghuis;30
+12;FW;Noa Lang;23
+13;GK;Justin Bijlow;24
+14;MF;Davy Klaassen;29
+15;MF;Marten de Roon;31
+16;DF;Tyrell Malacia;23
+17;DF;Daley Blind;32
+18;FW;Vincent Janssen;28
+19;FW;Wout Weghorst;30
+20;MF;Teun Koopmeiners;24
+21;MF;Frenkie de Jong;25
+22;DF;Denzel Dumfries;26
+23;GK;Andries Noppert;28
+24;MF;Kenneth Taylor;20
+25;MF;Xavi Simons;19
+26;DF;Jeremie Frimpong;21
+##PAIS=Qatar
+1;GK;Saad Al-Sheeb;32
+2;DF;Pedro Miguel;32
+3;DF;Abdelkarim Hassan;29
+4;MF;Mohammed Waad;23
+5;DF;Tarek Salman;24
+6;MF;Abdulaziz Hatem;32
+7;FW;Ahmed Alaaeldin;29
+8;MF;Ali Assadalla;29
+9;FW;Mohammed Muntari;28
+10;MF;Hassan Al-Haydos;31
+11;FW;Akram Afif;26
+12;MF;Karim Boudiaf;32
+13;DF;Musab Kheder;29
+14;DF;Homam Ahmed;23
+15;DF;Bassam Al-Rawi;24
+16;DF;Boualem Khoukhi;32
+17;DF;Ismaeel Mohammad;32
+18;FW;Khalid Muneer;24
+19;FW;Almoez Ali;26
+20;MF;Salem Al-Hajri;26
+21;GK;Yousef Hassan;26
+22;GK;Meshaal Barsham;24
+23;MF;Assim Madibo;26
+24;MF;Naif Al-Hadhrami;21
+25;MF;Jassem Gaber;20
+26;MF;Mostafa Meshaal;21
+##PAIS=Senegal
+1;GK;Seny Dieng;27
+2;DF;Formose Mendy;21
+3;DF;Kalidou Koulibaly;31
+4;DF;Pape Abou Cissé;27
+5;MF;Idrissa Gueye;33
+6;MF;Nampalys Mendy;30
+7;FW;Nicolas Jackson;21
+8;DF;Cheikhou Kouyaté;32
+9;FW;Boulaye Dia;26
+10;DF;Moussa N'Diaye;20
+11;MF;Pathé Ciss;28
+12;DF;Fodé Ballo-Touré;25
+13;FW;Iliman Ndiaye;22
+14;DF;Ismail Jakobs;23
+15;MF;Krépin Diatta;23
+16;GK;Édouard Mendy;30
+17;MF;Pape Matar Sarr;20
+18;FW;Ismaïla Sarr;24
+19;FW;Famara Diédhiou;29
+20;FW;Bamba Dieng;22
+21;DF;Youssouf Sabaly;29
+22;DF;Abdou Diallo;26
+23;GK;Alfred Gomis;29
+24;DF;Moustapha Name;27
+25;MF;Mamadou Loum;25
+26;MF;Pape Gueye;23
+##PAIS=Inglaterra
+1;GK;Jordan Pickford;28
+2;DF;Kyle Walker;32
+3;DF;Luke Shaw;27
+4;MF;Declan Rice;23
+5;DF;John Stones;28
+6;DF;Harry Maguire;29
+7;FW;Jack Grealish;27
+8;MF;Jordan Henderson;32
+9;FW;Harry Kane;29
+10;FW;Raheem Sterling;27
+11;FW;Marcus Rashford;25
+12;DF;Kieran Trippier;32
+13;GK;Nick Pope;30
+14;MF;Kalvin Phillips;26
+15;DF;Eric Dier;28
+16;DF;Conor Coady;29
+17;FW;Bukayo Saka;21
+18;DF;Trent Alexander-Arnold;24
+19;MF;Mason Mount;23
+20;MF;Phil Foden;22
+21;DF;Ben White;25
+22;MF;Jude Bellingham;19
+23;GK;Aaron Ramsdale;24
+24;FW;Callum Wilson;30
+25;MF;James Maddison;25
+26;MF;Conor Gallagher;22
+##PAIS=Irã
+1;GK;Alireza Beiranvand;30
+2;DF;Sadegh Moharrami;26
+3;DF;Ehsan Hajsafi;32
+4;DF;Shojae Khalilzadeh;33
+5;DF;Milad Mohammadi;29
+6;MF;Saeid Ezatolahi;26
+7;MF;Alireza Jahanbakhsh;29
+8;DF;Morteza Pouraliganji;30
+9;FW;Mehdi Taremi;30
+10;FW;Karim Ansarifard;32
+11;MF;Vahid Amiri;34
+12;GK;Payam Niazmand;27
+13;DF;Hossein Kanaanizadegan;28
+14;MF;Saman Ghoddos;29
+15;DF;Rouzbeh Cheshmi;29
+16;MF;Mehdi Torabi;28
+17;MF;Ali Gholizadeh;26
+18;MF;Ali Karimi;28
+19;DF;Majid Hosseini;26
+20;FW;Sardar Azmoun;27
+21;MF;Ahmad Nourollahi;29
+22;GK;Amir Abedzadeh;29
+23;DF;Ramin Rezaeian;32
+24;GK;Hossein Hosseini;30
+25;DF;Abolfazl Jalali;24
+##PAIS=EUA
+1;GK;Matt Turner;28
+2;DF;Sergiño Dest;22
+3;DF;Walker Zimmerman;29
+4;MF;Tyler Adams;23
+5;DF;Antonee Robinson;25
+6;MF;Yunus Musah;19
+7;FW;Giovanni Reyna;20
+8;MF;Weston McKennie;24
+9;FW;Jesús Ferreira;21
+10;FW;Christian Pulisic;24
+11;FW;Brenden Aaronson;22
+12;GK;Ethan Horvath;27
+13;DF;Tim Ream;35
+14;MF;Luca de la Torre;24
+15;DF;Aaron Long;30
+16;FW;Jordan Morris;28
+17;MF;Cristian Roldan;27
+18;DF;Shaq Moore;26
+19;FW;Haji Wright;24
+20;DF;Cameron Carter-Vickers;24
+21;FW;Timothy Weah;22
+22;DF;DeAndre Yedlin;29
+23;MF;Kellyn Acosta;27
+24;FW;Josh Sargent;22
+25;GK;Sean Johnson;33
+26;DF;Joe Scally;19
+##PAIS=País de Gales
+1;GK;Wayne Hennessey;35
+2;DF;Chris Gunter;33
+3;DF;Neco Williams;21
+4;DF;Ben Davies;29
+5;DF;Chris Mepham;25
+6;DF;Joe Rodon;25
+7;MF;Joe Allen;32
+8;MF;Harry Wilson;25
+9;FW;Brennan Johnson;21
+10;MF;Aaron Ramsey;31
+11;FW;Gareth Bale;33
+12;GK;Danny Ward;29
+13;FW;Kieffer Moore;30
+14;DF;Connor Roberts;27
+15;DF;Ethan Ampadu;22
+16;MF;Joe Morrell;25
+17;DF;Tom Lockyer;27
+18;MF;Jonny Williams;29
+19;FW;Mark Harris;23
+20;FW;Daniel James;25
+21;GK;Adam Davies;30
+22;MF;Sorba Thomas;23
+23;MF;Dylan Levitt;22
+24;DF;Ben Cabango;22
+25;MF;Rubin Colwill;20
+26;MF;Matthew Smith;22
+##PAIS=Argentina
+1;GK;Franco Armani;36
+2;DF;Juan Foyth;24
+3;DF;Nicolás Tagliafico;30
+4;DF;Gonzalo Montiel;25
+5;MF;Leandro Paredes;28
+6;DF;Germán Pezzella;31
+7;MF;Rodrigo De Paul;28
+8;DF;Marcos Acuña;31
+9;FW;Julián Álvarez;22
+10;FW;Lionel Messi;35
+11;FW;Ángel Di María;34
+12;GK;Gerónimo Rulli;30
+13;DF;Cristian Romero;24
+14;MF;Exequiel Palacios;24
+15;FW;Ángel Correa;27
+16;MF;Thiago Almada;21
+17;MF;Papu Gómez;34
+18;MF;Guido Rodríguez;28
+19;DF;Nicolás Otamendi;34
+20;MF;Alexis Mac Allister;23
+21;FW;Paulo Dybala;29
+22;FW;Lautaro Martínez;25
+23;GK;Emiliano Martínez;30
+24;MF;Enzo Fernández;21
+25;DF;Lisandro Martínez;24
+26;DF;Nahuel Molina;24
+##PAIS=Arábia Saudita
+1;GK;Mohammed Al-Rubaie;25
+2;DF;Sultan Al-Ghannam;28
+3;DF;Abdullah Madu;29
+4;DF;Abdulelah Al-Amri;25
+5;DF;Ali Al-Bulaihi;32
+6;DF;Mohammed Al-Breik;30
+7;MF;Salman Al-Faraj;33
+8;MF;Abdulellah Al-Malki;28
+9;FW;Firas Al-Buraikan;22
+10;FW;Salem Al-Dawsari;31
+11;FW;Saleh Al-Shehri;29
+12;DF;Saud Abdulhamid;23
+13;DF;Yasser Al-Shahrani;30
+14;MF;Abdullah Otayf;30
+15;MF;Ali Al-Hassan;25
+16;MF;Sami Al-Najei;25
+17;DF;Hassan Al-Tambakti;23
+18;MF;Nawaf Al-Abed;32
+19;FW;Hattan Bahebri;30
+20;FW;Abdulrahman Al-Aboud;27
+21;GK;Mohammed Al-Owais;31
+22;GK;Nawaf Al-Aqidi;22
+23;MF;Mohamed Kanno;28
+24;MF;Nasser Al-Dawsari;23
+25;FW;Haitham Asiri;21
+26;MF;Riyadh Sharahili;29
+##PAIS=México
+1;GK;Alfredo Talavera;40
+2;DF;Néstor Araujo;31
+3;DF;César Montes;25
+4;DF;Edson Álvarez;25
+5;DF;Johan Vásquez;24
+6;DF;Gerardo Arteaga;24
+7;MF;Luis Romo;27
+8;MF;Carlos Rodríguez;25
+9;FW;Raúl Jiménez;31
+10;FW;Alexis Vega;24
+11;FW;Rogelio Funes Mori;31
+12;GK;Rodolfo Cota;35
+13;GK;Guillermo Ochoa;37
+14;MF;Érick Gutiérrez;27
+15;DF;Héctor Moreno;34
+16;MF;Héctor Herrera;32
+17;FW;Orbelín Pineda;26
+18;MF;Andrés Guardado;36
+19;DF;Jorge Sánchez;24
+20;FW;Henry Martín;30
+21;FW;Uriel Antuna;25
+22;FW;Hirving Lozano;27
+23;DF;Jesús Gallardo;28
+24;MF;Luis Chávez;26
+25;FW;Roberto Alvarado;24
+26;DF;Kevin Álvarez;23
+##PAIS=Polônia
+1;GK;Wojciech Szczęsny;32
+2;DF;Matty Cash;25
+3;DF;Artur Jędrzejczyk;35
+4;DF;Mateusz Wieteska;25
+5;DF;Jan Bednarek;26
+6;MF;Krystian Bielik;24
+7;FW;Arkadiusz Milik;28
+8;MF;Damian Szymański;27
+9;FW;Robert Lewandowski;34
+10;MF;Grzegorz Krychowiak;32
+11;MF;Kamil Grosicki;34
+12;GK;Łukasz Skorupski;31
+13;MF;Jakub Kamiński;20
+14;DF;Jakub Kiwior;22
+15;DF;Kamil Glik;34
+16;FW;Karol Świderski;25
+17;MF;Szymon Żurkowski;25
+18;DF;Bartosz Bereszyński;30
+19;MF;Sebastian Szymański;23
+20;MF;Piotr Zieliński;28
+21;MF;Nicola Zalewski;20
+22;GK;Kamil Grabara;23
+23;FW;Krzysztof Piątek;27
+24;MF;Przemysław Frankowski;27
+25;DF;Robert Gumny;24
+26;MF;Michał Skóraś;22
+##PAIS=França
+1;GK;Hugo Lloris;35
+2;DF;Benjamin Pavard;26
+3;DF;Axel Disasi;24
+4;DF;Raphaël Varane;29
+5;DF;Jules Koundé;24
+6;MF;Mattéo Guendouzi;23
+7;FW;Antoine Griezmann;31
+8;MF;Aurélien Tchouaméni;22
+9;FW;Olivier Giroud;36
+10;FW;Kylian Mbappé;23
+11;FW;Ousmane Dembélé;25
+12;FW;Randal Kolo Muani;23
+13;MF;Youssouf Fofana;23
+14;MF;Adrien Rabiot;27
+15;MF;Jordan Veretout;29
+16;GK;Steve Mandanda;37
+17;DF;William Saliba;21
+18;DF;Dayot Upamecano;24
+19;FW;Karim Benzema;34;LESIONADO
+20;FW;Kingsley Coman;26
+21;DF;Lucas Hernandez;26
+22;DF;Théo Hernandez;25
+23;GK;Alphonse Areola;29
+24;DF;Ibrahima Konaté;23
+25;MF;Eduardo Camavinga;20
+26;FW;Marcus Thuram;25
+##PAIS=Austrália
+1;GK;Mathew Ryan;30
+2;DF;Miloš Degenek;28
+3;DF;Nathaniel Atkinson;23
+4;DF;Kye Rowles;24
+5;DF;Fran Karačić;26
+6;FW;Marco Tilio;21
+7;FW;Mathew Leckie;31
+8;DF;Bailey Wright;30
+9;FW;Jamie Maclaren;29
+10;MF;Ajdin Hrustic;26
+11;FW;Awer Mabil;27
+12;GK;Andrew Redmayne;33
+13;MF;Aaron Mooy;32
+14;MF;Riley McGree;24
+15;FW;Mitchell Duke;31
+16;DF;Aziz Behich;31
+17;MF;Cameron Devlin;24
+18;GK;Danny Vukovic;37
+19;DF;Harry Souttar;24
+20;DF;Thomas Deng;25
+21;FW;Garang Kuol;18
+22;MF;Jackson Irvine;29
+23;FW;Craig Goodwin;30
+24;DF;Joel King;22
+25;FW;Jason Cummings;27
+26;MF;Keanu Baccus;24
+##PAIS=Dinamarca
+1;GK;Kasper Schmeichel;36
+2;DF;Joachim Andersen;26
+3;DF;Victor Nelsson;24
+4;DF;Simon Kjær;33
+5;DF;Joakim Mæhle;25
+6;DF;Andreas Christensen;26
+7;MF;Mathias Jensen;26
+8;MF;Thomas Delaney;31
+9;FW;Martin Braithwaite;31
+10;MF;Christian Eriksen;30
+11;MF;Andreas Skov Olsen;22
+12;FW;Kasper Dolberg;25
+13;DF;Rasmus Kristensen;25
+14;MF;Mikkel Damsgaard;22
+15;MF;Christian Nørgaard;28
+16;GK;Oliver Christensen;23
+17;DF;Jens Stryger Larsen;31
+18;DF;Daniel Wass;33
+19;FW;Jonas Wind;23
+20;FW;Yussuf Poulsen;28
+21;FW;Andreas Cornelius;29
+22;GK;Frederik Rønnow;30
+23;MF;Pierre-Emile Højbjerg;27
+24;MF;Robert Skov;26
+25;MF;Jesper Lindstrøm;22
+26;DF;Alexander Bah;24
+##PAIS=Tunísia
+1;GK;Aymen Mathlouthi;38
+2;DF;Bilel Ifa;32
+3;DF;Montassar Talbi;24
+4;DF;Yassine Meriah;29
+5;MF;Nader Ghandri;27
+6;DF;Dylan Bronn;27
+7;FW;Youssef Msakni;32
+8;MF;Hannibal Mejbri;19
+9;FW;Issam Jebali;30
+10;FW;Wahbi Khazri;31
+11;FW;Taha Yassine Khenissi;30
+12;DF;Ali Maâloul;32
+13;MF;Ferjani Sassi;30
+14;MF;Aïssa Laïdouni;25
+15;MF;Mohamed Ali Ben Romdhane;23
+16;GK;Aymen Dahmen;25
+17;MF;Ellyes Skhiri;27
+18;MF;Ghailene Chaalali;28
+19;FW;Seifeddine Jaziri;29
+20;DF;Mohamed Dräger;26
+21;DF;Wajdi Kechrida;27
+22;GK;Bechir Ben Saïd;29
+23;FW;Naïm Sliti;30
+24;DF;Ali Abdi;28
+25;FW;Anis Ben Slimane;21
+26;GK;Mouez Hassen;27
+##PAIS=Espanha
+1;GK;Robert Sánchez;25
+2;DF;César Azpilicueta;33
+3;DF;Eric García;21
+4;DF;Pau Torres;25
+5;MF;Sergio Busquets;34
+6;MF;Marcos Llorente;27
+7;FW;Álvaro Morata;30
+8;MF;Koke;30
+9;MF;Gavi;18
+10;FW;Marco Asensio;26
+11;FW;Ferran Torres;22
+12;FW;Nico Williams;20
+13;GK;David Raya;27
+14;DF;Alejandro Balde;19
+15;DF;Hugo Guillamón;22
+16;MF;Rodri;26
+17;FW;Yéremy Pino;20
+18;DF;Jordi Alba;33
+19;MF;Carlos Soler;25
+20;DF;Dani Carvajal;30
+21;FW;Dani Olmo;24
+22;FW;Pablo Sarabia;30
+23;GK;Unai Simón;25
+24;DF;Aymeric Laporte;28
+25;FW;Ansu Fati;20
+26;MF;Pedri;19
+##PAIS=Costa Rica
+1;GK;Keylor Navas;35
+2;MF;Daniel Chacón;21
+3;DF;Juan Pablo Vargas;27
+4;DF;Keysher Fuller;28
+5;MF;Celso Borges;34
+6;DF;Óscar Duarte;33
+7;FW;Anthony Contreras;22
+8;DF;Bryan Oviedo;32
+9;MF;Jewison Bennette;18
+10;MF;Bryan Ruiz;37
+11;FW;Johan Venegas;33
+12;FW;Joel Campbell;30
+13;MF;Gerson Torres;25
+14;MF;Youstin Salas;26
+15;DF;Francisco Calvo;30
+16;DF;Carlos Martínez;23
+17;MF;Yeltsin Tejeda;30
+18;GK;Esteban Alvarado;33
+19;DF;Kendall Waston;34
+20;MF;Brandon Aguilera;19
+21;MF;Douglas López;24
+22;DF;Rónald Matarrita;28
+23;GK;Patrick Sequeira;23
+24;MF;Roan Wilson;20
+25;MF;Anthony Hernández;21
+26;MF;Álvaro Zamora;20
+##PAIS=Alemanha
+1;GK;Manuel Neuer;36
+2;DF;Antonio Rüdiger;29
+3;DF;David Raum;24
+4;DF;Matthias Ginter;28
+5;DF;Thilo Kehrer;26
+6;MF;Joshua Kimmich;27
+7;FW;Kai Havertz;23
+8;MF;Leon Goretzka;27
+9;FW;Niclas Füllkrug;29
+10;FW;Serge Gnabry;27
+11;MF;Mario Götze;30
+12;GK;Kevin Trapp;32
+13;MF;Thomas Müller;33
+14;MF;Jamal Musiala;19
+15;DF;Niklas Süle;27
+16;DF;Lukas Klostermann;26
+17;MF;Julian Brandt;26
+18;MF;Jonas Hofmann;30
+19;MF;Leroy Sané;26
+20;DF;Christian Günter;29
+21;MF;İlkay Gündoğan;32
+22;GK;Marc-André ter Stegen;30
+23;DF;Nico Schlotterbeck;22
+24;FW;Karim Adeyemi;20
+25;DF;Armel Bella-Kotchap;20
+26;FW;Youssoufa Moukoko;18
+##PAIS=Japão
+1;GK;Eiji Kawashima;39
+2;DF;Miki Yamane;28
+3;DF;Shōgo Taniguchi;31
+4;DF;Kō Itakura;25
+5;DF;Yūto Nagatomo;36
+6;MF;Wataru Endō;29
+7;MF;Gaku Shibasaki;30
+8;MF;Ritsu Dōan;24
+9;MF;Kaoru Mitoma;25
+10;MF;Takumi Minamino;27
+11;MF;Takefusa Kubo;21
+12;GK;Shūichi Gonda;33
+13;MF;Hidemasa Morita;27
+14;MF;Junya Itō;29
+15;MF;Daichi Kamada;26
+16;DF;Takehiro Tomiyasu;24
+17;MF;Ao Tanaka;24
+18;FW;Takuma Asano;28
+19;DF;Hiroki Sakai;32
+20;FW;Shūto Machino;23
+21;FW;Ayase Ueda;24
+22;DF;Maya Yoshida;34
+23;GK;Daniel Schmidt;30
+24;MF;Yūki Sōma;25
+25;FW;Daizen Maeda;25
+26;DF;Hiroki Itō;23
+##PAIS=Bélgica
+1;GK;Thibaut Courtois;30
+2;DF;Toby Alderweireld;33
+3;DF;Arthur Theate;22
+4;DF;Wout Faes;24
+5;DF;Jan Vertonghen;35
+6;MF;Axel Witsel;33
+7;MF;Kevin De Bruyne;31
+8;MF;Youri Tielemans;25
+9;FW;Romelu Lukaku;29
+10;FW;Eden Hazard;31
+11;FW;Yannick Carrasco;29
+12;GK;Simon Mignolet;34
+13;GK;Koen Casteels;30
+14;FW;Dries Mertens;35
+15;MF;Thomas Meunier;31
+16;MF;Thorgan Hazard;29
+17;FW;Leandro Trossard;27
+18;MF;Amadou Onana;21
+19;DF;Leander Dendoncker;27
+20;MF;Hans Vanaken;30
+21;MF;Timothy Castagne;26
+22;FW;Charles De Ketelaere;21
+23;FW;Michy Batshuayi;29
+24;FW;Loïs Openda;22
+25;FW;Jérémy Doku;20
+26;DF;Zeno Debast;19
+##PAIS=Canadá
+1;GK;Dayne St. Clair;25
+2;DF;Alistair Johnston;24
+3;DF;Sam Adekugbe;27
+4;DF;Kamal Miller;25
+5;DF;Steven Vitória;35
+6;MF;Samuel Piette;28
+7;MF;Stephen Eustáquio;25
+8;MF;Liam Fraser;24
+9;FW;Lucas Cavallini;29
+10;MF;Junior Hoilett;32
+11;FW;Tajon Buchanan;23
+12;FW;Iké Ugbo;24
+13;MF;Atiba Hutchinson;39
+14;MF;Mark-Anthony Kaye;27
+15;MF;Ismaël Koné;20
+16;GK;James Pantemis;25
+17;FW;Cyle Larin;27
+18;GK;Milan Borjan;35
+19;FW;Alphonso Davies;22
+20;FW;Jonathan David;22
+21;MF;Jonathan Osorio;30
+22;DF;Richie Laryea;27
+23;MF;Liam Millar;23
+24;MF;David Wotherspoon;32
+25;DF;Derek Cornelius;24
+26;DF;Joel Waterman;26
+##PAIS=Croácia
+1;GK;Dominik Livaković;27
+2;DF;Josip Stanišić;22
+3;DF;Borna Barišić;30
+4;FW;Ivan Perišić;33
+5;DF;Martin Erlić;24
+6;DF;Dejan Lovren;33
+7;MF;Lovro Majer;24
+8;MF;Mateo Kovačić;28
+9;FW;Andrej Kramarić;31
+10;MF;Luka Modrić;37
+11;MF;Marcelo Brozović;30
+12;GK;Ivo Grbić;26
+13;MF;Nikola Vlašić;25
+14;FW;Marko Livaja;29
+15;MF;Mario Pašalić;27
+16;FW;Bruno Petković;28
+17;FW;Ante Budimir;31
+18;FW;Mislav Oršić;29
+19;DF;Borna Sosa;24
+20;DF;Joško Gvardiol;20
+21;DF;Domagoj Vida;33
+22;DF;Josip Juranović;27
+23;GK;Ivica Ivušić;27
+24;DF;Josip Šutalo;22
+25;MF;Luka Sučić;20
+26;MF;Kristijan Jakić;25
+##PAIS=Marrocos
+1;GK;Yassine Bounou;31
+2;DF;Achraf Hakimi;24
+3;DF;Noussair Mazraoui;25
+4;MF;Sofyan Amrabat;26
+5;DF;Nayef Aguerd;26
+6;DF;Romain Saïss;32
+7;MF;Hakim Ziyech;29
+8;MF;Azzedine Ounahi;22
+9;FW;Abderrazak Hamdallah;31
+10;MF;Anass Zaroury;22
+11;FW;Abdelhamid Sabiri;25
+12;GK;Munir Mohamedi;33
+13;MF;Ilias Chair;25
+14;MF;Zakaria Aboukhlal;22
+15;MF;Selim Amallah;26
+16;FW;Abde Ezzalzouli;20
+17;MF;Sofiane Boufal;29
+18;DF;Jawad El Yamiq;30
+19;FW;Youssef En-Nesyri;25
+20;DF;Achraf Dari;23
+21;FW;Walid Cheddira;24
+22;GK;Ahmed Reda Tagnaouti;26
+23;MF;Bilal El Khannous;18
+24;DF;Badr Benoun;29
+25;DF;Yahia Attiyat Allah;27
+26;MF;Yahya Jabrane;31
+##PAIS=Brasil
+1;GK;Alisson;30
+2;DF;Danilo;31
+3;DF;Thiago Silva;38
+4;DF;Marquinhos;28
+5;MF;Casemiro;30
+6;DF;Alex Sandro;31
+7;MF;Lucas Paquetá;25
+8;MF;Fred;29
+9;FW;Richarlison;25
+10;FW;Neymar;30
+11;FW;Raphinha;25
+12;GK;Weverton;34
+13;DF;Dani Alves;39
+14;DF;Éder Militão;24
+15;MF;Fabinho;29
+16;DF;Alex Telles;29
+17;MF;Bruno Guimarães;25
+18;FW;Gabriel Jesus;25
+19;FW;Antony;22
+20;FW;Vinícius Júnior;22
+21;FW;Rodrygo;21
+22;MF;Éverton Ribeiro;33
+23;GK;Ederson;29
+24;DF;Bremer;25
+25;FW;Pedro;25
+26;FW;Gabriel Martinelli;21
+##PAIS=Sérvia
+1;GK;Marko Dmitrović;30
+2;DF;Strahinja Pavlović;21
+3;DF;Strahinja Eraković;21
+4;DF;Nikola Milenković;25
+5;DF;Miloš Veljković;27
+6;MF;Nemanja Maksimović;27
+7;FW;Nemanja Radonjić;26
+8;MF;Nemanja Gudelj;31
+9;FW;Aleksandar Mitrović;28
+10;FW;Dušan Tadić;34
+11;FW;Luka Jović;24
+12;GK;Predrag Rajković;27
+13;DF;Stefan Mitrović;32
+14;MF;Andrija Živković;26
+15;DF;Srđan Babić;26
+16;MF;Saša Lukić;26
+17;MF;Filip Kostić;30
+18;FW;Dušan Vlahović;22
+19;MF;Uroš Račić;24
+20;MF;Sergej Milinković-Savić;27
+21;FW;Filip Đuričić;30
+22;MF;Darko Lazović;32
+23;GK;Vanja Milinković-Savić;25
+24;MF;Ivan Ilić;21
+25;DF;Filip Mladenović;31
+26;MF;Marko Grujić;26
+##PAIS=Suíça
+1;GK;Yann Sommer;33
+2;DF;Edimilson Fernandes;26
+3;DF;Silvan Widmer;29
+4;DF;Nico Elvedi;26
+5;DF;Manuel Akanji;27
+6;MF;Denis Zakaria;26
+7;FW;Breel Embolo;25
+8;MF;Remo Freuler;30
+9;FW;Haris Seferovic;30
+10;MF;Granit Xhaka;30
+11;DF;Renato Steffen;31
+12;GK;Jonas Omlin;28
+13;DF;Ricardo Rodriguez;30
+14;MF;Michel Aebischer;25
+15;MF;Djibril Sow;25
+16;MF;Christian Fassnacht;29
+17;FW;Ruben Vargas;24
+18;DF;Eray Cömert;24
+19;FW;Noah Okafor;22
+20;MF;Fabian Frei;33
+21;GK;Gregor Kobel;24
+22;DF;Fabian Schär;30
+23;MF;Xherdan Shaqiri;31
+24;GK;Philipp Köhn;24
+25;MF;Fabian Rieder;20
+26;MF;Ardon Jashari;20
+##PAIS=Camarões
+1;GK;Simon Ngapandouetnbu;19
+2;DF;Jerome Ngom Mbekeli;24
+3;DF;Nicolas Nkoulou;32
+4;DF;Christopher Wooh;21
+5;MF;Gaël Ondoua;27
+6;FW;Moumi Ngamaleu;28
+7;MF;Georges-Kévin Nkoudou;27
+8;MF;André-Frank Zambo Anguissa;27
+9;FW;Jean-Pierre Nsame;29
+10;FW;Vincent Aboubakar;30
+11;FW;Christian Bassogog;27
+12;FW;Karl Toko Ekambi;30
+13;FW;Eric Maxim Choupo-Moting;33
+14;MF;Samuel Gouet;24
+15;MF;Pierre Kunde;27
+16;GK;Devis Epassy;29
+17;DF;Olivier Mbaizo;25
+18;MF;Martin Hongla;24
+19;DF;Collins Fai;30
+20;FW;Bryan Mbeumo;23
+21;DF;Jean-Charles Castelletto;27
+22;MF;Olivier Ntcham;26
+23;GK;André Onana;26
+24;DF;Enzo Ebosse;23
+25;DF;Nouhou Tolo;25
+26;MF;Souaibou Marou;21
+##PAIS=Portugal
+1;GK;Rui Patrício;34
+2;DF;Diogo Dalot;23
+3;DF;Pepe;39
+4;DF;Rúben Dias;25
+5;DF;Raphaël Guerreiro;28
+6;MF;João Palhinha;27
+7;FW;Cristiano Ronaldo;37
+8;MF;Bruno Fernandes;28
+9;FW;André Silva;27
+10;FW;Bernardo Silva;28
+11;FW;João Félix;23
+12;GK;José Sá;29
+13;DF;Danilo Pereira;31
+14;MF;William Carvalho;30
+15;FW;Rafael Leão;23
+16;MF;Vitinha;22
+17;MF;João Mário;29
+18;MF;Rúben Neves;25
+19;DF;Nuno Mendes;20
+20;DF;João Cancelo;28
+21;FW;Ricardo Horta;28
+22;GK;Diogo Costa;23
+23;MF;Matheus Nunes;24
+24;DF;António Silva;19
+25;MF;Otávio;27
+26;FW;Gonçalo Ramos;21
+##PAIS=Gana
+1;GK;Lawrence Ati-Zigi;25
+2;DF;Tariq Lamptey;22
+3;DF;Denis Odoi;34
+4;DF;Mohammed Salisu;23
+5;MF;Thomas Partey;29
+6;MF;Elisha Owusu;25
+7;MF;Abdul Fatawu Issahaku;18
+8;MF;Daniel-Kofi Kyereh;26
+9;FW;Jordan Ayew;31
+10;FW;André Ayew;32
+11;MF;Osman Bukari;23
+12;GK;Ibrahim Danlad;19
+13;MF;Daniel Afriyie;21
+14;DF;Gideon Mensah;24
+15;DF;Joseph Aidoo;27
+16;GK;Abdul Manaf Nurudeen;23
+17;DF;Baba Rahman;28
+18;DF;Daniel Amartey;27
+19;FW;Iñaki Williams;28
+20;MF;Mohammed Kudus;22
+21;MF;Salis Abdul Samed;22
+22;MF;Kamaldeen Sulemana;20
+23;DF;Alexander Djiku;28
+24;MF;Kamal Sowah;22
+25;FW;Antoine Semenyo;22
+26;DF;Alidu Seidu;22
+##PAIS=Uruguai
+1;GK;Fernando Muslera;36
+2;DF;José Giménez;27
+3;DF;Diego Godín;36
+4;DF;Ronald Araújo;23
+5;MF;Matías Vecino;31
+6;MF;Rodrigo Bentancur;25
+7;MF;Nicolás de la Cruz;25
+8;FW;Facundo Pellistri;20
+9;FW;Luis Suárez;35
+10;MF;Giorgian de Arrascaeta;28
+11;FW;Darwin Núñez;23
+12;GK;Sebastián Sosa;36
+13;DF;Guillermo Varela;29
+14;MF;Lucas Torreira;26
+15;MF;Federico Valverde;24
+16;DF;Mathías Olivera;25
+17;DF;Matías Viña;25
+18;FW;Maxi Gómez;26
+19;DF;Sebastián Coates;32
+20;FW;Facundo Torres;22
+21;FW;Edinson Cavani;35
+22;DF;Martín Cáceres;35
+23;GK;Sergio Rochet;29
+24;MF;Agustín Canobbio;24
+25;MF;Manuel Ugarte;21
+26;DF;José Luis Rodríguez;25
+##PAIS=Coreia do Sul
+1;GK;Kim Seung-gyu;32
+2;DF;Yoon Jong-gyu;24
+3;DF;Kim Jin-su;30
+4;DF;Kim Min-jae;26
+5;MF;Jung Woo-young;32
+6;MF;Hwang In-beom;26
+7;FW;Son Heung-min;30
+8;MF;Paik Seung-ho;25
+9;FW;Cho Gue-sung;24
+10;MF;Lee Jae-sung;30
+11;MF;Hwang Hee-chan;26
+12;GK;Song Bum-keun;25
+13;MF;Son Jun-ho;30
+14;DF;Hong Chul;32
+15;DF;Kim Moon-hwan;27
+16;FW;Hwang Ui-jo;30
+17;MF;Na Sang-ho;26
+18;MF;Lee Kang-in;21
+19;DF;Kim Young-gwon;32
+20;DF;Kwon Kyung-won;30
+21;GK;Jo Hyeon-woo;31
+22;MF;Kwon Chang-hoon;28
+23;DF;Kim Tae-hwan;33
+24;DF;Cho Yu-min;26
+25;MF;Jeong Woo-yeong;23
+26;MF;Song Min-kyu;23
