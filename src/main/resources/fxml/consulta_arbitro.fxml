@@ -40,9 +40,9 @@
                 </VBox>
 
                 <VBox spacing="5" GridPane.rowIndex="0" GridPane.columnIndex="1">
-                    <Label text="Nacionalidade" styleClass="label"/>
+                    <Label text="País de origem" styleClass="label"/>
                     <TextField fx:id="campoNacionalidade"
-                               promptText="Filtrar por nacionalidade"
+                               promptText="Filtrar por país de origem"
                                maxWidth="Infinity"/>
                 </VBox>
 
