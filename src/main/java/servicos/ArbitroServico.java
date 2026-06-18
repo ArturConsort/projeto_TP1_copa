@@ -63,17 +63,5 @@ public class ArbitroServico extends Servico{
 
     public List<Arbitro> listarArbitros() throws IOException {
         return arbitroDAO.carregaLista();
-    }    protected void verificarPermissao(TipoPerfil... perfisAceitos) {
-        Usuario logado = SessaoUsuario.getInstancia().getUsuarioLogado();
-
-        if (logado == null) {
-            throw new AcessoNegadoException("Nenhum usuário logado.");
-        }
-
-        for (TipoPerfil perfil : perfisAceitos) {
-            if (logado.getPerfil() == perfil) return;
-        }
-
-        throw new AcessoNegadoException("Acesso negado: permissão insuficiente.");
     }
 }
