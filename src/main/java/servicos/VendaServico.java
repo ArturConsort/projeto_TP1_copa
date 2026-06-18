@@ -12,6 +12,8 @@ import persistencia.VendaDAO;
 import servicos.usuario.SessaoUsuario;
 import servicos.Servico;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,6 +56,23 @@ public class VendaServico extends Servico{
 
         if (ingresso.getCategoria() != null && !ingresso.getCategoria().temVagasDisponiveis()) {
             throw new IllegalStateException("Categoria sem vagas disponíveis: " + ingresso.getCategoria().getNome());
+        }
+
+        // Regra: ingressos não podem ser vendidos após o início da partida
+        Partida partida = ingresso.getPartida();
+        if (partida != null && partida.getData() != null && partida.getHorario() != null) {
+            try {
+                DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+                LocalDateTime inicioPartida = LocalDateTime.parse(
+                        partida.getData() + " " + partida.getHorario(), fmt);
+                if (LocalDateTime.now().isAfter(inicioPartida)) {
+                    throw new IllegalStateException(
+                            "Não é possível vender ingressos após o início da partida ("
+                            + partida.getData() + " " + partida.getHorario() + ").");
+                }
+            } catch (java.time.format.DateTimeParseException ignored) {
+                // Se o formato de data/hora estiver inesperado, não bloqueia
+            }
         }
 
         venda.adicionarIngresso(ingresso);

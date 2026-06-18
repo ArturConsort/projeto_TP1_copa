@@ -26,7 +26,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import modelo.classes.Ingresso;
 
 public class RelatoriosController {
 
@@ -308,6 +312,50 @@ public class RelatoriosController {
                                 ing.getIdIngresso(), partida, categoria, validado));
                     }
                 }
+            }
+            sb.append("\n");
+        }
+
+        // ── Público e arrecadação por partida ─────────────────────
+        // Agrupa ingressos de vendas FINALIZADAS por partida
+        Map<String, int[]>    porPartida     = new LinkedHashMap<>();
+        Map<String, double[]> receitaPartida = new LinkedHashMap<>();
+        Map<String, String>   labelPartida   = new LinkedHashMap<>();
+
+        for (Venda v : vendas) {
+            if (!"FINALIZADA".equals(v.getStatus()) || v.getIngressos() == null) continue;
+            for (Ingresso ing : v.getIngressos()) {
+                Partida p = ing.getPartida();
+                if (p == null) continue;
+                String chave = String.valueOf(p.getNumeroPartidas());
+                porPartida.computeIfAbsent(chave, k -> new int[2]);
+                receitaPartida.computeIfAbsent(chave, k -> new double[1]);
+                if (!labelPartida.containsKey(chave)) {
+                    String casa = p.getTimeCasa() != null ? p.getTimeCasa().getPais() : "?";
+                    String vis  = p.getTimeVisitante() != null ? p.getTimeVisitante().getPais() : "?";
+                    labelPartida.put(chave, "Nº " + p.getNumeroPartidas() + "  "
+                            + casa + " x " + vis
+                            + "  (" + p.getData() + " " + p.getHorario() + ")");
+                }
+                porPartida.get(chave)[0]++;
+                if (ing.isFoiValidado()) porPartida.get(chave)[1]++;
+                receitaPartida.get(chave)[0] += ing.getPrecoEfetivo();
+            }
+        }
+
+        sb.append("PÚBLICO E ARRECADAÇÃO POR PARTIDA\n");
+        sb.append(sublinha).append("\n");
+        if (porPartida.isEmpty()) {
+            sb.append("  Nenhum ingresso de venda finalizada registrado.\n\n");
+        } else {
+            sb.append(String.format("  %-45s  %6s  %6s  %s\n",
+                    "Partida", "Vendid.", "Valid.", "Arrecadação (R$)"));
+            sb.append(sublinha).append("\n");
+            for (String chave : porPartida.keySet()) {
+                int[]    cnt = porPartida.get(chave);
+                double[] rec = receitaPartida.get(chave);
+                sb.append(String.format("  %-45s  %6d  %6d  %.2f\n",
+                        labelPartida.get(chave), cnt[0], cnt[1], rec[0]));
             }
             sb.append("\n");
         }

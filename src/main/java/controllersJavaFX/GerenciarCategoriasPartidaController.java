@@ -99,6 +99,8 @@ public class GerenciarCategoriasPartidaController {
                 throw new IllegalArgumentException("Já existe uma categoria com o nome \"" + nome + "\" nesta partida.");
             }
 
+            validarCapacidade(null, estoque);
+
             partidaAtual.adicionarCategoria(new CategoriaIngresso(nome, preco, estoque));
             partidaService.atualizarPartida(partidaAtual);
             recarregarTabela();
@@ -126,6 +128,8 @@ public class GerenciarCategoriasPartidaController {
 
             if (novoPreco < 0)   throw new IllegalArgumentException("O preço não pode ser negativo.");
             if (novoEstoque < 0) throw new IllegalArgumentException("O estoque não pode ser negativo.");
+
+            validarCapacidade(selecionada.getNome(), novoEstoque);
 
             selecionada.atualizarPreco(novoPreco);
             selecionada.setEstoque(novoEstoque);
@@ -200,6 +204,32 @@ public class GerenciarCategoriasPartidaController {
     }
 
     // ── Utilitários ─────────────────────────────────────────
+
+    /**
+     * Verifica se a soma dos estoques de todas as categorias (substituindo o estoque
+     * da categoria {@code nomeCategoriaSubstituida} pelo valor {@code novoEstoque})
+     * não ultrapassa a capacidade do estádio da partida atual.
+     * Passa {@code null} em {@code nomeCategoriaSubstituida} quando é uma adição nova.
+     */
+    private void validarCapacidade(String nomeCategoriaSubstituida, int novoEstoque) {
+        if (partidaAtual == null || partidaAtual.getEstadio() == null) return;
+        int capacidade = partidaAtual.getEstadio().getCapacidade();
+        int somaAtual = partidaAtual.getCategoriasIngresso().stream()
+                .mapToInt(c -> {
+                    if (nomeCategoriaSubstituida != null
+                            && c.getNome().equalsIgnoreCase(nomeCategoriaSubstituida)) {
+                        return 0; // será substituído pelo novoEstoque
+                    }
+                    return c.getEstoque();
+                })
+                .sum();
+        int total = somaAtual + novoEstoque;
+        if (total > capacidade) {
+            throw new IllegalArgumentException(
+                    "A soma dos estoques (" + total + ") ultrapassa a capacidade do estádio ("
+                    + capacidade + ").");
+        }
+    }
 
     private void recarregarTabela() {
         if (partidaAtual == null) return;
