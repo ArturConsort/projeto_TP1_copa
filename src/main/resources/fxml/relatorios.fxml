@@ -71,6 +71,10 @@
                         text="Partidas"
                         onAction="#handleRelatorioPartidas"
                         styleClass="btn-relatorio"/>
+                <Button fx:id="btnVendas"
+                        text="Vendas de Ingressos"
+                        onAction="#handleRelatorioVendas"
+                        styleClass="btn-relatorio"/>
             </HBox>
 
             <!-- Terminal -->

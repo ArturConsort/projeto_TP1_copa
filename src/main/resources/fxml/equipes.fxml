@@ -6,57 +6,70 @@
 <?import javafx.scene.layout.*?>
 <?import java.lang.String?>
 
-<VBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="controllersJavaFX.SelecaoInicialController"
-      prefWidth="900" prefHeight="540"
-      styleClass="sel-root-v3">
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllersJavaFX.SelecaoInicialController"
+            prefWidth="900" prefHeight="540"
+            style="-fx-background-color: radial-gradient(center 50% 60%, radius 70%, #3d2e0a 0%, #1a1508 45%, #0a0a0a 100%);">
 
-    <style>
-        -fx-background-color: radial-gradient(center 50% 60%, radius 70%,
-        #3d2e0a 0%, #1a1508 45%, #0a0a0a 100%);
-    </style>
+    <!-- ===== NAVBAR ===== -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="0"
+              style="-fx-background-color: #0d0d0d;
+                     -fx-padding: 0 24 0 16;
+                     -fx-min-height: 56;
+                     -fx-border-color: transparent transparent #1e1a0a transparent;
+                     -fx-border-width: 0 0 1 0;">
 
-    <!-- ══════════════ HUD / NAVBAR ══════════════ -->
-    <HBox styleClass="hud-bar" alignment="CENTER_LEFT" spacing="0">    <!-- ← era hud-navbar-v3 -->
+            <ImageView fitWidth="40" fitHeight="40" preserveRatio="true">
+                <image><Image url="@../images/worldcup_logo.png"/></image>
+            </ImageView>
 
-        <ImageView fitHeight="48" fitWidth="48" preserveRatio="true"
-                   smooth="true" pickOnBounds="true">
-            <image><Image url="@/images/worldcup_logo.png"/></image>
-            <HBox.margin><Insets right="24"/></HBox.margin>
-        </ImageView>
+            <Region HBox.hgrow="NEVER" minWidth="20"/>
+            <Button text="← Voltar" onAction="#handleVoltar" styleClass="nav-btn"/>
 
-        <Button fx:id="btnHome"      text="Home"      onAction="#irHome"      styleClass="nav-btn"/>
-        <Button fx:id="btnJogadores" text="Jogadores" onAction="#irJogadores" styleClass="nav-btn"/>
-        <Button fx:id="btnEquipes"   text="Equipes"   onAction="#irEquipes"   styleClass="nav-btn"/>  <!-- ← ativo -->
-        <Button fx:id="btnPartidas"  text="Partidas"  onAction="#irPartidas"  styleClass="nav-btn"/>
-        <Button fx:id="btnEstadios"  text="Estádios"  onAction="#irEstadios"  styleClass="nav-btn"/>
-        <Button fx:id="btnArbitros"  text="Árbitros"  onAction="#irArbitros"  styleClass="nav-btn"/>
-        <Button fx:id="btnIngressos" text="Ingressos" onAction="#irIngressos" styleClass="nav-btn"/>
-        <Region HBox.hgrow="ALWAYS"/>
+            <Region HBox.hgrow="ALWAYS"/>
 
-    </HBox>
+            <Label fx:id="labelUsuarioLogado"
+                   style="-fx-text-fill: #b0a898;
+                          -fx-font-size: 12;
+                          -fx-font-family: 'Segoe UI';"/>
+            <Region minWidth="16"/>
+            <Button text="Sair" onAction="#handleLogout"
+                    style="-fx-background-color: #c9982a;
+                           -fx-text-fill: #0a0a0a;
+                           -fx-font-weight: bold;
+                           -fx-font-size: 12;
+                           -fx-font-family: 'Segoe UI';
+                           -fx-background-radius: 14;
+                           -fx-padding: 6 18 6 18;
+                           -fx-cursor: hand;"/>
+        </HBox>
+    </top>
 
-    <!-- ══════════════ CORPO ══════════════ -->
-    <StackPane VBox.vgrow="ALWAYS" styleClass="sel-corpo-v3">
+    <!-- ===== CORPO ===== -->
+    <center>
+        <StackPane styleClass="sel-corpo-v3">
 
-        <Label text="👥" styleClass="sel-ilustracao-v3"
-               StackPane.alignment="BOTTOM_RIGHT">
-            <StackPane.margin><Insets bottom="16" right="24"/></StackPane.margin>
-        </Label>
+            <Label text="👥" styleClass="sel-ilustracao-v3"
+                   StackPane.alignment="BOTTOM_RIGHT">
+                <StackPane.margin><Insets bottom="16" right="24"/></StackPane.margin>
+            </Label>
 
-        <VBox alignment="CENTER" spacing="22">
-            <padding><Insets bottom="36"/></padding>
-            <Label text="Seleção de atividade Seleção" styleClass="sel-titulo-v3"/>
-            <Button text="Cadastro" onAction="#handleCadastro"
-                    styleClass="sel-btn-cadastro-v3" prefWidth="190" prefHeight="48"/>
-            <Button text="Consulta" onAction="#handleConsulta"
-                    styleClass="sel-btn-consulta-v3" prefWidth="190" prefHeight="48"/>
-        </VBox>
-    </StackPane>
+            <VBox alignment="CENTER" spacing="22">
+                <padding><Insets bottom="36"/></padding>
+                <Label text="Seleção de atividade Seleção" styleClass="sel-titulo-v3"/>
+                <Button text="Cadastro" onAction="#handleCadastro"
+                        styleClass="sel-btn-cadastro-v3" prefWidth="190" prefHeight="48"/>
+                <Button text="Consulta" onAction="#handleConsulta"
+                        styleClass="sel-btn-consulta-v3" prefWidth="190" prefHeight="48"/>
+            </VBox>
+        </StackPane>
+    </center>
 
     <stylesheets>
-        <String fx:value="/css/selecao_inicio.css"/>  <!-- ← adicione esta linha -->
+        <String fx:value="/css/menu.css"/>
+        <String fx:value="/css/selecao_inicio.css"/>
     </stylesheets>
 
-</VBox>
+</BorderPane>

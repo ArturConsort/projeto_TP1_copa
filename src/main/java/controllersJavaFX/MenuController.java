@@ -452,7 +452,11 @@ public class MenuController {
                     new FXMLLoader(getClass().getResource(fxmlPath));
 
             Stage stage = (Stage) btnHome.getScene().getWindow();
-            stage.setScene(new Scene(loader.load(), 900, 600));
+            double w = stage.getWidth();
+            double h = stage.getHeight();
+            stage.setScene(new Scene(loader.load()));
+            stage.setWidth(w);
+            stage.setHeight(h);
             stage.setTitle(titulo);
 
         } catch (Exception e) {
@@ -466,7 +470,11 @@ public class MenuController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Stage stage = (Stage) btnHome.getScene().getWindow();
-            stage.setScene(new Scene(loader.load(), 900, 600));
+            double w = stage.getWidth();
+            double h = stage.getHeight();
+            stage.setScene(new Scene(loader.load()));
+            stage.setWidth(w);
+            stage.setHeight(h);
             stage.setTitle(titulo);
 
             Object controller = loader.getController();
@@ -495,7 +503,11 @@ public class MenuController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Stage stage = (Stage) btnHome.getScene().getWindow();
-            stage.setScene(new Scene(loader.load(), 900, 600));
+            double w = stage.getWidth();
+            double h = stage.getHeight();
+            stage.setScene(new Scene(loader.load()));
+            stage.setWidth(w);
+            stage.setHeight(h);
             stage.setTitle(titulo);
 
             Object controller = loader.getController();
@@ -522,7 +534,11 @@ public class MenuController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Stage stage = (Stage) btnHome.getScene().getWindow();
-            stage.setScene(new Scene(loader.load(), 900, 600));
+            double w = stage.getWidth();
+            double h = stage.getHeight();
+            stage.setScene(new Scene(loader.load()));
+            stage.setWidth(w);
+            stage.setHeight(h);
             stage.setTitle(titulo);
 
             Object controller = loader.getController();

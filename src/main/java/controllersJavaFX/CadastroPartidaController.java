@@ -74,7 +74,11 @@ public class CadastroPartidaController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/menu.fxml"));
             Stage stage = (Stage) comboTimeCasa.getScene().getWindow();
-            stage.setScene(new Scene(loader.load(), 1200, 700));
+            double w = stage.getWidth();
+            double h = stage.getHeight();
+            stage.setScene(new Scene(loader.load()));
+            stage.setWidth(w);
+            stage.setHeight(h);
             stage.setTitle("Copa do Mundo 2026");
         } catch (Exception e) {
             feedback("Erro ao voltar: " + e.getMessage(), false);

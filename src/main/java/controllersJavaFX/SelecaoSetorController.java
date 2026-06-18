@@ -4,7 +4,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
@@ -13,7 +12,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import modelo.classes.CategoriaIngresso;
 import modelo.classes.Partida;
-import modelo.enumerations.TipoPerfil;
+import modelo.classes.Usuario;
 import servicos.usuario.SessaoCompra;
 import servicos.usuario.SessaoUsuario;
 
@@ -21,15 +20,8 @@ import java.util.List;
 
 public class SelecaoSetorController {
 
-    // ── Botões do HUD ───────────────────────────────────────
-    @FXML private Button btnHome;
-    @FXML private Button btnJogadores;
-    @FXML private Button btnEquipes;
-    @FXML private Button btnPartidas;
-    @FXML private Button btnEstadios;
-    @FXML private Button btnArbitros;
-    @FXML private Button btnIngressos;
-    @FXML private Button btnRelatorios;
+    // ── Navbar ──────────────────────────────────────────────
+    @FXML private Label labelUsuarioLogado;
 
     @FXML private HBox painelBandeiras;
     @FXML private Label labelConfronto;
@@ -46,7 +38,10 @@ public class SelecaoSetorController {
     @FXML
     public void initialize() {
 
-        ajustarNavbarPorPerfil();
+        Usuario logado = SessaoUsuario.getInstancia().getUsuarioLogado();
+        if (logado != null) {
+            labelUsuarioLogado.setText(logado.getNome() + " · " + logado.getPerfil());
+        }
 
         Partida partida = SessaoCompra.getInstancia().getPartidaSelecionada();
 
@@ -208,36 +203,30 @@ public class SelecaoSetorController {
         };
     }
 
-    // ── Controle de visibilidade por perfil ─────────────────
+    // ── Navegação ───────────────────────────────────────────
 
-    private void ajustarNavbarPorPerfil() {
-        modelo.classes.Usuario logado = SessaoUsuario.getInstancia().getUsuarioLogado();
-        if (logado == null || logado.getPerfil() != TipoPerfil.OPERADOR) return;
-        for (Button b : new Button[]{ btnJogadores, btnEquipes, btnPartidas, btnEstadios, btnArbitros }) {
-            b.setVisible(false);
-            b.setManaged(false);
-        }
+    @FXML
+    private void handleVoltar() {
+        navegarPara("/fxml/ingressos.fxml", "Ingressos");
     }
 
-    // ── Navegação pelo HUD ──────────────────────────────────
-
-    @FXML private void irHome()      { navegarPara("/fxml/menu.fxml",      "Home");      }
-    @FXML private void irJogadores() { navegarPara("/fxml/jogadores.fxml", "Jogadores"); }
-    @FXML private void irEquipes()   { navegarPara("/fxml/equipes.fxml",   "Equipes");   }
-    @FXML private void irPartidas()  { navegarPara("/fxml/partidas.fxml",  "Partidas");  }
-    @FXML private void irEstadios()  { navegarPara("/fxml/estadios.fxml",  "Estádios");  }
-    @FXML private void irArbitros()  { navegarPara("/fxml/arbitros.fxml",  "Árbitros");  }
-    @FXML private void irRelatorios(){ navegarPara("/fxml/relatorios.fxml", "Relatórios"); }
-
-    @FXML private void irIngressos() { navegarPara("/fxml/ingressos.fxml", "Ingressos"); }
+    @FXML
+    private void handleLogout() {
+        SessaoUsuario.getInstancia().encerrarSessao();
+        navegarPara("/fxml/login.fxml", "Login — Copa do Mundo 2026");
+    }
 
     // ── Utilitário ──────────────────────────────────────────
 
     private void navegarPara(String fxmlPath, String titulo) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            Stage stage = (Stage) btnHome.getScene().getWindow();
-            stage.setScene(new Scene(loader.load(), 1200, 700));
+            Stage stage = (Stage) labelUsuarioLogado.getScene().getWindow();
+            double w = stage.getWidth();
+            double h = stage.getHeight();
+            stage.setScene(new Scene(loader.load()));
+            stage.setWidth(w);
+            stage.setHeight(h);
             stage.setTitle(titulo);
         } catch (Exception e) {
             System.out.println("Tela ainda não implementada: " + fxmlPath);

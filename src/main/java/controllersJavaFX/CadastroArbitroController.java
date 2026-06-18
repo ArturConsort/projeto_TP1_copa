@@ -151,7 +151,11 @@ public class CadastroArbitroController {
             Parent root = loader.load();
 
             Stage stage = (Stage) btnVoltar.getScene().getWindow();
+            double w = stage.getWidth();
+            double h = stage.getHeight();
             stage.setScene(new Scene(root));
+            stage.setWidth(w);
+            stage.setHeight(h);
             stage.show();
 
         } catch (IOException e) {

@@ -20,6 +20,7 @@ public class CadastroResultadoController {
     @FXML private TextField         campoCartoesAmarelos;
     @FXML private TextField         campoCartoesVermelhos;
     @FXML private Label             labelFeedback;
+    @FXML private CheckBox checkEmpate;
 
     private final ResultadoPartidaService service = new ResultadoPartidaService();
 
@@ -27,6 +28,12 @@ public class CadastroResultadoController {
     public void initialize() {
         carregarPartidas();
         comboPartida.setOnAction(e -> atualizarTimes());
+
+        checkEmpate.selectedProperty().addListener((obs, antigo, novo) -> {
+            // Se empate marcado, desabilita vencedor/perdedor
+            comboVencedor.setDisable(novo);
+            comboPerdedor.setDisable(novo);
+        });
     }
 
     private void carregarPartidas() {
@@ -53,8 +60,9 @@ public class CadastroResultadoController {
         try {
             service.cadastrarResultado(
                     comboPartida.getValue(),
-                    comboVencedor.getValue(),
-                    comboPerdedor.getValue(),
+                    checkEmpate.isSelected() ? null : comboVencedor.getValue(),
+                    checkEmpate.isSelected() ? null : comboPerdedor.getValue(),
+                    checkEmpate.isSelected(),
                     campoPlacar.getText(),
                     campoPlacarPenaltis.getText(),
                     campoCartoesAmarelos.getText(),
@@ -74,7 +82,11 @@ public class CadastroResultadoController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/menu.fxml"));
             Stage stage = (Stage) comboPartida.getScene().getWindow();
-            stage.setScene(new Scene(loader.load(), 1200, 700));
+            double w = stage.getWidth();
+            double h = stage.getHeight();
+            stage.setScene(new Scene(loader.load()));
+            stage.setWidth(w);
+            stage.setHeight(h);
             stage.setTitle("Copa do Mundo 2026");
         } catch (Exception e) {
             feedback("Erro ao voltar: " + e.getMessage(), false);

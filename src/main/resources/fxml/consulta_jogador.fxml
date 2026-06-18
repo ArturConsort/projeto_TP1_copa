@@ -6,143 +6,129 @@
 <?import javafx.scene.layout.*?>
 <?import java.lang.String?>
 
-<VBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="controllersJavaFX.ConsultaJogadorController"
-      prefWidth="1200"
-      prefHeight="700"
-      styleClass="sel-root-v3">
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllersJavaFX.ConsultaJogadorController"
+            prefWidth="1200" prefHeight="700"
+            style="-fx-background-color: radial-gradient(center 50% 60%, radius 70%, #3d2e0a 0%, #1a1508 45%, #0a0a0a 100%);">
 
-    <style>
-        -fx-background-color: radial-gradient(center 50% 60%, radius 70%,
-        #3d2e0a 0%, #1a1508 45%, #0a0a0a 100%);
-    </style>
+    <!-- ===== NAVBAR ===== -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="0"
+              style="-fx-background-color: #0d0d0d;
+                     -fx-padding: 0 24 0 16;
+                     -fx-min-height: 56;
+                     -fx-border-color: transparent transparent #1e1a0a transparent;
+                     -fx-border-width: 0 0 1 0;">
 
-    <!-- HUD -->
-    <HBox styleClass="hud-bar" alignment="CENTER_LEFT">
+            <ImageView fitWidth="40" fitHeight="40" preserveRatio="true">
+                <image><Image url="@../images/worldcup_logo.png"/></image>
+            </ImageView>
 
-        <ImageView fitHeight="48" fitWidth="48" preserveRatio="true">
-            <image>
-                <Image url="@/images/worldcup_logo.png"/>
-            </image>
-            <HBox.margin>
-                <Insets right="24"/>
-            </HBox.margin>
-        </ImageView>
+            <Region HBox.hgrow="NEVER" minWidth="20"/>
+            <Button text="← Voltar" onAction="#handleVoltar" styleClass="nav-btn"/>
 
-        <Button fx:id="btnHome"      text="Home"      onAction="#irHome"      styleClass="nav-btn"/>
-        <Button fx:id="btnJogadores" text="Jogadores" onAction="#irJogadores" styleClass="nav-btn"/>
-        <Button fx:id="btnEquipes"   text="Equipes"   onAction="#irEquipes"   styleClass="nav-btn"/>
-        <Button fx:id="btnPartidas"  text="Partidas"  onAction="#irPartidas"  styleClass="nav-btn"/>
-        <Button fx:id="btnEstadios"  text="Estádios"  onAction="#irEstadios"  styleClass="nav-btn"/>
-        <Button fx:id="btnArbitros"  text="Árbitros"  onAction="#irArbitros"  styleClass="nav-btn"/>
-        <Button fx:id="btnIngressos" text="Ingressos" onAction="#irIngressos" styleClass="nav-btn"/>
+            <Region HBox.hgrow="ALWAYS"/>
 
-        <Region HBox.hgrow="ALWAYS"/>
-
-    </HBox>
-
-    <!-- CORPO -->
-    <VBox VBox.vgrow="ALWAYS" spacing="20" alignment="TOP_CENTER">
-
-        <padding>
-            <Insets top="30" right="40" bottom="20" left="40"/>
-        </padding>
-
-        <Label text="Consulta de Jogadores" styleClass="sel-titulo-v3"/>
-
-        <!-- FILTROS -->
-        <HBox spacing="15" alignment="CENTER_LEFT" styleClass="filtro-box">
-
-            <Label text="Nome"/>
-            <TextField fx:id="campoNome"
-                       promptText="Nome do jogador"
-                       prefWidth="200"/>
-
-            <Label text="Seleção"/>
-            <TextField fx:id="campoSelecao"
-                       promptText="País da seleção"
-                       prefWidth="180"/>
-
-            <Label text="Posição"/>
-            <ComboBox fx:id="comboPosicao"
-                      promptText="Posição"
-                      prefWidth="140"/>
-
-            <Label text="Status"/>
-            <ComboBox fx:id="comboStatus"
-                      promptText="Status"
-                      prefWidth="130"/>
-
-            <Button text="Pesquisar"
-                    onAction="#handlePesquisar"
-                    styleClass="sel-btn-cadastro-v3"/>
-
-            <Button text="Limpar"
-                    onAction="#handleLimpar"
-                    styleClass="sel-btn-consulta-v3"/>
-
-            <Button text="Editar"
-                    onAction="#handleEditar"
-                    styleClass="sel-btn-cadastro-v3"/>
-
-            <Button text="Excluir"
-                    onAction="#handleExcluir"
-                    styleClass="btn-excluir"/>
-
+            <Label fx:id="labelUsuarioLogado"
+                   style="-fx-text-fill: #b0a898;
+                          -fx-font-size: 12;
+                          -fx-font-family: 'Segoe UI';"/>
+            <Region minWidth="16"/>
+            <Button text="Sair" onAction="#handleLogout"
+                    style="-fx-background-color: #c9982a;
+                           -fx-text-fill: #0a0a0a;
+                           -fx-font-weight: bold;
+                           -fx-font-size: 12;
+                           -fx-font-family: 'Segoe UI';
+                           -fx-background-radius: 14;
+                           -fx-padding: 6 18 6 18;
+                           -fx-cursor: hand;"/>
         </HBox>
+    </top>
 
-        <!-- TABELA -->
-        <TableView fx:id="tabelaJogadores"
-                   VBox.vgrow="ALWAYS"
-                   styleClass="tabela-selecoes">
+    <!-- ===== CORPO ===== -->
+    <center>
+        <VBox spacing="20" alignment="TOP_CENTER" style="-fx-background-color: transparent;">
 
-            <columns>
+            <padding>
+                <Insets top="30" right="40" bottom="20" left="40"/>
+            </padding>
 
-                <TableColumn fx:id="colNome"
-                             text="Nome"
-                             prefWidth="220"/>
+            <Label text="Consulta de Jogadores" styleClass="sel-titulo-v3"/>
 
-                <TableColumn fx:id="colSelecao"
-                             text="Seleção"
-                             prefWidth="180"/>
+            <!-- FILTROS -->
+            <HBox spacing="15" alignment="CENTER_LEFT" styleClass="filtro-box">
 
-                <TableColumn fx:id="colIdade"
-                             text="Idade"
-                             prefWidth="100"/>
+                <Label text="Nome"/>
+                <TextField fx:id="campoNome"
+                           promptText="Nome do jogador"
+                           prefWidth="200"/>
 
-                <TableColumn fx:id="colNumeracao"
-                             text="Nº Camisa"
-                             prefWidth="110"/>
+                <Label text="Seleção"/>
+                <TextField fx:id="campoSelecao"
+                           promptText="País da seleção"
+                           prefWidth="180"/>
 
-                <TableColumn fx:id="colPosicao"
-                             text="Posição"
-                             prefWidth="150"/>
+                <Label text="Posição"/>
+                <ComboBox fx:id="comboPosicao"
+                          promptText="Posição"
+                          prefWidth="140"/>
 
-                <TableColumn fx:id="colStatus"
-                             text="Status"
-                             prefWidth="130"/>
+                <Label text="Status"/>
+                <ComboBox fx:id="comboStatus"
+                          promptText="Status"
+                          prefWidth="130"/>
 
-            </columns>
+                <Button text="Pesquisar"
+                        onAction="#handlePesquisar"
+                        styleClass="sel-btn-cadastro-v3"/>
 
-        </TableView>
+                <Button text="Limpar"
+                        onAction="#handleLimpar"
+                        styleClass="sel-btn-consulta-v3"/>
 
-        <!-- RODAPÉ -->
-        <HBox alignment="CENTER_RIGHT" spacing="15">
+                <Button text="Editar"
+                        onAction="#handleEditar"
+                        styleClass="sel-btn-cadastro-v3"/>
 
-            <Label fx:id="labelTotal"/>
+                <Button text="Excluir"
+                        onAction="#handleExcluir"
+                        styleClass="btn-excluir"/>
 
-            <Button text="Atualizar"
-                    onAction="#handleAtualizar"
-                    styleClass="sel-btn-cadastro-v3"/>
+            </HBox>
 
-        </HBox>
+            <!-- TABELA -->
+            <TableView fx:id="tabelaJogadores"
+                       VBox.vgrow="ALWAYS"
+                       styleClass="tabela-selecoes">
 
-    </VBox>
+                <columns>
+                    <TableColumn fx:id="colNome"      text="Nome"      prefWidth="220"/>
+                    <TableColumn fx:id="colSelecao"   text="Seleção"   prefWidth="180"/>
+                    <TableColumn fx:id="colIdade"     text="Idade"     prefWidth="100"/>
+                    <TableColumn fx:id="colNumeracao" text="Nº Camisa" prefWidth="110"/>
+                    <TableColumn fx:id="colPosicao"   text="Posição"   prefWidth="150"/>
+                    <TableColumn fx:id="colStatus"    text="Status"    prefWidth="130"/>
+                </columns>
+
+            </TableView>
+
+            <!-- RODAPÉ -->
+            <HBox alignment="CENTER_RIGHT" spacing="15">
+                <Label fx:id="labelTotal"/>
+                <Button text="Atualizar"
+                        onAction="#handleAtualizar"
+                        styleClass="sel-btn-cadastro-v3"/>
+            </HBox>
+
+        </VBox>
+    </center>
 
     <stylesheets>
+        <String fx:value="/css/menu.css"/>
         <String fx:value="/css/selecao_inicio.css"/>
         <String fx:value="/css/consulta_selecao.css"/>
     </stylesheets>
 
-</VBox>
+</BorderPane>

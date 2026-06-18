@@ -1,6 +1,7 @@
 package servicos.Partida;
 
 import modelo.classes.*;
+import modelo.enumerations.FasePartida;
 import persistencia.ClassificacaoGrupoDAO;
 import persistencia.ResultadoPartidaDAO;
 import persistencia.SelecaoDAO;
@@ -19,38 +20,24 @@ public class ClassificacaoService {
     }
 
     // ---------------------------------------------------------------
-    // Chamado toda vez que um ResultadoPartida é registrado
-    // Atualiza automaticamente a pontuação do grupo
+    // Atualiza pontuação do grupo ao registrar resultado
     // ---------------------------------------------------------------
     public void processarResultado(ResultadoPartida resultado) throws Exception {
         Partida partida = resultado.getPartida();
 
-        // Só processa partidas da fase de grupos
-        if (partida.getFase() != modelo.enumerations.FasePartida.FASE_DE_GRUPOS) return;
+        if (partida.getFase() != FasePartida.FASE_DE_GRUPOS) return;
 
         Selecao timeCasa      = partida.getTimeCasa();
         Selecao timeVisitante = partida.getTimeVisitante();
+        String  grupo         = timeCasa.getGrupo();
 
-        // Ambos devem estar no mesmo grupo
-        if (timeCasa.getGrupo() != timeVisitante.getGrupo()) {
-            throw new Exception("Times de grupos diferentes não podem se enfrentar na fase de grupos!");
-        }
-
-        String grupo = timeCasa.getGrupo();
-
-        // Busca ou cria a classificação do grupo
         ClassificacaoGrupo classificacao = classificacaoDAO.buscarPorGrupo(grupo);
-        if (classificacao == null) {
-            classificacao = new ClassificacaoGrupo(grupo);
-        }
+        if (classificacao == null) classificacao = new ClassificacaoGrupo(grupo);
 
-        // Garante que as duas seleções estão no grupo
         classificacao.adicionarSelecao(timeCasa);
         classificacao.adicionarSelecao(timeVisitante);
 
-        // Extrai o placar para registrar gols
-        // Placar no formato "2x1" — casa x visitante
-        int[] gols = extrairGols(resultado.getPlacar());
+        int[] gols        = extrairGols(resultado.getPlacar());
         int golsCasa      = gols[0];
         int golsVisitante = gols[1];
 
@@ -58,17 +45,12 @@ public class ClassificacaoService {
         PontuacaoSelecao ptsVisitante = classificacao.getPontuacao(timeVisitante);
 
         if (golsCasa > golsVisitante) {
-            // Time da casa venceu
             ptsCasa.registrarVitoria(golsCasa, golsVisitante);
             ptsVisitante.registrarDerrota(golsVisitante, golsCasa);
-
         } else if (golsVisitante > golsCasa) {
-            // Time visitante venceu
             ptsVisitante.registrarVitoria(golsVisitante, golsCasa);
             ptsCasa.registrarDerrota(golsCasa, golsVisitante);
-
         } else {
-            // Empate
             ptsCasa.registrarEmpate(golsCasa, golsVisitante);
             ptsVisitante.registrarEmpate(golsVisitante, golsCasa);
         }
@@ -77,22 +59,79 @@ public class ClassificacaoService {
     }
 
     // ---------------------------------------------------------------
-    // Retorna a tabela de classificação de um grupo
+    // Processa eliminação no mata-mata
     // ---------------------------------------------------------------
-    public ClassificacaoGrupo getClassificacaoGrupo(char grupo) {
-        return classificacaoDAO.buscarPorGrupo(String.valueOf(grupo));
+    public void processarEliminacao(ResultadoPartida resultado, SelecaoDAO selecaoDAO) throws Exception {
+        Partida    partida = resultado.getPartida();
+        FasePartida fase   = partida.getFase();
+
+        if (fase == FasePartida.FASE_DE_GRUPOS) return;
+
+        // Busca sempre a versão mais recente do arquivo
+        Selecao perdedor = selecaoDAO.buscarPorPais(resultado.getTimePerdedor().getPais());
+        if (perdedor == null) return;
+
+        if (fase == FasePartida.SEMIFINAL) {
+            // Perdedor da semi vai para disputa de 3º — não elimina ainda
+            perdedor.setPerdeuSemifinal(true);
+            selecaoDAO.atualizaSelecao(perdedor);
+
+        } else if (fase == FasePartida.DISPUTA_DE_TERCEIRO_LUGAR) {
+            perdedor.eliminar();
+            selecaoDAO.atualizaSelecao(perdedor);
+
+        } else {
+            // Oitavas, quartas, final
+            perdedor.eliminar();
+            selecaoDAO.atualizaSelecao(perdedor);
+        }
     }
 
     // ---------------------------------------------------------------
-    // Retorna todos os grupos
+    // Elimina 3ª e 4ª de cada grupo após todos terminarem
     // ---------------------------------------------------------------
+    public void processarEliminacaoGrupos(SelecaoDAO selecaoDAO) throws Exception {
+        List<Selecao> todasSelecoes = selecaoDAO.carregaLista();
+
+        // Verifica se TODAS as seleções já jogaram 3 partidas antes de eliminar qualquer uma
+        for (Selecao selecao : todasSelecoes) {
+            ClassificacaoGrupo grupo = classificacaoDAO.buscarPorGrupo(selecao.getGrupo());
+            if (grupo == null) throw new Exception("Nem todos os grupos terminaram.");
+
+            PontuacaoSelecao pts = grupo.getPontuacao(selecao);
+            if (pts == null || pts.getPartidasJogadas() < 3) {
+                throw new Exception("Nem todos os grupos terminaram.");
+            }
+        }
+
+        // Só chega aqui se TODOS jogaram 3 — elimina 3ª e 4ª de cada grupo
+        List<ClassificacaoGrupo> grupos = classificacaoDAO.carregaLista();
+        for (ClassificacaoGrupo g : grupos) {
+            List<PontuacaoSelecao> tabela = g.getClassificacao();
+            for (int i = 2; i < tabela.size(); i++) {
+                // Busca a versão mais recente do arquivo — evita usar cópia antiga
+                Selecao doArquivo = selecaoDAO.buscarPorPais(
+                        tabela.get(i).getSelecao().getPais()
+                );
+                if (doArquivo != null && doArquivo.isAtiva()) {
+                    doArquivo.eliminar();
+                    selecaoDAO.atualizaSelecao(doArquivo);
+                }
+            }
+        }
+    }
+
+    // ---------------------------------------------------------------
+    // Consultas
+    // ---------------------------------------------------------------
+    public ClassificacaoGrupo getClassificacaoGrupo(String grupo) {
+        return classificacaoDAO.buscarPorGrupo(grupo);
+    }
+
     public List<ClassificacaoGrupo> getTodosOsGrupos() {
         return classificacaoDAO.carregaLista();
     }
 
-    // ---------------------------------------------------------------
-    // Verifica se todos os grupos terminaram e retorna as classificadas
-    // ---------------------------------------------------------------
     public List<Selecao> getClassificadasOitavas() throws Exception {
         List<ClassificacaoGrupo> grupos = classificacaoDAO.carregaLista();
 
@@ -103,22 +142,20 @@ public class ClassificacaoService {
         List<Selecao> classificadas = new ArrayList<>();
         for (ClassificacaoGrupo g : grupos) {
             if (!g.todasJogaramTresPartidas()) {
-                throw new Exception("Grupo " + g.getGrupo() +
-                        " ainda não terminou a fase de grupos!");
+                throw new Exception("Grupo " + g.getGrupo() + " ainda não terminou!");
             }
             classificadas.addAll(g.getClassificadas());
         }
 
-        return classificadas; // 16 seleções classificadas
+        return classificadas;
     }
 
     // ---------------------------------------------------------------
-    // Extrai os gols do placar no formato "2x1"
+    // Utilitário
     // ---------------------------------------------------------------
     private int[] extrairGols(String placar) throws Exception {
         if (placar == null || !placar.contains("x")) {
-            throw new Exception("Placar inválido: '" + placar +
-                    "'. Use o formato 'golsCasa x golsVisitante' (ex: 2x1).");
+            throw new Exception("Placar inválido: '" + placar + "'. Use o formato '2x1'.");
         }
         try {
             String[] partes = placar.toLowerCase().split("x");
@@ -128,56 +165,6 @@ public class ClassificacaoService {
             };
         } catch (NumberFormatException e) {
             throw new Exception("Placar inválido: '" + placar + "'. Os gols devem ser números.");
-        }
-    }
-
-    // Adicione no ClassificacaoService existente:
-
-    // Marca o perdedor como eliminado após resultado do mata-mata
-    public void processarEliminacao(ResultadoPartida resultado, SelecaoDAO selecaoDAO) throws Exception {
-        Partida partida = resultado.getPartida();
-        modelo.enumerations.FasePartida fase = partida.getFase();
-
-        // Fase de grupos não elimina ninguém aqui — isso é feito pela classificação
-        if (fase == modelo.enumerations.FasePartida.FASE_DE_GRUPOS) return;
-
-        Selecao perdedor = resultado.getTimePerdedor();
-        Selecao vencedor = resultado.getTimeVencedor();
-
-        if (fase == modelo.enumerations.FasePartida.SEMIFINAL) {
-            // Perdedor da semi vai para disputa de 3º lugar — não elimina ainda
-            perdedor.setPerdeuSemifinal(true);
-            selecaoDAO.atualizaSelecao(perdedor);
-
-        } else if (fase == modelo.enumerations.FasePartida.DISPUTA_DE_TERCEIRO_LUGAR) {
-            // Perdedor da disputa de 3º é eliminado
-            perdedor.eliminar();
-            selecaoDAO.atualizaSelecao(perdedor);
-
-        } else {
-            // Oitavas, quartas, final — perdedor é eliminado direto
-            perdedor.eliminar();
-            selecaoDAO.atualizaSelecao(perdedor);
-        }
-    }
-
-    // Elimina as seleções que não se classificaram após a fase de grupos
-    public void processarEliminacaoGrupos(SelecaoDAO selecaoDAO) throws Exception {
-        List<ClassificacaoGrupo> grupos = classificacaoDAO.carregaLista();
-
-        for (ClassificacaoGrupo g : grupos) {
-            if (!g.todasJogaramTresPartidas()) {
-                throw new Exception("Grupo " + g.getGrupo() + " ainda não terminou!");
-            }
-
-            List<PontuacaoSelecao> tabela = g.getClassificacao();
-
-            // 3ª e 4ª colocadas são eliminadas
-            for (int i = 2; i < tabela.size(); i++) {
-                Selecao eliminada = tabela.get(i).getSelecao();
-                eliminada.eliminar();
-                selecaoDAO.atualizaSelecao(eliminada);
-            }
         }
     }
 }
