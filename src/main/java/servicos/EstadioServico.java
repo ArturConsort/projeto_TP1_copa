@@ -62,6 +62,24 @@ public class EstadioServico extends Servico{
         return estadioDAO.carregaLista();
     }
 
+    public void editarEstadio(String nomeOriginal, String cidade, String estado, int capacidade, TipoGramado tipoGramado) throws EstadioNaoEncontradoException, IOException {
+
+        verificarPermissao(TipoPerfil.ORGANIZADOR, TipoPerfil.ADMINISTRADOR);
+
+        Estadio existente = estadioDAO.buscarPorNome(nomeOriginal);
+
+        if (existente == null) {
+            throw new EstadioNaoEncontradoException(nomeOriginal);
+        }
+
+        existente.setCidade(cidade);
+        existente.setEstado(estado);
+        existente.setCapacidade(capacidade);
+        existente.setTipoGramado(tipoGramado);
+
+        estadioDAO.atualizar(existente);
+    }
+
     public void removerEstadio(String nome) throws EstadioNaoEncontradoException, IOException {
 
         verificarPermissao(TipoPerfil.ORGANIZADOR, TipoPerfil.ADMINISTRADOR);

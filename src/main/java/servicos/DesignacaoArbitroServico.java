@@ -93,6 +93,34 @@ public class DesignacaoArbitroServico extends Servico{
                 .collect(Collectors.toList());
     }
 
+    public void editarDesignacao(int numeroPartidaOriginal, Partida novaPartida, Arbitro novoPrincipal, List<Arbitro> novosAssistentes) throws NacionalidadeConflitanteException, DesignacaoNaoEncontradaException, ArbitroIguaisException, IOException {
+
+        verificarPermissao(TipoPerfil.ADMINISTRADOR, TipoPerfil.ORGANIZADOR);
+
+        Optional<DesignacaoArbitro> existente = designacaoDAO.buscarPorPartida(numeroPartidaOriginal);
+        if (existente.isEmpty()) {
+            throw new DesignacaoNaoEncontradaException(numeroPartidaOriginal);
+        }
+
+        // verificar arbitros iguais
+        if (novoPrincipal.equals(novosAssistentes.get(0)) ||
+                novoPrincipal.equals(novosAssistentes.get(1)) ||
+                (novosAssistentes.get(0)).equals(novosAssistentes.get(1))) {
+            throw new ArbitroIguaisException();
+        }
+
+        DesignacaoArbitro designacaoAtualizada = new DesignacaoArbitro(novaPartida, novoPrincipal, novosAssistentes);
+        designacaoAtualizada.verificarConflitosNacionalidade();
+
+        // se a partida mudou, remover a antiga entrada e salvar a nova
+        if (numeroPartidaOriginal != novaPartida.getNumeroPartidas()) {
+            designacaoDAO.remover(numeroPartidaOriginal);
+            designacaoDAO.salvar(designacaoAtualizada);
+        } else {
+            designacaoDAO.atualizar(designacaoAtualizada);
+        }
+    }
+
     public void removerDesignacao(int numeroPartida) throws DesignacaoNaoEncontradaException, IOException {
 
         verificarPermissao(TipoPerfil.ADMINISTRADOR, TipoPerfil.ORGANIZADOR);

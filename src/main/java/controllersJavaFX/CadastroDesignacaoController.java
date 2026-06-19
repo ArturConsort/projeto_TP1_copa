@@ -10,9 +10,11 @@ import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
 
 import modelo.classes.Arbitro;
+import modelo.classes.DesignacaoArbitro;
 import modelo.classes.Partida;
 import modelo.excecoes.AcessoNegadoException;
 import modelo.excecoes.designacaoarbitro.DesignacaoJaCadastradaException;
+import modelo.excecoes.designacaoarbitro.DesignacaoNaoEncontradaException;
 import modelo.excecoes.designacaoarbitro.NacionalidadeConflitanteException;
 import modelo.excecoes.designacaoarbitro.ArbitroIguaisException;
 import servicos.ArbitroServico;
@@ -42,6 +44,8 @@ public class CadastroDesignacaoController {
     private DesignacaoArbitroServico designacaoServico;
     private ArbitroServico arbitroServico;
     private PartidaService partidaService;
+    private boolean modoEdicao = false;
+    private int numeroPartidaOriginal;
 
     public void setServicos(DesignacaoArbitroServico designacaoServico,
                             ArbitroServico arbitroServico,
@@ -49,6 +53,15 @@ public class CadastroDesignacaoController {
         this.designacaoServico = designacaoServico;
         this.arbitroServico = arbitroServico;
         this.partidaService = partidaService;
+    }
+
+    public void preencherParaEdicao(DesignacaoArbitro designacao) {
+        this.modoEdicao = true;
+        this.numeroPartidaOriginal = designacao.getPartida().getNumeroPartidas();
+        cbPartida.setValue(designacao.getPartida());
+        cbArbitroPrincipal.setValue(designacao.getPrincipalArbitro());
+        if (designacao.getAssistentes().size() > 0) cbAssistente1.setValue(designacao.getAssistentes().get(0));
+        if (designacao.getAssistentes().size() > 1) cbAssistente2.setValue(designacao.getAssistentes().get(1));
     }
 
     public void carregarDadosIniciais() {
@@ -107,9 +120,13 @@ public class CadastroDesignacaoController {
         }
 
         try {
-            designacaoServico.criarDesignacao(partida, principal, List.of(assistente1, assistente2));
-
-            mostrarSucesso("Designação da partida " + partida.getNumeroPartidas() + " cadastrada com sucesso!");
+            if (modoEdicao) {
+                designacaoServico.editarDesignacao(numeroPartidaOriginal, partida, principal, List.of(assistente1, assistente2));
+                mostrarSucesso("Designação da partida " + partida.getNumeroPartidas() + " atualizada com sucesso!");
+            } else {
+                designacaoServico.criarDesignacao(partida, principal, List.of(assistente1, assistente2));
+                mostrarSucesso("Designação da partida " + partida.getNumeroPartidas() + " cadastrada com sucesso!");
+            }
 
             limpar();
 
@@ -117,6 +134,9 @@ public class CadastroDesignacaoController {
             mostrarErro("Dois ou mais arbitros iguais: " + e.getMessage());
         } catch (DesignacaoJaCadastradaException e) {
             mostrarErro("Designação já cadastrada: " + e.getMessage());
+
+        } catch (DesignacaoNaoEncontradaException e) {
+            mostrarErro("Designação não encontrada: " + e.getMessage());
 
         } catch (NacionalidadeConflitanteException e) {
             mostrarErro("Conflito de nacionalidade: " + e.getMessage());

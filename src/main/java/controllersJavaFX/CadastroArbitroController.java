@@ -10,9 +10,11 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import modelo.classes.Arbitro;
 import modelo.enumerations.CategoriaArbitro;
 import modelo.excecoes.AcessoNegadoException;
 import modelo.excecoes.arbitro.ArbitroJaCadastradoException;
+import modelo.excecoes.arbitro.ArbitroNaoEncontradoException;
 import servicos.ArbitroServico;
 
 import java.io.IOException;
@@ -38,9 +40,22 @@ public class CadastroArbitroController {
     private Button btnVoltar;
 
     private ArbitroServico arbitroServico;
+    private boolean modoEdicao = false;
+    private String nomeOriginal;
 
     public void setServico(ArbitroServico arbitroServico) {
         this.arbitroServico = arbitroServico;
+    }
+
+    public void preencherParaEdicao(Arbitro arbitro) {
+        this.modoEdicao = true;
+        this.nomeOriginal = arbitro.getNome();
+        txtNome.setText(arbitro.getNome());
+        txtNome.setEditable(false);
+        txtIdade.setText(String.valueOf(arbitro.getIdade()));
+        txtExperiencia.setText(String.valueOf(arbitro.getExperiencia()));
+        txtNacionalidade.setText(arbitro.getNacionalidade());
+        cbCategoria.setValue(arbitro.getCategoria());
     }
 
     @FXML
@@ -107,14 +122,21 @@ public class CadastroArbitroController {
         }
 
         try {
-            arbitroServico.cadastrarArbitro(nome, idade, categoria, experiencia, nacionalidade);
-
-            mostrarSucesso("Árbitro '" + nome + "' cadastrado com sucesso!");
+            if (modoEdicao) {
+                arbitroServico.editarArbitro(nomeOriginal, idade, categoria, experiencia, nacionalidade);
+                mostrarSucesso("Árbitro '" + nomeOriginal + "' atualizado com sucesso!");
+            } else {
+                arbitroServico.cadastrarArbitro(nome, idade, categoria, experiencia, nacionalidade);
+                mostrarSucesso("Árbitro '" + nome + "' cadastrado com sucesso!");
+            }
 
             limpar();
 
         } catch (ArbitroJaCadastradoException e) {
             mostrarErro("Árbitro já cadastrado: " + e.getMessage());
+
+        } catch (ArbitroNaoEncontradoException e) {
+            mostrarErro("Árbitro não encontrado: " + e.getMessage());
 
         } catch (AcessoNegadoException e) {
             mostrarErro("Acesso negado: " + e.getMessage());

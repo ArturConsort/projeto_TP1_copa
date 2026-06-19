@@ -559,7 +559,11 @@ public class MenuController {
                 );
                 c.carregarDadosIniciais();
             } else if (controller instanceof ConsultaDesignacaoController c) {
-                c.setServico(new servicos.DesignacaoArbitroServico(new persistencia.DesignacaoArbitroDAO()));
+                c.setServicos(
+                        new servicos.DesignacaoArbitroServico(new persistencia.DesignacaoArbitroDAO()),
+                        new servicos.ArbitroServico(new persistencia.ArbitroDAO()),
+                        new servicos.Partida.PartidaService()
+                );
                 c.carregarDadosIniciais();
             }
 

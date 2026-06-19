@@ -37,6 +37,24 @@ public class ArbitroServico extends Servico{
         arbitroDAO.salvar(arbitro);
     }
 
+    public void editarArbitro(String nomeOriginal, int idade, CategoriaArbitro categoria, int experiencia, String nacionalidade) throws AcessoNegadoException, ArbitroNaoEncontradoException, IOException {
+
+        verificarPermissao(TipoPerfil.ADMINISTRADOR, TipoPerfil.ORGANIZADOR);
+
+        Arbitro existente = arbitroDAO.buscarPorNome(nomeOriginal);
+
+        if (existente == null) {
+            throw new ArbitroNaoEncontradoException(nomeOriginal);
+        }
+
+        existente.setIdade(idade);
+        existente.setCategoria(categoria);
+        existente.setExperiencia(experiencia);
+        existente.setNacionalidade(nacionalidade);
+
+        arbitroDAO.atualizar(existente);
+    }
+
     public void removerArbitro(String nome) throws AcessoNegadoException, ArbitroNaoEncontradoException, IOException {
 
         verificarPermissao(TipoPerfil.ADMINISTRADOR, TipoPerfil.ORGANIZADOR);

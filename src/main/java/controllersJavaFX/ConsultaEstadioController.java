@@ -12,9 +12,11 @@ import javafx.stage.Stage;
 
 import modelo.classes.Estadio;
 import modelo.enumerations.TipoGramado;
+import modelo.enumerations.TipoPerfil;
 import modelo.excecoes.AcessoNegadoException;
 import modelo.excecoes.estadio.EstadioNaoEncontradoException;
 import servicos.EstadioServico;
+import servicos.usuario.SessaoUsuario;
 
 import java.io.IOException;
 import java.util.List;
@@ -57,6 +59,9 @@ public class ConsultaEstadioController {
     @FXML
     private Button btnVoltar;
 
+    @FXML
+    private Button btnEditar;
+
     private final ObservableList<Estadio> listaEstadios = FXCollections.observableArrayList();
 
     private EstadioServico estadioServico;
@@ -66,6 +71,12 @@ public class ConsultaEstadioController {
     }
 
     public void carregarDadosIniciais() {
+        // Controle de acesso: ocultar botão Editar para perfil ARBITRO
+        TipoPerfil perfil = SessaoUsuario.getInstancia().getUsuarioLogado().getPerfil();
+        if (perfil == TipoPerfil.ARBITRO) {
+            btnEditar.setVisible(false);
+            btnEditar.setManaged(false);
+        }
         recarregarTodos();
     }
 
@@ -122,6 +133,37 @@ public class ConsultaEstadioController {
     @FXML
     private void handleAtualizar() {
         recarregarTodos();
+    }
+
+    @FXML
+    private void handleEditar() {
+
+        Estadio selecionado = tabelaEstadios.getSelectionModel().getSelectedItem();
+
+        if (selecionado == null) {
+            mostrarErro("Selecione um estádio na tabela antes de editar.");
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/cadastro_estadio.fxml"));
+            Parent root = loader.load();
+
+            CadastroEstadioController controller = loader.getController();
+            controller.setServico(estadioServico);
+            controller.preencherParaEdicao(selecionado);
+
+            Stage stage = (Stage) tabelaEstadios.getScene().getWindow();
+            double w = stage.getWidth();
+            double h = stage.getHeight();
+            stage.setScene(new Scene(root));
+            stage.setWidth(w);
+            stage.setHeight(h);
+            stage.show();
+
+        } catch (IOException e) {
+            mostrarErro("Erro ao abrir tela de edição: " + e.getMessage());
+        }
     }
 
     @FXML

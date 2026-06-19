@@ -59,6 +59,7 @@
             <HBox spacing="12">
                 <Button text="Pesquisar" onAction="#handlePesquisar" styleClass="btn-cadastrar"/>
                 <Button text="Limpar"    onAction="#handleLimpar"    styleClass="btn-voltar"/>
+                <Button fx:id="btnEditar" text="Editar" onAction="#handleEditar" styleClass="btn-voltar"/>
                 <Button text="Excluir"   onAction="#handleExcluir"   styleClass="btn-excluir"/>
             </HBox>
 

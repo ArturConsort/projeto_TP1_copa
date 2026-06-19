@@ -12,9 +12,13 @@ import javafx.stage.Stage;
 
 import modelo.classes.Arbitro;
 import modelo.classes.DesignacaoArbitro;
+import modelo.enumerations.TipoPerfil;
 import modelo.excecoes.AcessoNegadoException;
 import modelo.excecoes.designacaoarbitro.DesignacaoNaoEncontradaException;
+import servicos.ArbitroServico;
 import servicos.DesignacaoArbitroServico;
+import servicos.Partida.PartidaService;
+import servicos.usuario.SessaoUsuario;
 
 import java.io.IOException;
 import java.util.List;
@@ -57,15 +61,32 @@ public class ConsultaDesignacaoController {
     @FXML
     private Button btnLimpar;
 
+    @FXML
+    private Button btnEditar;
+
     private final ObservableList<DesignacaoArbitro> listaDesignacoes = FXCollections.observableArrayList();
 
     private DesignacaoArbitroServico designacaoServico;
+    private ArbitroServico arbitroServico;
+    private PartidaService partidaService;
 
     public void setServico(DesignacaoArbitroServico designacaoServico) {
         this.designacaoServico = designacaoServico;
     }
 
+    public void setServicos(DesignacaoArbitroServico designacaoServico, ArbitroServico arbitroServico, PartidaService partidaService) {
+        this.designacaoServico = designacaoServico;
+        this.arbitroServico = arbitroServico;
+        this.partidaService = partidaService;
+    }
+
     public void carregarDadosIniciais() {
+        // Controle de acesso: ocultar botão Editar para perfil ARBITRO
+        TipoPerfil perfil = SessaoUsuario.getInstancia().getUsuarioLogado().getPerfil();
+        if (perfil == TipoPerfil.ARBITRO) {
+            btnEditar.setVisible(false);
+            btnEditar.setManaged(false);
+        }
         recarregarTodos();
     }
 
@@ -134,6 +155,42 @@ public class ConsultaDesignacaoController {
     @FXML
     private void handleAtualizar() {
         recarregarTodos();
+    }
+
+    @FXML
+    private void handleEditar() {
+
+        DesignacaoArbitro selecionado = tabelaDesignacoes.getSelectionModel().getSelectedItem();
+
+        if (selecionado == null) {
+            mostrarErro("Selecione uma designação na tabela antes de editar.");
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/cadastro_designacao.fxml"));
+            Parent root = loader.load();
+
+            CadastroDesignacaoController controller = loader.getController();
+            controller.setServicos(
+                    designacaoServico,
+                    arbitroServico != null ? arbitroServico : new servicos.ArbitroServico(new persistencia.ArbitroDAO()),
+                    partidaService != null ? partidaService : new servicos.Partida.PartidaService()
+            );
+            controller.carregarDadosIniciais();
+            controller.preencherParaEdicao(selecionado);
+
+            Stage stage = (Stage) tabelaDesignacoes.getScene().getWindow();
+            double w = stage.getWidth();
+            double h = stage.getHeight();
+            stage.setScene(new Scene(root));
+            stage.setWidth(w);
+            stage.setHeight(h);
+            stage.show();
+
+        } catch (IOException e) {
+            mostrarErro("Erro ao abrir tela de edição: " + e.getMessage());
+        }
     }
 
     @FXML

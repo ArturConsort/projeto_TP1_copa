@@ -10,9 +10,11 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import modelo.classes.Estadio;
 import modelo.enumerations.TipoGramado;
 import modelo.excecoes.AcessoNegadoException;
 import modelo.excecoes.estadio.EstadioJaCadastradoException;
+import modelo.excecoes.estadio.EstadioNaoEncontradoException;
 import servicos.EstadioServico;
 
 import java.io.IOException;
@@ -44,9 +46,23 @@ public class CadastroEstadioController {
     private Button btnVoltar;
 
     private EstadioServico estadioServico;
+    private boolean modoEdicao = false;
+    private String nomeOriginal;
 
     public void setServico(EstadioServico estadioServico) {
         this.estadioServico = estadioServico;
+    }
+
+    public void preencherParaEdicao(Estadio estadio) {
+        this.modoEdicao = true;
+        this.nomeOriginal = estadio.getNome();
+        txtNome.setText(estadio.getNome());
+        txtNome.setEditable(false);
+        txtCidade.setText(estadio.getCidade());
+        txtEstado.setText(estadio.getEstado());
+        txtCapacidade.setText(String.valueOf(estadio.getCapacidade()));
+        cbTipoGramado.setValue(estadio.getTipoGramado());
+        btnCadastrar.setText("Salvar Alterações");
     }
 
     @FXML
@@ -105,14 +121,21 @@ public class CadastroEstadioController {
         }
 
         try {
-            estadioServico.cadastrarEstadio(nome, cidade, estado, capacidade, tipo);
-
-            mostrarSucesso("Estádio '" + nome + "' cadastrado com sucesso!");
+            if (modoEdicao) {
+                estadioServico.editarEstadio(nomeOriginal, cidade, estado, capacidade, tipo);
+                mostrarSucesso("Estádio '" + nomeOriginal + "' atualizado com sucesso!");
+            } else {
+                estadioServico.cadastrarEstadio(nome, cidade, estado, capacidade, tipo);
+                mostrarSucesso("Estádio '" + nome + "' cadastrado com sucesso!");
+            }
 
             limpar();
 
         } catch (EstadioJaCadastradoException e) {
             mostrarErro("Estádio já cadastrado: " + e.getMessage());
+
+        } catch (EstadioNaoEncontradoException e) {
+            mostrarErro("Estádio não encontrado: " + e.getMessage());
 
         } catch (AcessoNegadoException e) {
             mostrarErro("Acesso negado: " + e.getMessage());
