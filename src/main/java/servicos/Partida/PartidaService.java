@@ -64,6 +64,9 @@ public class PartidaService {
         if (timeCasa.equals(timeVisitante)) {
             throw new Exception("Os dois times não podem ser iguais!");
         }
+        if(timeCasa.qntJogadores() > 26 || timeCasa.qntJogadores() < 18 || timeVisitante.qntJogadores() > 26 || timeVisitante.qntJogadores() < 18){
+            throw new Exception("As seleções precisam ter entre 18 e 26 jogadores");
+        }
         if (estadio == null) {
             throw new Exception("O estádio é obrigatório!");
         }
@@ -113,9 +116,7 @@ public class PartidaService {
         partidaDAO.salvar(partida);
     }
 
-    // ================================================================
-    //  NOVA — Seleções do mesmo grupo na fase de grupos
-    // ================================================================
+    // Seleções do mesmo grupo na fase de grupos
 
     private void validarMesmoGrupo(Selecao timeCasa, Selecao timeVisitante) throws Exception {
         if (!timeCasa.getGrupo().equals(timeVisitante.getGrupo())) {
@@ -127,13 +128,10 @@ public class PartidaService {
         }
     }
 
-    // ================================================================
-    //  NOVA — Limite de confrontos diretos entre dois times
-    // ================================================================
+    // Limite de confrontos diretos entre dois times
 
     // Na fase de grupos: os dois times só podem se enfrentar 1 vez
     // Fora da fase de grupos: os dois times também só podem se enfrentar 1 vez
-    // (em fases diferentes conta separado)
     private void validarConfrontosDiretos(Selecao timeCasa, Selecao timeVisitante,
                                           FasePartida fase) throws Exception {
         boolean esFaseGrupos = fase == FasePartida.FASE_DE_GRUPOS;
@@ -165,9 +163,7 @@ public class PartidaService {
         }
     }
 
-    // ================================================================
-    //  ATUALIZADA — Conflito de horário com margem de 1h45min
-    // ================================================================
+    //Conflito de horário com margem de 1h45min
 
     private void validarConflitoHorario(Selecao timeCasa, Selecao timeVisitante,
                                         String data, String horario) throws Exception {
@@ -208,9 +204,7 @@ public class PartidaService {
         }
     }
 
-    // ================================================================
-    //  ATUALIZADA — Conflito de estádio com margem de 1h45min
-    // ================================================================
+    //Conflito de estádio com margem de 1h45min
 
     private void validarConflitoEstadio(Estadio estadio, String data, String horario) throws Exception {
         LocalTime horaNovaPartida = LocalTime.parse(horario.trim(), FMT_HORA);
@@ -236,9 +230,7 @@ public class PartidaService {
         }
     }
 
-    // ================================================================
-    //  VALIDAÇÃO — Grupos encerrados antes do mata-mata
-    // ================================================================
+    //Grupos encerrados antes do mata-mata
 
     private void validarGruposEncerrados() throws Exception {
         List<Selecao> todasSelecoes = selecaoDAO.carregaLista();
@@ -271,9 +263,7 @@ public class PartidaService {
         }
     }
 
-    // ================================================================
-    //  VALIDAÇÃO — Elegibilidade
-    // ================================================================
+    //Elegibilidade
 
     private void validarElegibilidade(Selecao selecao, FasePartida fase) throws Exception {
         if (fase == FasePartida.FASE_DE_GRUPOS) return;
@@ -296,9 +286,7 @@ public class PartidaService {
         }
     }
 
-    // ================================================================
     //  DEMAIS MÉTODOS
-    // ================================================================
 
     private LocalDate converterData(String data) throws Exception {
         try {
