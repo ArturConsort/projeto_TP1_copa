@@ -46,6 +46,20 @@
                                maxWidth="Infinity"/>
                 </VBox>
 
+                <VBox spacing="5" GridPane.rowIndex="1" GridPane.columnIndex="0">
+                    <Label text="Árbitro Assistente 1" styleClass="label"/>
+                    <TextField fx:id="campoAssistente1"
+                               promptText="Buscar por assistente 1"
+                               maxWidth="Infinity"/>
+                </VBox>
+
+                <VBox spacing="5" GridPane.rowIndex="1" GridPane.columnIndex="1">
+                    <Label text="Árbitro Assistente 2" styleClass="label"/>
+                    <TextField fx:id="campoAssistente2"
+                               promptText="Buscar por assistente 2"
+                               maxWidth="Infinity"/>
+                </VBox>
+
             </GridPane>
 
             <HBox spacing="12">

@@ -291,17 +291,6 @@ public class MenuController {
 
     private void configurarSubMenuDesignacoes() {
 
-        Button btnCadastrar = new Button("Cadastrar Designação");
-
-        btnCadastrar.getStyleClass().add("submenu-item");
-        btnCadastrar.setOnAction(e -> {
-            subMenuDesignacoes.hide();
-            navegarParaDesignacoes(
-                    "/fxml/cadastro_designacao.fxml",
-                    "Cadastro de Designação"
-            );
-        });
-
         Button btnConsultar = new Button("Consultar Designações");
 
         btnConsultar.getStyleClass().add("submenu-item");
@@ -313,11 +302,31 @@ public class MenuController {
             );
         });
 
-        subMenuDesignacoes = criarPopup(
-                btnDesignacoes,
-                btnCadastrar,
-                btnConsultar
-        );
+        Usuario logado = SessaoUsuario.getInstancia().getUsuarioLogado();
+
+        if (logado != null && logado.getPerfil() != TipoPerfil.ARBITRO) {
+            Button btnCadastrar = new Button("Cadastrar Designação");
+
+            btnCadastrar.getStyleClass().add("submenu-item");
+            btnCadastrar.setOnAction(e -> {
+                subMenuDesignacoes.hide();
+                navegarParaDesignacoes(
+                        "/fxml/cadastro_designacao.fxml",
+                        "Cadastro de Designação"
+                );
+            });
+
+            subMenuDesignacoes = criarPopup(
+                    btnDesignacoes,
+                    btnCadastrar,
+                    btnConsultar
+            );
+        } else {
+            subMenuDesignacoes = criarPopup(
+                    btnDesignacoes,
+                    btnConsultar
+            );
+        }
     }
 
     // =========================================================

@@ -14,13 +14,10 @@ import modelo.classes.Arbitro;
 import modelo.classes.DesignacaoArbitro;
 import modelo.excecoes.AcessoNegadoException;
 import modelo.excecoes.designacaoarbitro.DesignacaoNaoEncontradaException;
-import modelo.enumerations.TipoPerfil;
 import servicos.DesignacaoArbitroServico;
-import servicos.usuario.SessaoUsuario;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ConsultaDesignacaoController {
 
@@ -29,6 +26,12 @@ public class ConsultaDesignacaoController {
 
     @FXML
     private TextField campoArbitro;
+
+    @FXML
+    private TextField campoAssistente1;
+
+    @FXML
+    private TextField campoAssistente2;
 
     @FXML
     private TableView<DesignacaoArbitro> tabelaDesignacoes;
@@ -54,9 +57,6 @@ public class ConsultaDesignacaoController {
     @FXML
     private Button btnLimpar;
 
-    /** true quando o usuário logado é árbitro — o filtro fica fixo no nome dele */
-    private boolean filtroArbitroFixo = false;
-
     private final ObservableList<DesignacaoArbitro> listaDesignacoes = FXCollections.observableArrayList();
 
     private DesignacaoArbitroServico designacaoServico;
@@ -66,18 +66,6 @@ public class ConsultaDesignacaoController {
     }
 
     public void carregarDadosIniciais() {
-
-        modelo.classes.Usuario logado = SessaoUsuario.getInstancia().getUsuarioLogado();
-
-        if (logado != null && logado.getPerfil() == TipoPerfil.ARBITRO) {
-            filtroArbitroFixo = true;
-            campoArbitro.setText(logado.getNome());
-            campoArbitro.setEditable(false);
-            campoArbitro.setStyle("-fx-opacity: 0.7;");
-            btnLimpar.setVisible(false);
-            btnLimpar.setManaged(false);
-        }
-
         recarregarTodos();
     }
 
@@ -113,19 +101,12 @@ public class ConsultaDesignacaoController {
 
         String filtroPartida = campoPartida.getText();
         String filtroArbitro = campoArbitro.getText();
+        String filtroAssistente1 = campoAssistente1 != null ? campoAssistente1.getText() : "";
+        String filtroAssistente2 = campoAssistente2 != null ? campoAssistente2.getText() : "";
 
         try {
-            List<DesignacaoArbitro> todos = designacaoServico.listarDesignacoes();
-
-            final String fPartida = filtroPartida != null ? filtroPartida.trim() : "";
-            final String fArbitro = filtroArbitro != null ? filtroArbitro.trim() : "";
-
-            List<DesignacaoArbitro> resultado = todos.stream()
-                    .filter(d -> fPartida.isEmpty()
-                            || d.getPartida().toString().toLowerCase().contains(fPartida.toLowerCase()))
-                    .filter(d -> fArbitro.isEmpty()
-                            || d.getPrincipalArbitro().getNome().toLowerCase().contains(fArbitro.toLowerCase()))
-                    .collect(Collectors.toList());
+            List<DesignacaoArbitro> resultado = designacaoServico.pesquisarDesignacoes(
+                    filtroPartida, filtroArbitro, filtroAssistente1, filtroAssistente2);
 
             listaDesignacoes.setAll(resultado);
             atualizarTotal(resultado.size());
@@ -143,9 +124,9 @@ public class ConsultaDesignacaoController {
     private void handleLimpar() {
 
         campoPartida.clear();
-        if (!filtroArbitroFixo) {
-            campoArbitro.clear();
-        }
+        campoArbitro.clear();
+        if (campoAssistente1 != null) campoAssistente1.clear();
+        if (campoAssistente2 != null) campoAssistente2.clear();
 
         recarregarTodos();
     }
@@ -205,18 +186,7 @@ public class ConsultaDesignacaoController {
     private void recarregarTodos() {
 
         try {
-            List<DesignacaoArbitro> todos = designacaoServico.listarDesignacoes();
-
-            List<DesignacaoArbitro> resultado;
-
-            if (filtroArbitroFixo) {
-                String nomeArbitro = campoArbitro.getText().trim().toLowerCase();
-                resultado = todos.stream()
-                        .filter(d -> d.getPrincipalArbitro().getNome().toLowerCase().contains(nomeArbitro))
-                        .collect(Collectors.toList());
-            } else {
-                resultado = todos;
-            }
+            List<DesignacaoArbitro> resultado = designacaoServico.listarDesignacoes();
 
             listaDesignacoes.setAll(resultado);
             atualizarTotal(resultado.size());
